@@ -34,6 +34,19 @@ Start with logistic regression or a tree-based classifier. The dataset is static
 
 ## Weekly milestones
 
+```mermaid
+flowchart TD
+    W1["Week 1: Find datasets and check quality"]
+    W2["Week 2: EDA and select BC region"]
+    W3["Week 3: Join data, engineer features, create labels"]
+    W4["Week 4: Build baseline"]
+    W5["Week 5: Compare classifiers and prediction windows<br/>Validate within first 3 years"]
+    W6["Week 6: Freeze model and window<br/>Refit on years 1-3, test on year 4"]
+    W7["Week 7: Charts and draft report"]
+    W8["Week 8: Final report and presentation"]
+    W1 --> W2 --> W3 --> W4 --> W5 --> W6 --> W7 --> W8
+```
+
 | Week | Work | Deliverable |
 | --- | --- | --- |
 | 1 | Find datasets and check their quality. | Data summary |

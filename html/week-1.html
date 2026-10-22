@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A simple presentation about wildfire early detection and useful features for our project.">
+  <title>Week 1 | Wildfire early detection</title>
+  <style>
+    :root {
+      --green: #174e43;
+      --green-light: #eaf1e9;
+      --ink: #20332e;
+      --muted: #596a63;
+      --paper: #f7f7f2;
+      --orange: #dc7645;
+      --line: #dce3da;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 17px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      padding: 56px 24px 50px;
+      background: var(--green);
+      color: white;
+    }
+
+    .wrap { width: min(900px, 100%); margin: 0 auto; }
+
+    .tag {
+      margin: 0 0 10px;
+      color: #d3e6a1;
+      font-size: .8rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      letter-spacing: -.05em;
+      line-height: 1.02;
+    }
+
+    header p:last-child {
+      max-width: 620px;
+      margin: 18px 0 0;
+      color: #e2eee5;
+      font-size: 1.15rem;
+    }
+
+    main { padding: 38px 24px 60px; }
+
+    section { margin: 0 0 40px; }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.55rem, 4vw, 2.15rem);
+      letter-spacing: -.035em;
+      line-height: 1.2;
+    }
+
+    h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .number {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--orange);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+
+    .takeaway {
+      padding: 16px 19px;
+      border-left: 4px solid var(--orange);
+      border-radius: 0 10px 10px 0;
+      background: #fff0e7;
+    }
+
+    .takeaway p { margin: 0; }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .feature {
+      padding: 17px 18px;
+      border-radius: 11px;
+      background: var(--green-light);
+    }
+
+    .feature p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+    .feature strong { color: var(--ink); }
+
+    .feature .feature-role {
+      display: block;
+      margin: 10px 0 4px;
+      color: var(--green);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 17px;
+    }
+
+    .steps .card { border-top: 4px solid var(--green); }
+
+    ul { margin: 8px 0 0; padding-left: 21px; }
+    li { margin: 5px 0; }
+
+    .sources {
+      padding: 17px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      font-size: .9rem;
+    }
+
+    .sources ul { margin: 0; }
+    a { color: var(--green); }
+    a:hover { color: #a94f28; }
+    a:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+    .eda-box {
+      margin-top: 15px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .eda-box h3 { margin-top: 15px; }
+    .eda-box h3:first-child { margin-top: 0; }
+    .eda-box p, .eda-box li { color: var(--muted); font-size: .94rem; }
+    .eda-box p:last-child { margin-bottom: 0; }
+
+    footer {
+      padding: 19px 24px;
+      background: #e9ede6;
+      color: var(--muted);
+      font-size: .82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      header { padding: 42px 21px; }
+      main { padding: 30px 19px 45px; }
+      .cards, .feature-list, .steps { grid-template-columns: 1fr; }
+      section { margin-bottom: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="tag">Week 1 · Wildfire science</p>
+      <h1>Can machine learning help us spot wildfire sooner?</h1>
+      <p>A quick guide to how wildfire detection works—and which data signals are worth testing in our B.C. project.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>First, what are we trying to predict?</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="number">01 · DETECT</span>
+          <h3>Fire is happening now</h3>
+          <p>Find a hotspot in satellite images.</p>
+        </article>
+        <article class="card">
+          <span class="number">02 · DETECT EARLY</span>
+          <h3>Spot it sooner</h3>
+          <p>Use frequent images to identify a new fire as quickly as possible.</p>
+        </article>
+        <article class="card">
+          <span class="number">03 · FORECAST</span>
+          <h3>Estimate future risk</h3>
+          <p>Predict where a new fire may be recorded in a future time window.</p>
+        </article>
+      </div>
+      <div class="takeaway" style="margin-top: 15px">
+        <p><strong>Our project:</strong> We are forecasting near-term fire occurrence from historical fire and weather data. We are not building a live satellite alarm.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>How machine learning helps detect fires</h2>
+      <p class="muted">Satellites observe heat and light. Models look for unusual signals and patterns that change over time.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>Look for heat</h3>
+          <p>Thermal and shortwave-infrared images can reveal hot spots.</p>
+        </article>
+        <article class="card">
+          <h3>Look across time</h3>
+          <p>GRU and other sequence models learn how a hotspot develops between images.</p>
+        </article>
+        <article class="card">
+          <h3>Combine information</h3>
+          <p>Image models can combine satellite bands, weather, and landscape data.</p>
+        </article>
+      </div>
+      <p class="muted" style="margin-top: 14px">Frequent satellite images can help with timeliness; finer-resolution images can show more spatial detail. Clouds, false alarms, and missing or imperfect fire labels remain challenges.</p>
+    </section>
+
+    <section>
+      <h2>What the papers show</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>GRU + frequent imagery</h3>
+          <p>Zhao and Ban use GOES-R time series to detect fires earlier in many study areas.</p>
+        </article>
+        <article class="card">
+          <h3>Predicting hotspot images</h3>
+          <p>Saqer uses a self-attention GRU to predict future GOES hotspot images. Longer forecasts are harder.</p>
+        </article>
+        <article class="card">
+          <h3>Fuse data sources</h3>
+          <p>CanadaFireSat combines Sentinel-2, MODIS, and weather data to forecast fire-labelled areas.</p>
+        </article>
+      </div>
+      <p class="muted" style="margin-top: 12px">Each study answers a different question, so their performance scores are not directly comparable.</p>
+    </section>
+
+    <section>
+      <h2>Features worth trying for our model</h2>
+      <p class="muted">Start with a few understandable signals. Add more only if the data are reliable and improve validation results.</p>
+      <div class="feature-list">
+        <article class="feature">
+          <h3>Weather today</h3>
+          <p>Temperature, relative humidity, wind, and rainfall.</p>
+          <span class="feature-role">Why it matters</span>
+          <p>Heat and low humidity dry fine fuels; wind can help a fire grow; rain moistens fuels.</p>
+          <span class="feature-role">Value to the model</span>
+          <p>Gives the model current conditions that can make an ignition more likely to become a recorded fire.</p>
+        </article>
+        <article class="feature">
+          <h3>Dryness over time</h3>
+          <p>Rain totals over recent days, dry-spell length, and FWI components if available.</p>
+          <span class="feature-role">Why it matters</span>
+          <p>Fuels do not become wet or dry based only on today's weather; moisture reflects conditions over time.</p>
+          <span class="feature-role">Value to the model</span>
+          <p>Rolling rainfall and FWI features summarize accumulated dryness, helping capture delayed or combined weather effects.</p>
+        </article>
+        <article class="feature">
+          <h3>Season and fuels</h3>
+          <p>Day of year; vegetation or fuel type; terrain if available.</p>
+          <span class="feature-role">Why it matters</span>
+          <p>Fire conditions and fuel moisture change seasonally. Vegetation, slope, and elevation shape local fuel and fire behaviour.</p>
+          <span class="feature-role">Value to the model</span>
+          <p>Provides seasonal or location context, so similar weather can be interpreted differently across time and landscape.</p>
+        </article>
+        <article class="feature">
+          <h3>Past fire activity</h3>
+          <p>Recent fire counts, calculated only from records available before each prediction.</p>
+          <span class="feature-role">Why it matters</span>
+          <p>Ignition patterns can vary by place and time, reflecting factors such as lightning or human activity.</p>
+          <span class="feature-role">Value to the model</span>
+          <p>Adds historical ignition context that weather alone cannot provide. It must not include the fire being predicted or future records.</p>
+        </article>
+      </div>
+      <div class="takeaway" style="margin-top: 15px">
+        <p><strong>Why use this feature set?</strong> Together, the features represent weather, accumulated fuel dryness, seasonal and landscape context, and ignition history. They give a model complementary clues; none is a cause-proof or a guarantee that a fire will occur. FWI describes fire-conducive conditions, not the probability that a fire will start.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>How these datasets guide EDA</h2>
+      <p class="muted">Exploratory data analysis (EDA) means checking what the data contain, finding patterns and gaps, and deciding how to build fair model inputs. The notebook points to three useful sources:</p>
+      <div class="cards">
+        <article class="card">
+          <h3>NASA FIRMS · VIIRS hotspots</h3>
+          <p><a href="https://firms.modaps.eosdis.nasa.gov/">Fire observations</a> with date/time, latitude/longitude, confidence, brightness, fire radiative power (FRP), and day/night.</p>
+        </article>
+        <article class="card">
+          <h3>ECCC · daily weather</h3>
+          <p><a href="https://api.weather.gc.ca/collections/climate-daily?f=html">Station observations</a> including maximum temperature, total precipitation, minimum relative humidity, and maximum wind gust.</p>
+        </article>
+        <article class="card">
+          <h3>ECCC + DataBC · where</h3>
+          <p><a href="https://api.weather.gc.ca/collections/climate-stations?f=html">Station locations and dates</a>, matched to <a href="https://www2.gov.bc.ca/gov/content/safety/wildfire-status/about-bcws/fire-centres">B.C. fire-centre boundaries</a> and hotspot locations.</p>
+        </article>
+      </div>
+      <div class="eda-box">
+        <h3>Ask these questions before choosing features</h3>
+        <ul>
+          <li><strong>Do hotspot counts change by year, month, or region?</strong> Plot counts over time and map the points. This helps choose a study region and spot a season or year that dominates the data.</li>
+          <li><strong>Are detections repeated or uncertain?</strong> Compare confidence, day/night, brightness, and FRP; inspect detections close together in time and space. One FIRMS row is a hotspot observation, not necessarily one unique fire or its ignition date. This determines whether to filter, group, or count detections—and warns against labeling every row as a separate fire.</li>
+          <li><strong>Do weather stations cover the same dates and places?</strong> For each station and summer, count expected versus available days, missing runs, and field flags; map station distance from hotspots. The notebook uses 459 expected May–September days per station across 2021–2023 and screens for at least 90% of days with both maximum temperature and precipitation. This helps select a region and stations, and tells us whether interpolation or a reduced study window is needed.</li>
+          <li><strong>Do fire and weather records line up?</strong> Compare date ranges, time zones, station proximity, spatial resolution, and daily weather distributions. This guides the join and whether weather should be summarized by station, region, or grid cell.</li>
+          <li><strong>Do the proposed signals differ on fire and non-fire dates?</strong> Plot temperature, humidity, rainfall, wind, and rolling dryness against the chosen fire label. This checks whether candidate features have useful patterns; it does not by itself prove causation or guarantee predictive value.</li>
+        </ul>
+        <h3>What the current notes do—and do not—show</h3>
+        <p>The notebook documents a FIRMS summary of 522,167 B.C. May–September detections for 2021–2023, with 2024 held separate. These are hotspot observations, not confirmed ignition events. The current checkout does not include the referenced local FIRMS input file, and the notebook’s region/weather cells describe analysis steps rather than verified results. Re-run the notebook on the source files before presenting the counts or claiming a region/station passed the coverage screen.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Keep the test fair</h2>
+      <div class="steps">
+        <article class="card">
+          <h3>Define the future window</h3>
+          <p>Decide how many days ahead count as a predicted fire.</p>
+        </article>
+        <article class="card">
+          <h3>Test on later dates</h3>
+          <p>Train on earlier years; keep a later year untouched for testing.</p>
+        </article>
+        <article class="card">
+          <h3>Measure useful results</h3>
+          <p>Report fires caught, false alarms, precision, and recall—not accuracy alone.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sources</h2>
+      <div class="sources">
+        <ul>
+          <li><a href="https://www.mdpi.com/2072-4292/14/17/4347">Zhao &amp; Ban (2022): GOES-R time series and GRU wildfire detection</a></li>
+          <li><a href="https://hdl.handle.net/10217/239802">Saqer (2024): Short-term wildfire prediction from geostationary satellite data</a></li>
+          <li><a href="https://infoscience.epfl.ch/entities/publication/dcada51b-0c39-457c-9886-f938f2992e17">EPFL: Spatio-temporal-spectral satellite images for early detection</a></li>
+          <li><a href="https://www.sciencedirect.com/science/article/pii/S0924271626002972">CanadaFireSat (2026): High-resolution wildfire forecasting</a></li>
+          <li><a href="https://cwfis.cfs.nrcan.gc.ca/background/summary/fwi">Canadian Forest Fire Weather Index System</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>Week 1 · Wildfire forecasting project · Research summary, not operational fire advice</footer>
+</body>
+</html>

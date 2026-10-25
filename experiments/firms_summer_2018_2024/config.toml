@@ -1,0 +1,28 @@
+# FIRMS summer preprocessing experiment
+input_archives = [
+  "../../../DL_FIRE_SV-C2_830406.zip",
+  "../../DL_FIRE_SV-C2_825835.zip"
+]
+boundary_geojson = "../../data/checks/bc_legal_boundary.geojson"
+output_dir = "data"
+archive_members = [
+  "fire_archive_SV-C2_830406.csv",
+  "fire_archive_SV-C2_825835.csv"
+]
+years = [2018, 2019, 2020, 2021, 2022, 2023, 2024]
+summer_months = [5, 6, 7, 8, 9]
+development_years = []
+holdout_years = []
+chunk_size = 200000
+
+# H3 transformation settings
+input_dataset = "data/bc_firms_summer_2018_2024.csv"
+h3_resolution = 7
+latitude_column = "latitude"
+longitude_column = "longitude"
+date_column = "acq_date"
+h3_column = "h3_cell"
+h3_detection_output = "data/firms_h3_detections.csv"
+cell_date_output = "data/firms_h3_cell_date.csv"
+cell_summary_output = "data/firms_h3_cell_summary.csv"
+

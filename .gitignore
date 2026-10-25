@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local wildfire inputs, generated artifacts, and working notes
+/DL_FIRE_*.zip
+/data/
+/output.png
+/docs/gurleen-progress.md
+/experiments/firms_summer_2018_2024/data/
+/experiments/figures/

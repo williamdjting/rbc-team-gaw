@@ -1,0 +1,156 @@
+The Core Idea: What each dataset gives you
+
+NASA FIRMS = Your Labels (y) & Recent Fire Memory
+Tells you: Was there a fire burning here yesterday or over the last 3 days?
+CEMS Dataset = Your Environmental Fire Drivers (X)
+Tells you: How flammable and explosive are the forest fuels today/tomorrow?
+
+[Temperature, Humidity, Wind, Rain]
+             |
+             +------------+-------------+
+             |            |             |
+             v            v             v
+          1. FFMC      2. DMC        3. DC
+         (Surface)    (Medium)      (Deep)
+             |            |             |
+      +------+      +-----+-----+       |
+      |             |           |       |
+      v             |           v       v
+   4. ISI <---------+        5. BUI <---+
+  (Spread)                   (Fuel)
+      |                         |
+      +------------+------------+
+                   |
+                   v
+                6. FWI
+              (Intensity)
+                   |
+                   v
+                7. DSR
+              (Severity)
+
+Why This Works So Well (The Machine Learning Advantage)
+
+Your model will learn two distinct physical behaviors:
+
+New Ignition Risk (when fire_state_today == 0):
+If a cell has no fire today, but CEMS shows extreme FFMC (> 90) and high FWI (> 25), the model predicts a high probability of a new ignition (e.g., from lightning or human sparks).
+Fire Spread & Continuation (when fire_state_today == 1):
+If a fire is already burning today, and CEMS shows dry, windy weather, the model predicts a near 100% probability that the fire continues burning and spreading.
+If CEMS suddenly shows heavy rain (FWI drops to 2), the model predicts the fire will extinguish or be contained.
+
+This gives you a complete, practical 24-hour predictive wildfire early warning system.
+
+From CEMS we will only use the features: 
+1. fwinx (FWI):	Fire intensity index for that cell
+2. ffmcode (FFMC): Fine litter dryness (ignitability)
+3. drtcode (DC): Deep soil drought
+4. infsinx (ISI): Wind-driven spread rate
+
+1. Why drop fdsrte (DSR)?
+It is a 100% duplicate of fwinx (FWI).
+DSR is literally just FWI raised to the power of 1.77 and multiplied by a constant!
+Its Spearman correlation with fwinx is 
+0.99+.
+Giving both fwinx and fdsrte to a machine learning model gives it zero new information—it is just the same curve stretched out.
+
+2. Why can you drop fbupinx (BUI)?
+It is already computed from dufmcode (DMC) and drtcode (DC).
+Furthermore, fbupinx is already combined inside fwinx along with infsinx:
+FWI≈ISI×f(BUI)
+Because fwinx already carries the BUI signal, keeping both can cause high variance in linear or neural models.
+
+3. Why can dufmcode (DMC) be optional?
+dufmcode measures intermediate duff layer moisture (12-day lag).
+Between ffmcode (surface, 16-hour fast response) and drtcode (deep soil, 52-day slow drought), the model already captures both the short-term ignition window and the long-term seasonal dryness.
+
+Figure	Chart Type	Key Question It Answers
+1. Distributions	Histograms / KDE	Are features skewed or bounded? (Do we need log transforms?)
+2. Collinearity	Heatmap (7×7)	Which indices are redundant mathematical duplicates?
+3. Seasonality	Monthly Line / Boxplot	How do surface fuels vs deep drought evolve over the summer?
+4. Annual Extremes	Bar chart by year	Can CEMS independently identify historical extreme fire years?
+5. Spatial Map	BC Lat/Lon Heatmap	Where in British Columbia is fire danger geographically concentrated?
+
+####### 1. Feature Distributions: Histograms + KDE Curves
+
+Group 1: Surface Ignition Flammability (The Top-Left Plot)
+FFMC (Fine Fuel Moisture Code)
+Visual shape: It is the only left-skewed distribution in the entire dataset. The curve climbs steadily and forms a sharp peak at the far right between 80 and 92 (median is 72.8, 95th percentile is 91.1).
+Physical meaning: Surface fuels (pine needles, dead grass, dry leaves) respond within hours to sunlight and heat. Because BC summers are predominantly warm, surface fine fuels are already dry enough to ignite on most summer days.
+Key takeaway: A high FFMC (>85) is a necessary precondition for a fire to start, but fine fuel dryness alone is not sufficient to create a massive wildfire.
+
+Group 2: Sub-Surface Fuel & Cumulative Drought (Top Middle & Top Right)
+DMC (Duff Moisture Code) & DC (Drought Code)
+Visual shape:
+DMC: Steep decay starting near 0−10 (median 10.2) with a long tail stretching out past 150.
+DC: A much broader, gradual decline starting from a median of 145.1 and extending past 800 (95th percentile is 474.2).
+Physical meaning: These represent slow-drying organic matter, deep roots, and heavy logs. While rain can quickly reset surface FFMC in an afternoon, deep soil drought (DC) takes weeks of continuous summer heat to develop. When DC reaches the tail (>400), fires burn deep into the ground, produce heavy smoke, and resist water bombing.
+
+Group 3: Fire Spread, Intensity, & Severity (The Remaining 4 Plots)
+ISI, BUI, FWI, and DSR
+Visual shape: All four show extreme right-skewness (heavy tails).
+Look at FWI (Fire Weather Index): Over 50,000 sample observations are crammed against 0−2 (the blue median line is at just 
+1.3), while a thin tail stretches all the way out to 70.
+Look at DSR (Daily Severity Rating): Almost the entire mass is pinned at 0.1, with rare spikes reaching past 45.
+Physical meaning: This visually proves that dangerous, runaway wildfire conditions are rare, episodic anomalies. On 90−95% of days across BC, weather conditions do not support extreme fire behavior. True wildfire danger occurs when all ingredients align simultaneously (dry fuels + high winds + heat dome), propelling values into the extreme right-hand tail beyond the red 95th-percentile line (22.5 for FWI).
+
+
+####### 2. Statistical Summary: Percentiles & Skewness
+What This Dictates for Your Machine Learning Models:
+Tree-Based Models (XGBoost / LightGBM) are the Perfect Fit: Decision trees split on individual thresholds (e.g., Is fwinx > 22.47?). They do not assume bell-curve normal distributions, so they handle this extreme right-skewness naturally.
+If You Use Linear Models or Neural Networks: You cannot feed fwinx or fdsrte in raw form without causing severe gradient distortion. You will need a logarithmic transform like np.log1p(df['fwinx']) or a RobustScaler.
+Severe Class Imbalance: Because extreme fire weather occurs <5% of the time, active wildfire detections will also be rare (<2−5% positive class). You will need to evaluate models using Precision-Recall AUC (PR-AUC) rather than simple accuracy!
+
+Spearman Correlation & Collinearity Matrix results
+The table proves that you do not need all 7 features in your machine learning models because they are telling the exact same story multiple times:
+
+FWI and DSR (Row 8, r=0.978): Choose FWI and drop DSR.
+DMC and BUI (Row 3, r=0.993): Choose DMC and drop BUI.
+FFMC and ISI (Row 0, r=0.982): Choose FFMC or ISI.
+
+######## 3. Plot: Monthly Boxplots for the 4 Core Features
+1. DC (Drought Code) Shows the "Cumulative Summer Dryout"
+What this means in reality: Deep forest soils, roots, and heavy logs take months of continuous sun and heat to dry out. Early in May, snowmelt keeps the deep soil wet. By August and September, deep fuel layers are severely parched. This explains why late-season wildfires burn so deep, produce massive smoke plumes, and are nearly impossible to put out with water tankers.
+2. FFMC (Fine Fuel) is "Fast and Flammable" All Summer Long
+Top surface litter (pine needles, cured grass) dries within hours of the sun coming out. Unlike deep drought, surface fuels are primed for ignition right from May through September.
+3. FWI & ISI Peak in July & August
+July and August are the true danger window in British Columbia. This is the exact period where all ingredients align: high heat + peak surface dryness (FFMC) + deep drought (DC) + dry convective winds (ISI). Once September arrives, shorter daylight hours, cooler nights, and dew lower the spread rate back down.
+
+####### 4. Percentage of High/Extreme Danger Observations by Year
+Main Yearly Takeaways (2018 – 2023)
+2023 Was the Most Severe Year Overall (8.9% High/Extreme):
+- Recorded the single highest share of severe fire weather days (8.9%) and the lowest share of benign low-danger days (74.79%), aligning with BC’s most destructive wildfire season on record.
+2018 Was Nearly as Severe (8.2% High/Extreme):
+- Followed closely behind 2023 with 8.17% of observations in High or Extreme danger, reflecting the massive province-wide fire complexes of that summer.
+2021 Recorded the Highest "Extreme" Peak (1.07% Extreme):
+- While total severe days were 7.0%, 2021 had the highest proportion of extreme fire weather (1.07%) of any year in the record, capturing the intense atmospheric shock of the late-June Pacific Northwest Heat Dome.
+2019 and 2020 Were Benign/Quiet Years (< 3% High/Extreme):
+- Severe days plummeted to just 2.7% in 2019 and 2.4% in 2020.
+- Over 91.6% of the 2020 fire season stayed in the "Low / Very Low" category, confirming it as a very mild, wet wildfire season.
+2022 Acted as a Moderate Transition Year (5.2% High/Extreme):
+- Sat right in the middle (5.2% severe days), marked by a damp, delayed spring followed by late-summer August/September fire activity.
+
+######## 5. Spatial Map	BC Lat/Lon Heatmap	
+What to look for when this runs:
+The Dry Southern Interior (Kamloops / Okanagan / Cariboo):
+You will see intense red/orange hotspots in south-central BC for both FWI and DC.
+This is where BC's dry valleys and rain-shadow effects create the highest natural fire frequency.
+The Wet Pacific Coast & Vancouver Island:
+Shows dark blue/cool green colors with very low FWI, reflecting high maritime humidity and frequent precipitation.
+The Northern Boreal Plateau (Prince George / Peace River):
+Shows high drought and spread values, reflecting vast continuous coniferous fuel beds.
+
+Key Takeaways from the map:
+FWI (Mean Fireline Intensity):
+- Takeaway: Pinpoints the Southern Interior (Kamloops & Southeast Fire Centres) and Northeast BC (Prince George Fire Centre) as having the highest sustained fire intensity potential.
+DC (Mean Seasonal Soil Drought):
+- Takeaway: Deep soil drought is most severe in the Interior Plateau (Cariboo/Kamloops) and the Northern Boreal Plains (Fort Nelson / Peace River), where low summer precipitation allows deep organic layers to dry out cumulatively over months.
+FFMC (Mean Fine Fuel Moisture):
+- Takeaway: Almost the entire interior and eastern half of BC is bright green/yellow (Mean FFMC 70–85), showing that surface litter is consistently dry and ignitable across most of the province's landmass all summer.
+ISI (Mean Fire Spread Rate):
+- Takeaway: Wind-driven fire spread is highest in the open plateaus and valleys of the Southern Interior and Northeast plains (bright orange/yellow, Mean ISI 4–6+), where dry fine fuels combine with higher valley/plain wind speeds.
+
+Why This Matters for Your Project & Candidate Region Selection
+- Directly supports choosing your study region: If your team is selecting candidate BC Fire Centres (like in 01_region_weather_exploration.ipynb), these maps visually prove why Kamloops, Cariboo, and Prince George experience the overwhelming majority of BC's wildfires—they sit directly inside the high-FWI, high-DC, and high-ISI climate corridors.
+- Zero Station Gaps: Unlike ground weather stations (which are missing in remote mountains and northern forests), CEMS provides complete, spatially continuous wall-to-wall coverage across every grid cell in BC.
+- ML Feature Importance: Because fire danger has such strong spatial structure (Coast vs. Interior vs. Mountains), including latitude and longitude (or regional indicators) alongside the 4 CEMS weather variables will give your model strong baseline spatial context.

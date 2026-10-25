@@ -1,0 +1,41 @@
+{
+  "region": "Prince George",
+  "source_hashes": {
+    "D:\\wildfire_forecast\\rbc-team-gaw\\experiments\\firms_summer_2018_2024\\data\\firms_h3_detections.csv": "1195a6120619f98233bc5658dc6439d2db2270c3004d0aa8b5017734e9edd3d5",
+    "D:\\wildfire_forecast\\rbc-team-gaw\\data\\region_exploration\\fire_centres.geojson": "87757d279b82eb5ec232cee864ab16d06ac92b5724b67eede2dacf8a77db8b34",
+    "D:\\wildfire_forecast\\rbc-team-gaw\\experiments\\02_hotspot_persistence_bc\\run_experiment.py": "2cc7f7b0f7ea68d52c97f4aa31c9a5783ae58f4b781310db637ab03b043666dc",
+    "D:\\wildfire_forecast\\rbc-team-gaw\\experiments\\01_hotspot_persistence_kamloops\\run_persistence.py": "62caadbe79632c6fa25d30d0064a22c3ac4892d8c7bfe6664d205091a51306fc",
+    "D:\\wildfire_forecast\\rbc-team-gaw\\experiments\\01_hotspot_persistence_kamloops\\prepare_daily_grid.py": "3649d1dd458058ba6a50debdd808342799d70f440c2fc9166e27179f95c2086b"
+  },
+  "selected_rule": "local_1d",
+  "selection_year": 2022,
+  "evaluation_year": 2023,
+  "holdout_loaded": false,
+  "grid_cells": 71787,
+  "resolution": 7,
+  "uncovered_boundary_area_degrees2": 0.0,
+  "grid_rule": "boundary-derived intersecting cells; independent of detections",
+  "target": "recorded detection on next UTC acquisition day; zero is not confirmed no fire",
+  "coverage": "unknown; coverage_supported_target missing on all rows",
+  "features": "past-only 1,3,7 day local/within-region-neighbour counts; censored history age",
+  "target_dates": "May 8-September 30, 2018-2023; no cross-season history",
+  "rule_selection": "highest 2022 F1 with alphabetical tie-break; no model fitting",
+  "sample_cells": [
+    "8712aa2e4ffffff",
+    "8712aa21affffff",
+    "8712aa20bffffff",
+    "8712aa174ffffff",
+    "87121066cffffff",
+    "8712ae221ffffff"
+  ],
+  "batch_size": 2000,
+  "checks": "full boundary coverage, H3 assignment, daily/monthly totals, neighbour sums, complete unique Cartesian rows by construction, past-only windows, parquet row counts",
+  "versions": {
+    "h3": "4.5.0",
+    "pandas": "2.2.2",
+    "numpy": "1.26.4",
+    "pyarrow": "16.1.0",
+    "shapely": "2.2.0",
+    "scipy": "1.13.1"
+  }
+}

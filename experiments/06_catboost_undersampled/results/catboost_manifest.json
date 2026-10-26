@@ -190,7 +190,7 @@
       "feature_set": "cell_only",
       "training_rows": 1514696,
       "training_positives": 46666,
-      "fit_seconds": 25.7,
+      "fit_seconds": 12.4,
       "class_weights": null,
       "tree_count": 300
     },
@@ -199,7 +199,7 @@
       "feature_set": "cell_plus_neighbours",
       "training_rows": 1758947,
       "training_positives": 46666,
-      "fit_seconds": 33.0,
+      "fit_seconds": 14.4,
       "class_weights": null,
       "tree_count": 300
     }
@@ -239,11 +239,11 @@
   "comparison": "Experiments 03-04 metrics parsed from their RESULTS.html (rounded to 3 decimals); Experiment 05 from its results; same 2023 rows checked via Experiment 03 TP+FN per centre",
   "checks": "past-only history, no 2024 rows, every positive kept, four categories sum before and after sampling, Experiment 02 previous-day rule reproduced on every evaluated region-year, no saturated log-odds, source hashes unchanged",
   "seed": 42,
-  "runtime_seconds": 103,
+  "runtime_seconds": 53,
   "versions": {
     "catboost": "1.2.10",
-    "pandas": "3.1.0",
-    "numpy": "2.5.4",
-    "python": "3.14.3"
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "python": "3.13.5"
   }
 }

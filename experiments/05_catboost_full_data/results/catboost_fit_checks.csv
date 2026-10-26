@@ -1,0 +1,5 @@
+variant,feature_set,training_rows,training_positives,fit_seconds,class_weights,tree_count
+unweighted,cell_only,136979536,46666,1827.4,,300
+balanced,cell_only,136979536,46666,2345.4,"[1, 2934.317626953125]",300
+unweighted,cell_plus_neighbours,136979536,46666,2019.9,,300
+balanced,cell_plus_neighbours,136979536,46666,2485.8,"[1, 2934.317626953125]",300

@@ -1,0 +1,272 @@
+{
+  "experiment": "05_catboost_full_data",
+  "source_hashes": {
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2018.parquet": "13bf76bedd0603b43bafe1407a88411a67f6a0ef4cd12bd85cb77e820704bcc8",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2019.parquet": "561cb370874384f8b43f0d4884773442930c845095fb95de950d18a1dc5eef16",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2020.parquet": "d155f6ba6e03460100cb1cbaaa45bb7ff9b36334a890176ed6e29e036a8ebfe2",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2021.parquet": "2c4a585e2852b57006b5699e9e37d0c6f4541de7c3fff2b5e317f7e9fb673374",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2022.parquet": "128a8f16646832ecbe17398d88ed69f2f9e1d55ea740a00dae202fc6126b3d53",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2023.parquet": "a27abf029333a67ed6c771378b5b28dcdfad544d29754552ff6bf0f49f35a07d",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2018.parquet": "f8445467de504a28ea84fe11752a8791a016cb4ab8a8e178b5d44fc50c28507e",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2019.parquet": "b746091772d6c5993315bf594f11ea306ca9947823159031eb8418523b0a0063",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2020.parquet": "ad4690644c46747fe3a37e29b5077fb0e6b7f65f57452be064aba21e8710db26",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2021.parquet": "f3a495abacbddb01b30a0f738799ac2951ed8d99cd9bb4303d4127e88a739334",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2022.parquet": "406df453399806a85872249328b5555930bfdc89a89ab98605dd3b96224a5f37",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2023.parquet": "ffaa7910a68e8a6d7935443b0121ca57715f1973cb029eaf53de6ea4e6fd6a2d",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2018.parquet": "12fe4c0b94e8d49b3331cde5164ed14b302f985f6a5f018c141a0383ed8a86f6",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2019.parquet": "36eb4b881104a23c0925c5d6c1a633ec1fae045c30918ff8c98ac52b5cb647d3",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2020.parquet": "ae7975ee433706a374bc37406aaabc36bad9a26825d7c76c729891da8c852cd9",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2021.parquet": "c8f9a5e5eadfee3f4771ff7504c69e56f5b7c9dc97f59189343b6af67625e252",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2022.parquet": "a2e9ce3dcf574cae371003e74dfc98168a93404fd7a7562adbeba0d3e3a2caec",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2023.parquet": "1cc18185afad387004b7a4b03d6d25a2c89fca922f5d098c935dbe2e1c399afb",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2018.parquet": "06349d7ffbcdcd3e1a95b913a9db4c178d95da9f6b92dc7be123eddc43716be4",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2019.parquet": "1881392e59ccb8af3e64a3058eb73f9de440b53a7e880643ee04d464fddc9bc0",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2020.parquet": "e05fe2334787508d74a3617344c8cc75527525393e92dc50c80e5710d1b110a8",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2021.parquet": "0ff2aad1918d94f8256432a37f65adc4a24a7e0c1626a9e3e0bfa1ccddaeaae9",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2022.parquet": "dad873e44261648a1abd0f8a7577e68cc7cc1341cac7b77ebb9db53949f4a966",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2023.parquet": "27c516f683a925abfd52484b1f8f81f11a6673f339bc17b995133129fb377b91",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2018.parquet": "099bd4dcaaf26afc83ceb512338d1bf3628eaafe68ac25e414d25b2009ff597d",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2019.parquet": "6737a95f42082022a24b13112bfb9847efbedd2be1dbef12b1c4533e711303a8",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2020.parquet": "6daae1857f7f406ead3e8399668fcee1594733f9ad86aa120a66fd7db798e785",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2021.parquet": "5164bb3e69428c20bd9281ac8c4dabb8dcf724929d69ad5084ac4a037658e716",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2022.parquet": "107eefcadec62ac855e80fed12fef5e8cb03b117d3b2b8bd7c62b363dd17eb98",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2023.parquet": "70b884b908c8f5e3f21660fa12afd10439a4897b5e235c318c9dff0af5e7aa43",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2018.parquet": "a19986270f4ea66c23ccdfc53f88ff3c9ab80cd5ec5fabb09796c3ea9123cccd",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2019.parquet": "dbc4543c22a32891895caa5143cf1aa86379f3a88cc5a77efdc60cfaf49ba223",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2020.parquet": "e843887a6f7eee7f49150155d8f130db7d1cdcd95c7b119a1bdc38158383de13",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2021.parquet": "3d85e2e810b29c890f5edbf4b47759741b7c79be61da5d6c93ae2fb7bb8516e5",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2022.parquet": "10b06f4b0c37f0f38b0a1586b9376253d16cc57e9e08f9e97d9a1c0a229cfe37",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2023.parquet": "198c65cede77bbfc606fc53cbca99742683de0da462a8c0039dc67b9b4d9e5b0",
+    "02_hotspot_persistence_bc/regions/cariboo/results/metrics_by_year.csv": "61ecfc5752fad16dfd4bc17d012d7bb17b238076974a27bed4e963cb2aea0ed7",
+    "02_hotspot_persistence_bc/regions/coastal/results/metrics_by_year.csv": "cc58475f4fd62f1fb5c22e95cedc9b4d73d717422432e24852cb9801dd10ac0d",
+    "02_hotspot_persistence_bc/regions/kamloops/results/metrics_by_year.csv": "4c8186a3ee0e4c94f9c5ce189cc457501c5c8031e0bb0fc4ce9692006b275bdf",
+    "02_hotspot_persistence_bc/regions/northwest/results/metrics_by_year.csv": "9c52c56633e88bf4c9fd80fabc044a841d0c35f36f8538459aa32c0387366fa6",
+    "02_hotspot_persistence_bc/regions/prince_george/results/metrics_by_year.csv": "b7967a3af4cfde69316a5fc1c6c23a8fe8c606c70ae88f47a25f6f96cc91c479",
+    "02_hotspot_persistence_bc/regions/southeast/results/metrics_by_year.csv": "32f01d74066356d207ced621ad86aa65f738ca3937a534ace809039c35d90cc2",
+    "03_exp_learned_baselines_bc/RESULTS.html": "81f31d8301c93d0e02ea1699c8cadbd31360587a9a595c02ab5dbe88f71b0496",
+    "04_exp_gnn_bc/RESULTS.html": "131fc2ba370e77c1fdc56f43fec05f6c72f73eb45de2c9619f66d5d40ec945bf"
+  },
+  "regions": [
+    "Cariboo",
+    "Coastal",
+    "Kamloops",
+    "Northwest",
+    "Prince George",
+    "Southeast"
+  ],
+  "training_years": [
+    2018,
+    2019,
+    2020,
+    2021
+  ],
+  "selection_year": 2022,
+  "evaluation_year": 2023,
+  "holdout_loaded": false,
+  "target": "target_recorded_detection: at least one FIRMS detection recorded in the cell on the target day; zero is not confirmed absence; positives are recorded hotspot activity, not ignitions",
+  "feature_sets": {
+    "cell_only": [
+      "local_count_1d",
+      "local_count_3d",
+      "local_count_7d",
+      "days_since_previous_detection",
+      "history_left_censored",
+      "day_of_year",
+      "quiet_stratum"
+    ],
+    "cell_plus_neighbours": [
+      "local_count_1d",
+      "local_count_3d",
+      "local_count_7d",
+      "days_since_previous_detection",
+      "history_left_censored",
+      "day_of_year",
+      "neighbour_count_1d",
+      "neighbour_count_3d",
+      "neighbour_count_7d",
+      "in_region_neighbours",
+      "quiet_stratum"
+    ]
+  },
+  "quiet_definition": {
+    "cell_only": [
+      "local_count_7d"
+    ],
+    "cell_plus_neighbours": [
+      "local_count_7d",
+      "neighbour_count_7d"
+    ]
+  },
+  "day_of_year": "derived from target_date; quiet_stratum derived from the set's own counts",
+  "training": "one pooled model per configuration across all six Fire Centres, every 2018-2021 row",
+  "class_handling": {
+    "unweighted": "no weights, no sampling, no odds correction",
+    "balanced": "auto_class_weights='Balanced' (negative weight 1, positive weight = negatives / positives); scores are not probability-calibrated"
+  },
+  "sampling": "none; quiet-row odds correction not applied",
+  "class_balance": [
+    {
+      "configuration": "cell_only",
+      "category": "active_positive",
+      "before_count": 34839,
+      "after_count": 34839,
+      "before_percent": 0.02543372610051767,
+      "after_percent": 0.02543372610051767
+    },
+    {
+      "configuration": "cell_only",
+      "category": "active_negative",
+      "before_count": 97814,
+      "after_count": 97814,
+      "before_percent": 0.0714077466286643,
+      "after_percent": 0.0714077466286643
+    },
+    {
+      "configuration": "cell_only",
+      "category": "quiet_positive",
+      "before_count": 11827,
+      "after_count": 11827,
+      "before_percent": 0.008634136415821995,
+      "after_percent": 0.008634136415821995
+    },
+    {
+      "configuration": "cell_only",
+      "category": "quiet_negative",
+      "before_count": 136835056,
+      "after_count": 136835056,
+      "before_percent": 99.894524390855,
+      "after_percent": 99.894524390855
+    },
+    {
+      "configuration": "cell_plus_neighbours",
+      "category": "active_positive",
+      "before_count": 41365,
+      "after_count": 41365,
+      "before_percent": 0.030197941391771104,
+      "after_percent": 0.030197941391771104
+    },
+    {
+      "configuration": "cell_plus_neighbours",
+      "category": "active_negative",
+      "before_count": 344629,
+      "after_count": 344629,
+      "before_percent": 0.25159159540444054,
+      "after_percent": 0.25159159540444054
+    },
+    {
+      "configuration": "cell_plus_neighbours",
+      "category": "quiet_positive",
+      "before_count": 5301,
+      "after_count": 5301,
+      "before_percent": 0.0038699211245685635,
+      "after_percent": 0.0038699211245685635
+    },
+    {
+      "configuration": "cell_plus_neighbours",
+      "category": "quiet_negative",
+      "before_count": 136588241,
+      "after_count": 136588241,
+      "before_percent": 99.71434054207921,
+      "after_percent": 99.71434054207921
+    }
+  ],
+  "fits": [
+    {
+      "variant": "unweighted",
+      "feature_set": "cell_only",
+      "training_rows": 136979536,
+      "training_positives": 46666,
+      "fit_seconds": 1827.4,
+      "class_weights": null,
+      "tree_count": 300
+    },
+    {
+      "variant": "balanced",
+      "feature_set": "cell_only",
+      "training_rows": 136979536,
+      "training_positives": 46666,
+      "fit_seconds": 2345.4,
+      "class_weights": [
+        1,
+        2934.317626953125
+      ],
+      "tree_count": 300
+    },
+    {
+      "variant": "unweighted",
+      "feature_set": "cell_plus_neighbours",
+      "training_rows": 136979536,
+      "training_positives": 46666,
+      "fit_seconds": 2019.9,
+      "class_weights": null,
+      "tree_count": 300
+    },
+    {
+      "variant": "balanced",
+      "feature_set": "cell_plus_neighbours",
+      "training_rows": 136979536,
+      "training_positives": 46666,
+      "fit_seconds": 2485.8,
+      "class_weights": [
+        1,
+        2934.317626953125
+      ],
+      "tree_count": 300
+    }
+  ],
+  "catboost_params": {
+    "loss_function": "Logloss",
+    "iterations": 300,
+    "learning_rate": 0.1,
+    "depth": 6,
+    "l2_leaf_reg": 3.0,
+    "border_count": 254,
+    "boost_from_average": true,
+    "random_seed": 42,
+    "thread_count": -1,
+    "allow_writing_files": false
+  },
+  "max_abs_evaluation_log_odds": {
+    "unweighted__cell_only": 10.68,
+    "balanced__cell_only": 10.28,
+    "unweighted__cell_plus_neighbours": 11.23,
+    "balanced__cell_plus_neighbours": 17.24
+  },
+  "threshold_rule": "per Fire Centre and configuration, maximize 2022 F1; applied unchanged to 2023",
+  "thresholds": {
+    "Cariboo | catboost_unweighted | cell_only": 0.46242979168891907,
+    "Cariboo | catboost_balanced | cell_only": 0.9958670735359192,
+    "Cariboo | catboost_unweighted | cell_plus_neighbours": 0.10605145990848541,
+    "Cariboo | catboost_balanced | cell_plus_neighbours": 0.992991030216217,
+    "Coastal | catboost_unweighted | cell_only": 0.1895906776189804,
+    "Coastal | catboost_balanced | cell_only": 0.9974758625030518,
+    "Coastal | catboost_unweighted | cell_plus_neighbours": 0.16578246653079987,
+    "Coastal | catboost_balanced | cell_plus_neighbours": 0.9956969618797302,
+    "Kamloops | catboost_unweighted | cell_only": 0.17629104852676392,
+    "Kamloops | catboost_balanced | cell_only": 0.9982686042785645,
+    "Kamloops | catboost_unweighted | cell_plus_neighbours": 0.1475890874862671,
+    "Kamloops | catboost_balanced | cell_plus_neighbours": 0.998184859752655,
+    "Northwest | catboost_unweighted | cell_only": 0.2355678528547287,
+    "Northwest | catboost_balanced | cell_only": 0.9989427924156189,
+    "Northwest | catboost_unweighted | cell_plus_neighbours": 0.24227167665958405,
+    "Northwest | catboost_balanced | cell_plus_neighbours": 0.9981852173805237,
+    "Prince George | catboost_unweighted | cell_only": 0.21730782091617584,
+    "Prince George | catboost_balanced | cell_only": 0.9980603456497192,
+    "Prince George | catboost_unweighted | cell_plus_neighbours": 0.193200945854187,
+    "Prince George | catboost_balanced | cell_plus_neighbours": 0.9980166554450989,
+    "Southeast | catboost_unweighted | cell_only": 0.2794325053691864,
+    "Southeast | catboost_balanced | cell_only": 0.9985315203666687,
+    "Southeast | catboost_unweighted | cell_plus_neighbours": 0.1907026767730713,
+    "Southeast | catboost_balanced | cell_plus_neighbours": 0.9968245029449463
+  },
+  "comparison": "Experiments 03-04 metrics parsed from their RESULTS.html (rounded to 3 decimals); same 2023 rows checked via Experiment 03 TP+FN per centre",
+  "checks": "past-only history, no 2024 rows, four categories sum to training rows, Experiment 02 previous-day rule reproduced on every evaluated region-year, no saturated log-odds, source hashes unchanged",
+  "seed": 42,
+  "runtime_seconds": 8744,
+  "versions": {
+    "catboost": "1.2.10",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "python": "3.13.5"
+  }
+}

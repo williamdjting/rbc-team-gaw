@@ -233,13 +233,11 @@ data/exploration/
 *.nc
 6e1134df5a293fa7621174aea2a2cbc8.nc
 303b53fd5f8792b16b03fcf152073514.nc
-# Ignore generated/processed CEMS datasets
-datasets/dataset_CEMS_18_23.csv
+# Ignore all files in datasets/ except explicitly allowed ones (<100 MB)
+datasets/*
+!datasets/bc_legal_boundary.geojson
 dataset_CEMS_*.csv
 dataset_18_*.csv
-
-# macOS system files
-.DS_Store
 
 # macOS system files
 .DS_Store

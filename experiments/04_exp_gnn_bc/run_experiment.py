@@ -45,8 +45,11 @@ warnings.filterwarnings("ignore", message="Sparse CSR tensor support is in beta"
 
 
 def digest(path):
+    h = hashlib.sha256()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def build_graph(regions):
@@ -90,8 +93,8 @@ def load_indexed(region, year, offsets, nodes):
     """One centre's feature rows with their (day, node) position in the daily snapshots."""
     start, local = offsets[region]
     frame = load(region, year, with_cells=True)
-    day = (frame.target_date - pd.Timestamp(f"{year}-05-08")).dt.days.to_numpy()
-    node = start + pd.Categorical(frame.h3_cell, categories=local).codes
+    day = (frame.target_date - pd.Timestamp(f"{year}-05-08")).dt.days.to_numpy(dtype=np.int64)
+    node = start + pd.Categorical(frame.h3_cell, categories=local).codes.astype(np.int64)
     assert len(frame) == DAYS * len(local) and day.min() == 0 and day.max() == DAYS - 1
     assert (node >= start).all() and not pd.Series(day * nodes + node).duplicated().any()
     return frame, day, node

@@ -37,7 +37,11 @@ sys.path.insert(0, str(REFERENCE))
 from run_persistence import preceding_sum, history_age, check_temporal_logic
 from prepare_daily_grid import polygon_parts
 
-INPUT = ROOT / "experiments/firms_summer_2018_2024/data/firms_h3_detections.csv"
+INPUT = (
+    ROOT / "datasets/firms_with_cems_18_24.csv"
+    if (ROOT / "datasets/firms_with_cems_18_24.csv").exists()
+    else ROOT / "experiments/firms_summer_2018_2024/data/firms_h3_detections.csv"
+)
 BOUNDARY = ROOT / "data/region_exploration/fire_centres.geojson"
 YEARS = range(2018, 2024)
 RULES = ["always_no_detection", "local_1d", "local_or_neighbour_1d",
@@ -45,8 +49,11 @@ RULES = ["always_no_detection", "local_1d", "local_or_neighbour_1d",
 
 
 def digest(path):
+    h = hashlib.sha256()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def histogram_add(histogram, y, scores):
@@ -205,7 +212,7 @@ def make_figures(name, region, polygons, active, samples, metrics, selected_dail
     plt.close(fig)
 
 
-def run_region(name, region, observations, batch_size, source_hashes):
+def run_region(name, region, observations, batch_size, source_hashes, skip_figures=False):
     slug = name.lower().replace(" ", "_")
     output = HERE / "regions" / slug
     data, results, figures = output / "data", output / "results", output / "figures"
@@ -340,7 +347,7 @@ def run_region(name, region, observations, batch_size, source_hashes):
     sample_daily.to_csv(data / "sample_cell_daily_counts.csv", index=False)
     feature_sample = pd.concat(feature_samples, ignore_index=True).sort_values(["h3_cell", "target_date"])
     feature_sample.to_parquet(results / "sample_features.parquet", index=False)
-    if name == "Kamloops":
+    if name == "Kamloops" and (REFERENCE / "results/metrics_by_year.csv").exists():
         # End-to-end regression against the original experiment, not just totals.
         reference = pd.read_csv(REFERENCE / "results/metrics_by_year.csv").sort_values(["year", "rule"])
         current = metrics.sort_values(["year", "rule"])
@@ -349,8 +356,9 @@ def run_region(name, region, observations, batch_size, source_hashes):
         previous = pd.read_parquet(REFERENCE / "results/sample_features.parquet").sort_values(["h3_cell", "target_date"])
         pd.testing.assert_frame_equal(feature_sample.reset_index(drop=True), previous.reset_index(drop=True), check_dtype=False, check_categorical=False)
         print("Kamloops regression passed: metrics and sample features match Experiment 01", flush=True)
-    print(f"{name}: saving figures", flush=True)
-    make_figures(name, region, polygons, active, sample_daily, metrics, selected_daily, figures)
+    if not skip_figures:
+        print(f"{name}: saving figures", flush=True)
+        make_figures(name, region, polygons, active, sample_daily, metrics, selected_daily, figures)
     chosen = metrics.loc[metrics.year.eq(2023) & metrics.rule.eq(selected)].iloc[0].to_dict()
     (results / "manifest.json").write_text(json.dumps({
         "region": name, "source_hashes": source_hashes, "selected_rule": selected,
@@ -375,6 +383,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=2000)
     parser.add_argument("--regions", nargs="+", help="Optional exact Fire Centre names without 'Fire Centre'")
     parser.add_argument("--resume", action="store_true", help="Reuse completed regions only when source and script hashes match")
+    parser.add_argument("--skip-figures", action="store_true", help="Skip generating regional PNG map figures for faster data setup")
     args = parser.parse_args()
     assert args.batch_size > 0
     check_metrics()
@@ -421,7 +430,7 @@ def main():
             checks = pd.read_csv(region_path / "results/yearly_checks.csv").to_dict("records")
             print(f"Reusing completed {name}", flush=True)
         else:
-            chosen, metrics, checks = run_region(name, regions[name], observations.loc[matches[name]], args.batch_size, hashes)
+            chosen, metrics, checks = run_region(name, regions[name], observations.loc[matches[name]], args.batch_size, hashes, skip_figures=args.skip_figures)
         chosen_rows.append(chosen)
         metric_frames.append(metrics)
         all_checks.extend(checks)

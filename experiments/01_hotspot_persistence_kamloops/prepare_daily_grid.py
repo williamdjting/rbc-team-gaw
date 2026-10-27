@@ -33,8 +33,11 @@ def polygon_parts(geometry):
 
 
 def digest(path):
+    h = hashlib.sha256()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def outline(ax, geometry):

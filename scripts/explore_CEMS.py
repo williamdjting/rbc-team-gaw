@@ -20,9 +20,11 @@ OUT = ROOT / "data" / "exploration"
 OUT.mkdir(parents=True, exist_ok=True)
 
 # ---------------------------------------------------------
-# 1. Load Cleaned BC CEMS Dataset
+# 1. Load Cleaned BC CEMS Dataset (2018-2024)
 # ---------------------------------------------------------
-csv_path = DATASETS_DIR / "dataset_CEMS_18_23.csv"
+csv_path = DATASETS_DIR / "dataset_CEMS_18_24.csv"
+if not csv_path.exists():
+    csv_path = DATASETS_DIR / "dataset_CEMS_18_23.csv"
 if not csv_path.exists():
     csv_path = ROOT.parent / "dataset_CEMS_18_23.csv"
 if not csv_path.exists():
@@ -30,7 +32,7 @@ if not csv_path.exists():
 
 if not csv_path.exists():
     raise FileNotFoundError(
-        f"Could not find dataset_CEMS_18_23.csv in {DATASETS_DIR} or {ROOT}. "
+        f"Could not find dataset_CEMS_18_24.csv or dataset_CEMS_18_23.csv in {DATASETS_DIR} or {ROOT}. "
         "Please run check_CEMS_coverage.py first to generate it."
     )
 

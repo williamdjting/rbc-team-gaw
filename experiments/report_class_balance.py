@@ -10,13 +10,20 @@ END = '<!-- CLASS_BALANCE_END -->'
 
 
 def before_after_tables(experiment, balance):
-    sample = pd.read_csv(experiment.parent / '03_exp_learned_baselines_bc/results/training_sample.csv')
+    sample_path = experiment / 'results/training_sample.csv'
+    if not sample_path.exists():
+        for fallback in ('03_exp_learned_baselines_bc', '03a_exp_learned_cems_bc'):
+            candidate = experiment.parent / fallback / 'results/training_sample.csv'
+            if candidate.exists():
+                sample_path = candidate
+                break
+    sample = pd.read_csv(sample_path)
     if experiment.name.startswith('01_'):
         sample = sample.loc[sample.region.eq('Kamloops')]
     totals = sample.sum(numeric_only=True)
     assert int(totals.rows) == int(balance.loc[balance.year.lt(2022), 'rows'].sum())
-    mode = ('actual' if experiment.name.startswith('03_') else
-            'expected' if experiment.name.startswith('04_') else 'unchanged')
+    mode = ('actual' if experiment.name.startswith(('03_', '03a_')) else
+            'expected' if experiment.name.startswith(('04_', '04a_')) else 'unchanged')
     sets = [('cell_only', 'Cell-only history')]
     if mode != 'expected':
         sets.append(('cell_plus_neighbours', 'Cell + neighbour history'))
@@ -75,7 +82,7 @@ def add_class_balance(page, experiment):
                                        else '2022 selection' if year == 2022 else '2023 development evaluation')
     assert balance.year.between(2018, 2023).all()
     assert (balance.positives + balance.negatives).eq(balance.rows).all()
-    if experiment.name.startswith(('03_', '04_')):
+    if experiment.name.startswith(('03_', '03a_', '04_', '04a_')):
         measured = pd.read_csv(experiment / 'results/metrics_by_year.csv')
         for row in measured.itertuples():
             expected = balance.loc[balance.region.eq(row.region) & balance.year.eq(row.year)].iloc[0]
@@ -97,7 +104,7 @@ def add_class_balance(page, experiment):
     split = balance.groupby('split', sort=True)[['rows', 'positives', 'negatives']].sum()
     evaluation = balance.loc[balance.year.eq(2023)].set_index('region')
     training_note = '<p class="muted">The persistence experiment fits no model and does not sample negatives; the training-period row is descriptive.</p>'
-    if experiment.name.startswith('03_'):
+    if experiment.name.startswith(('03_', '03a_')):
         sample = pd.read_csv(experiment / 'results/training_sample.csv').sum(numeric_only=True)
         assert int(sample.positives) == int(balance.loc[balance.year.lt(2022), 'positives'].sum())
         sampled = pd.DataFrame([
@@ -109,7 +116,7 @@ def add_class_balance(page, experiment):
         sampled.to_csv(experiment / 'results/training_class_balance.csv')
         training_note = ('<h3>Actual sampled training data</h3>' + table(sampled, 'Feature set')
                          + '<p class="muted">All positives and recent-activity rows are retained; other quiet negatives are sampled at 1%. Selection and evaluation retain all rows.</p>')
-    elif experiment.name.startswith('04_'):
+    elif experiment.name.startswith(('04_', '04a_')):
         training_note = ('<h3>GNN / MLP training loss sampling</h3><ul>'
                          '<li>Each snapshot contains every node. The loss keeps all positives and active nodes, plus a fresh 1% draw of quiet negatives at every training step.</li>'
                          '<li>The sampled loss class balance varies by step and epoch; exact sampled counts were not saved, so the table above reports the full underlying data.</li>'

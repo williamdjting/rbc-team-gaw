@@ -1,0 +1,229 @@
+{
+  "experiment": "07_tabpfn",
+  "source_hashes": {
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2018.parquet": "13bf76bedd0603b43bafe1407a88411a67f6a0ef4cd12bd85cb77e820704bcc8",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2019.parquet": "561cb370874384f8b43f0d4884773442930c845095fb95de950d18a1dc5eef16",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2020.parquet": "d155f6ba6e03460100cb1cbaaa45bb7ff9b36334a890176ed6e29e036a8ebfe2",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2021.parquet": "2c4a585e2852b57006b5699e9e37d0c6f4541de7c3fff2b5e317f7e9fb673374",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2022.parquet": "128a8f16646832ecbe17398d88ed69f2f9e1d55ea740a00dae202fc6126b3d53",
+    "02_hotspot_persistence_bc/regions/cariboo/data/features/features_2023.parquet": "a27abf029333a67ed6c771378b5b28dcdfad544d29754552ff6bf0f49f35a07d",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2018.parquet": "f8445467de504a28ea84fe11752a8791a016cb4ab8a8e178b5d44fc50c28507e",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2019.parquet": "b746091772d6c5993315bf594f11ea306ca9947823159031eb8418523b0a0063",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2020.parquet": "ad4690644c46747fe3a37e29b5077fb0e6b7f65f57452be064aba21e8710db26",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2021.parquet": "f3a495abacbddb01b30a0f738799ac2951ed8d99cd9bb4303d4127e88a739334",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2022.parquet": "406df453399806a85872249328b5555930bfdc89a89ab98605dd3b96224a5f37",
+    "02_hotspot_persistence_bc/regions/coastal/data/features/features_2023.parquet": "ffaa7910a68e8a6d7935443b0121ca57715f1973cb029eaf53de6ea4e6fd6a2d",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2018.parquet": "12fe4c0b94e8d49b3331cde5164ed14b302f985f6a5f018c141a0383ed8a86f6",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2019.parquet": "36eb4b881104a23c0925c5d6c1a633ec1fae045c30918ff8c98ac52b5cb647d3",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2020.parquet": "ae7975ee433706a374bc37406aaabc36bad9a26825d7c76c729891da8c852cd9",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2021.parquet": "c8f9a5e5eadfee3f4771ff7504c69e56f5b7c9dc97f59189343b6af67625e252",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2022.parquet": "a2e9ce3dcf574cae371003e74dfc98168a93404fd7a7562adbeba0d3e3a2caec",
+    "02_hotspot_persistence_bc/regions/kamloops/data/features/features_2023.parquet": "1cc18185afad387004b7a4b03d6d25a2c89fca922f5d098c935dbe2e1c399afb",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2018.parquet": "06349d7ffbcdcd3e1a95b913a9db4c178d95da9f6b92dc7be123eddc43716be4",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2019.parquet": "1881392e59ccb8af3e64a3058eb73f9de440b53a7e880643ee04d464fddc9bc0",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2020.parquet": "e05fe2334787508d74a3617344c8cc75527525393e92dc50c80e5710d1b110a8",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2021.parquet": "0ff2aad1918d94f8256432a37f65adc4a24a7e0c1626a9e3e0bfa1ccddaeaae9",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2022.parquet": "dad873e44261648a1abd0f8a7577e68cc7cc1341cac7b77ebb9db53949f4a966",
+    "02_hotspot_persistence_bc/regions/northwest/data/features/features_2023.parquet": "27c516f683a925abfd52484b1f8f81f11a6673f339bc17b995133129fb377b91",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2018.parquet": "099bd4dcaaf26afc83ceb512338d1bf3628eaafe68ac25e414d25b2009ff597d",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2019.parquet": "6737a95f42082022a24b13112bfb9847efbedd2be1dbef12b1c4533e711303a8",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2020.parquet": "6daae1857f7f406ead3e8399668fcee1594733f9ad86aa120a66fd7db798e785",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2021.parquet": "5164bb3e69428c20bd9281ac8c4dabb8dcf724929d69ad5084ac4a037658e716",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2022.parquet": "107eefcadec62ac855e80fed12fef5e8cb03b117d3b2b8bd7c62b363dd17eb98",
+    "02_hotspot_persistence_bc/regions/prince_george/data/features/features_2023.parquet": "70b884b908c8f5e3f21660fa12afd10439a4897b5e235c318c9dff0af5e7aa43",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2018.parquet": "a19986270f4ea66c23ccdfc53f88ff3c9ab80cd5ec5fabb09796c3ea9123cccd",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2019.parquet": "dbc4543c22a32891895caa5143cf1aa86379f3a88cc5a77efdc60cfaf49ba223",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2020.parquet": "e843887a6f7eee7f49150155d8f130db7d1cdcd95c7b119a1bdc38158383de13",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2021.parquet": "3d85e2e810b29c890f5edbf4b47759741b7c79be61da5d6c93ae2fb7bb8516e5",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2022.parquet": "10b06f4b0c37f0f38b0a1586b9376253d16cc57e9e08f9e97d9a1c0a229cfe37",
+    "02_hotspot_persistence_bc/regions/southeast/data/features/features_2023.parquet": "198c65cede77bbfc606fc53cbca99742683de0da462a8c0039dc67b9b4d9e5b0",
+    "02_hotspot_persistence_bc/regions/cariboo/results/metrics_by_year.csv": "61ecfc5752fad16dfd4bc17d012d7bb17b238076974a27bed4e963cb2aea0ed7",
+    "02_hotspot_persistence_bc/regions/coastal/results/metrics_by_year.csv": "cc58475f4fd62f1fb5c22e95cedc9b4d73d717422432e24852cb9801dd10ac0d",
+    "02_hotspot_persistence_bc/regions/kamloops/results/metrics_by_year.csv": "4c8186a3ee0e4c94f9c5ce189cc457501c5c8031e0bb0fc4ce9692006b275bdf",
+    "02_hotspot_persistence_bc/regions/northwest/results/metrics_by_year.csv": "9c52c56633e88bf4c9fd80fabc044a841d0c35f36f8538459aa32c0387366fa6",
+    "02_hotspot_persistence_bc/regions/prince_george/results/metrics_by_year.csv": "b7967a3af4cfde69316a5fc1c6c23a8fe8c606c70ae88f47a25f6f96cc91c479",
+    "02_hotspot_persistence_bc/regions/southeast/results/metrics_by_year.csv": "32f01d74066356d207ced621ad86aa65f738ca3937a534ace809039c35d90cc2",
+    "03_exp_learned_baselines_bc/RESULTS.html": "81f31d8301c93d0e02ea1699c8cadbd31360587a9a595c02ab5dbe88f71b0496",
+    "04_exp_gnn_bc/RESULTS.html": "131fc2ba370e77c1fdc56f43fec05f6c72f73eb45de2c9619f66d5d40ec945bf"
+  },
+  "regions": [
+    "Cariboo",
+    "Coastal",
+    "Kamloops",
+    "Northwest",
+    "Prince George",
+    "Southeast"
+  ],
+  "training_years": [
+    2018,
+    2019,
+    2020,
+    2021
+  ],
+  "selection_year": 2022,
+  "evaluation_year": 2023,
+  "holdout_loaded": false,
+  "target": "target_recorded_detection: at least one FIRMS detection recorded in the cell on the target day; zero is not confirmed absence; positives are recorded hotspot activity, not ignitions",
+  "feature_sets": {
+    "tabpfn": {
+      "cell_only": [
+        "local_count_1d",
+        "local_count_3d",
+        "local_count_7d",
+        "days_since_previous_detection",
+        "history_left_censored",
+        "day_of_year"
+      ],
+      "cell_plus_neighbours": [
+        "local_count_1d",
+        "local_count_3d",
+        "local_count_7d",
+        "days_since_previous_detection",
+        "history_left_censored",
+        "day_of_year",
+        "neighbour_count_1d",
+        "neighbour_count_3d",
+        "neighbour_count_7d",
+        "in_region_neighbours"
+      ]
+    },
+    "catboost_quiet_rows": {
+      "cell_only": [
+        "local_count_1d",
+        "local_count_3d",
+        "local_count_7d",
+        "days_since_previous_detection",
+        "history_left_censored",
+        "day_of_year",
+        "quiet_stratum"
+      ],
+      "cell_plus_neighbours": [
+        "local_count_1d",
+        "local_count_3d",
+        "local_count_7d",
+        "days_since_previous_detection",
+        "history_left_censored",
+        "day_of_year",
+        "neighbour_count_1d",
+        "neighbour_count_3d",
+        "neighbour_count_7d",
+        "in_region_neighbours",
+        "quiet_stratum"
+      ]
+    }
+  },
+  "quiet_definition": {
+    "cell_only": [
+      "local_count_7d"
+    ],
+    "cell_plus_neighbours": [
+      "local_count_7d",
+      "neighbour_count_7d"
+    ]
+  },
+  "model": "hybrid: TabPFN on active rows, Experiment 06 unweighted CatBoost on quiet rows",
+  "training": "one pooled TabPFN context per draw and configuration across all six Fire Centres",
+  "context": {
+    "rule": "uniform random draw without replacement from every 2018-2021 active row; no class rebalancing, so active-row scores need no correction",
+    "seed": 42,
+    "context_rows": 2000,
+    "contexts": 1,
+    "n_estimators": 1,
+    "predict_batch": 5000,
+    "balance": [
+      {
+        "feature_set": "cell_only",
+        "draw": 0,
+        "context_rows": 2000,
+        "context_positives": 504,
+        "context_prevalence": 0.252,
+        "active_rows": 132653,
+        "active_prevalence": 0.2626325827534997
+      },
+      {
+        "feature_set": "cell_plus_neighbours",
+        "draw": 0,
+        "context_rows": 2000,
+        "context_positives": 252,
+        "context_prevalence": 0.126,
+        "active_rows": 385994,
+        "active_prevalence": 0.10716487821054213
+      }
+    ]
+  },
+  "training_source_counts": {
+    "rows": 136979536,
+    "categories": {
+      "cell_only": {
+        "active_positive": 34839,
+        "active_negative": 97814,
+        "quiet_positive": 11827,
+        "quiet_negative": 136835056
+      },
+      "cell_plus_neighbours": {
+        "active_positive": 41365,
+        "active_negative": 344629,
+        "quiet_positive": 5301,
+        "quiet_negative": 136588241
+      }
+    },
+    "matches_experiment_06": true
+  },
+  "score_correction": "active rows: TabPFN probability averaged over draws, unchanged; quiet rows: Experiment 06 CatBoost with odds * 0.01 correction",
+  "evaluated_rows": {
+    "cell_only": {
+      "active": 155475,
+      "quiet": 68334293
+    },
+    "cell_plus_neighbours": {
+      "active": 425618,
+      "quiet": 68064150
+    }
+  },
+  "tabpfn_throughput_rows_per_second": 1184,
+  "fits": [
+    {
+      "feature_set": "cell_only",
+      "draw": 0,
+      "context_rows": 2000,
+      "context_positives": 504,
+      "fit_seconds": 210.2
+    },
+    {
+      "feature_set": "cell_plus_neighbours",
+      "draw": 0,
+      "context_rows": 2000,
+      "context_positives": 252,
+      "fit_seconds": 1.1
+    }
+  ],
+  "device": "mps",
+  "threshold_rule": "per Fire Centre and configuration, maximize hybrid 2022 F1; applied unchanged to 2023",
+  "thresholds": {
+    "Cariboo | tabpfn_hybrid | cell_only": 0.16367633640766144,
+    "Cariboo | tabpfn_hybrid | cell_plus_neighbours": 0.2724609673023224,
+    "Coastal | tabpfn_hybrid | cell_only": 0.1735416203737259,
+    "Coastal | tabpfn_hybrid | cell_plus_neighbours": 0.13828878104686737,
+    "Kamloops | tabpfn_hybrid | cell_only": 0.20224586129188538,
+    "Kamloops | tabpfn_hybrid | cell_plus_neighbours": 0.19785183668136597,
+    "Northwest | tabpfn_hybrid | cell_only": 0.2998046875,
+    "Northwest | tabpfn_hybrid | cell_plus_neighbours": 0.30095192790031433,
+    "Prince George | tabpfn_hybrid | cell_only": 0.18212890625,
+    "Prince George | tabpfn_hybrid | cell_plus_neighbours": 0.20576032996177673,
+    "Southeast | tabpfn_hybrid | cell_only": 0.1855469048023224,
+    "Southeast | tabpfn_hybrid | cell_plus_neighbours": 0.27015143632888794
+  },
+  "evaluation": "every 2022 and 2023 row; evaluation data not undersampled",
+  "comparison": "Experiments 03-04 parsed from their RESULTS.html; Experiments 05-06 from their results; same 2023 rows checked via Experiment 03 TP+FN per centre",
+  "checks": "past-only history, no 2024 rows, four categories sum to training rows, active counts match Experiment 06, Experiment 02 previous-day rule reproduced on every evaluated region-year, source hashes unchanged",
+  "seed": 42,
+  "runtime_seconds": 749,
+  "versions": {
+    "tabpfn": "9.2.0",
+    "torch": "2.14.1",
+    "catboost": "1.2.10",
+    "pandas": "3.1.0",
+    "numpy": "2.5.4",
+    "python": "3.12.16"
+  }
+}

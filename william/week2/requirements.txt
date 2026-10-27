@@ -1,0 +1,21 @@
+# TabPFN training (experiments/07_tabpfn/run_experiment.py)
+# Python 3.11-3.13 (developed on 3.12):
+#   python3.12 -m venv .venv && source .venv/bin/activate
+#   pip install --upgrade pip && pip install -r william/week2/requirements.txt
+# Versions pinned to the working .venv on 2026-10-26.
+
+# Model
+tabpfn==9.2.0
+torch==2.14.1
+huggingface_hub==2.3.0   # weight download; run `hf auth login` if it asks for a licence
+
+# CatBoost quiet-row scores (Experiment 06 models, Experiment 05 helpers)
+catboost==1.2.10
+
+# Data and metrics (also used by the Experiment 03 and 05 helpers it imports)
+numpy==2.5.4
+pandas==3.1.0
+pyarrow==26.0.0
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib==1.6.0

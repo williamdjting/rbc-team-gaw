@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 2 | CatBoost and TabPFN experiments</title>
+  <style>
+    :root {
+      --green: #174e43;
+      --green-dark: #113b35;
+      --green-soft: #eaf1e9;
+      --ink: #20332e;
+      --muted: #596a63;
+      --paper: #f7f7f2;
+      --orange: #dc7645;
+      --orange-soft: #fff0e7;
+      --line: #dce3da;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 17px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      padding: 56px 24px 48px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      color: white;
+    }
+
+    .wrap { width: min(980px, 100%); margin: 0 auto; }
+
+    .tag {
+      margin: 0 0 10px;
+      color: #d3e6a1;
+      font-size: .8rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(2.6rem, 7vw, 4.5rem);
+      letter-spacing: -.05em;
+      line-height: 1.02;
+    }
+
+    header p:last-child {
+      max-width: 690px;
+      margin: 18px 0 0;
+      color: #e2eee5;
+      font-size: 1.15rem;
+    }
+
+    main { padding: 40px 24px 60px; }
+
+    section { margin: 0 0 40px; }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.5rem, 3vw, 2.15rem);
+      letter-spacing: -.035em;
+      line-height: 1.2;
+    }
+
+    h3 { margin: 0 0 8px; font-size: 1.08rem; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+      box-shadow: 0 1px 0 rgba(19, 22, 21, 0.02);
+    }
+
+    .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .number {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--orange);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .takeaway {
+      padding: 18px 20px;
+      border-left: 4px solid var(--orange);
+      border-radius: 0 12px 12px 0;
+      background: var(--orange-soft);
+    }
+
+    .takeaway p { margin: 0; }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .feature {
+      padding: 18px 18px 16px;
+      border-radius: 12px;
+      background: var(--green-soft);
+    }
+
+    .feature p { margin: 0; color: var(--muted); font-size: .94rem; }
+    .feature strong { color: var(--ink); }
+
+    .feature-role {
+      display: block;
+      margin: 10px 0 4px;
+      color: var(--green);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .metric {
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+    }
+
+    .metric-value {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--green);
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -.05em;
+    }
+
+    .metric p { margin: 0; color: var(--muted); }
+
+    ul { margin: 8px 0 0; padding-left: 21px; }
+    li { margin: 6px 0; }
+
+    .checklist {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+    }
+
+    .branch-box {
+      margin-top: 16px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .branch-box p, .branch-box li { color: var(--muted); font-size: .95rem; }
+
+    footer {
+      padding: 20px 24px;
+      background: #e9ede6;
+      color: var(--muted);
+      font-size: .82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      header { padding: 42px 21px; }
+      main { padding: 30px 19px 46px; }
+      .cards, .feature-list, .metrics { grid-template-columns: 1fr; }
+      section { margin-bottom: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="tag">Week 2 · Experimentation</p>
+      <h1>CatBoost ablations and a first TabPFN prototype</h1>
+      <p>This week focused on the core forecasting experiments: full-data CatBoost, undersampled CatBoost, and the first hybrid TabPFN attempt. The design is aligned with the project’s B.C. hotspot forecasting task and uses the same regional feature stack from the earlier 02 experiment pipeline.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>What I completed this week</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="number">05</span>
+          <h3>Full-data CatBoost</h3>
+          <p>Trained CatBoost across all 2018–2021 rows without quiet-negative undersampling and compared unweighted vs balanced class handling.</p>
+        </article>
+        <article class="card">
+          <span class="number">06</span>
+          <h3>Undersampled CatBoost</h3>
+          <p>Matched the fair baseline design: keep all positives and active rows, keep only ~1% quiet negatives, and apply the 0.01 quiet-row odds correction.</p>
+        </article>
+        <article class="card">
+          <span class="number">07</span>
+          <h3>TabPFN hybrid</h3>
+          <p>Built the first TabPFN attempt, scoring active rows with TabPFN and quiet rows with the corrected CatBoost baseline.</p>
+        </article>
+      </div>
+
+      <div class="takeaway" style="margin-top: 18px;">
+        <p><strong>Bottom line:</strong> The work this week moved the project from “baseline pipeline” into a comparison of model families. The CatBoost ablations established the strong reference, and the TabPFN run tested whether a pretrained tabular model can add signal on the rare active rows.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dataset and experiment setup</h2>
+      <div class="feature-list">
+        <div class="feature">
+          <span class="feature-role">Training data</span>
+          <strong>Regional feature data from Experiment 02</strong>
+          <p>All three model folders use the same B.C. region feature sets under the 02/regions/ pipeline. The feature parquet files are built per region and per year and then pooled across 2018–2021 for training.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Evaluation logic</span>
+          <strong>Train on 2018–2021, tune on 2022, evaluate on 2023</strong>
+          <p>Thresholds were selected per Fire Centre and configuration using 2022 F1, then applied unchanged to 2023. This keeps the evaluation time-based and avoids leakage across years.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Target</span>
+          <strong>Recorded hotspot activity, not ignition certainty</strong>
+          <p>The label is target_recorded_detection: whether FIRMS reported at least one hotspot in the cell on that day. That is a detection target, not a verified fire start or confirmed ignition event.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Modeling choices</span>
+          <strong>Cell-only and cell-plus-neighbours</strong>
+          <p>Each experiment runs both feature sets, with the same core feature design used in the earlier learned baselines. The neighbor version intentionally adds local spatial context from nearby cells.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Experiment 05: full-data CatBoost</h2>
+      <p>Experiment 05 was the “do not undersample” ablation. It trains on the full 2018–2021 data and compares:</p>
+      <ul>
+        <li>Unweighted CatBoost on all rows</li>
+        <li>Balanced weighting via auto_class_weights="Balanced"</li>
+        <li>Both feature sets: cell_only and cell_plus_neighbours</li>
+      </ul>
+      <p>This tells us whether the model can handle the extreme event rarity without the quiet-downsampling correction, and whether class weighting is enough to keep the positive signal from being swamped by the non-event mass.</p>
+
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric-value">0.494</span>
+          <p>Mean F1 across 05 configs</p>
+        </div>
+        <div class="metric">
+          <span class="metric-value">0.455</span>
+          <p>Mean AP across 05 configs</p>
+        </div>
+        <div class="metric">
+          <span class="metric-value">4</span>
+          <p>VARIANTS: unweighted and balanced × 2 feature sets</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Experiment 06: fair undersampled CatBoost</h2>
+      <p>Experiment 06 is the cleaner baseline for comparison with the earlier learned models. It keeps every positive row, every active row, and a seeded ~1% draw of quiet negatives. The key design choice is the quiet-row odds correction:</p>
+      <ul>
+        <li>Active-row scores remain unchanged</li>
+        <li>Quiet-row odds are multiplied by 0.01 before reconversion to probability</li>
+        <li>The score is treated as a sampling correction rather than separate calibration</li>
+      </ul>
+      <p>This is the “fair comparison” experiment because it matches the class balancing scheme used in the earlier baseline work and makes the evaluation comparable across models.</p>
+
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric-value">0.507</span>
+          <p>Mean F1 across 06 configs</p>
+        </div>
+        <div class="metric">
+          <span class="metric-value">0.456</span>
+          <p>Mean AP across 06 configs</p>
+        </div>
+        <div class="metric">
+          <span class="metric-value">~1%</span>
+          <p>Quiet-negative retention</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Experiment 07: first TabPFN hybrid</h2>
+      <p>Experiment 07 was the most exploratory piece: a hybrid model that uses TabPFN only on active rows and keeps the Experiment 06 CatBoost score for quiet rows. The intent was to test whether a pretrained tabular foundation model can help on the rare positives while preserving the strong baseline for the quiet majority.</p>
+      <ul>
+        <li>Active rows: sampled context from 2018–2021 active rows, averaged over multiple draws</li>
+        <li>Quiet rows: keep the corrected CatBoost score from Experiment 06</li>
+        <li>Thresholds: chosen on 2022 F1 and then applied to 2023</li>
+      </ul>
+      <p>This was a first pass rather than a finalized model. The quick run was intended to probe feasibility, throughput, and whether the hybrid approach is worth deeper tuning.</p>
+
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric-value">0.526</span>
+          <p>Mean F1 across 07 configs</p>
+        </div>
+        <div class="metric">
+          <span class="metric-value">0.469</span>
+          <p>Mean AP across 07 configs</p>
+        </div>
+        <div class="metric">
+          <span class="metric-value">1st pass</span>
+          <p>Prototype status</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What the results suggest</h2>
+      <div class="checklist">
+        <ul>
+          <li><strong>CatBoost is a strong baseline.</strong> The undersampled CatBoost setup is competitive and interpretable, with mean F1 around 0.507.</li>
+          <li><strong>TabPFN is promising but still early.</strong> The hybrid run reached a higher mean F1 (~0.526) and mean AP (~0.469), suggesting the active-row model may be useful, but the outcome should still be read as a prototype rather than a final production model.</li>
+          <li><strong>Feature context matters.</strong> The cell_plus_neighbours feature set is consistently stronger than cell_only in the 05–07 runs, which supports the spatial signal hypothesis.</li>
+          <li><strong>Quiet vs active separation matters.</strong> The hybrid design is deliberately structured to use the best of both worlds: TabPFN where the label is more informative and CatBoost where the majority of rows are quiet and need a stable baseline.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>TabPFN research angle</h2>
+      <div class="feature-list">
+        <div class="feature">
+          <span class="feature-role">Why it matters</span>
+          <strong>TabPFN is especially strong on small labelled tabular datasets</strong>
+          <p>It is a pretrained transformer for tabular data, and a number of studies show strong performance when the dataset is modest and the task is structured tabular prediction. This makes it a plausible fit for rare-event hotspot detection where the positive class is small but the full data volume is large.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">What the literature says</span>
+          <strong>Three wildfire studies use TabPFN, but none match our exact forecasting task</strong>
+          <p>One study on Canadian wildfire propagation type, one on wildfire susceptibility mapping in Victoria, and one on post-wildfire debris-flow prediction all reported competitive performance. However, none of them focus on next-day hotspot detection or early wildfire detection in the same spatiotemporal framework as this project.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Main caveat</span>
+          <strong>Our use case is still an open gap</strong>
+          <p>The review suggests there is no direct TabPFN benchmark for early detection or next-day ignition forecasting in BC. That is good for the research story: this project is exploring an under-studied setting, not simply reproducing an existing pipeline.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Practical caveats</span>
+          <strong>Context size and data leakage are crucial</strong>
+          <p>TabPFN context is capped, and scoring many millions of rows is expensive. The review also stresses that random train/test splits can be too optimistic in wildfire work. For us, a time-based split (train on 2018–2021, evaluate on 2023) is the right design principle.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Technical notes: how the metrics and models work</h2>
+
+      <div class="feature-list">
+        <div class="feature">
+          <span class="feature-role">Mean F1</span>
+          <strong>F1 combines precision and recall into one score</strong>
+          <p>For rare-event wildfire detection, precision tells us how many predicted hotspots were real, and recall tells us how many true hotspots we caught. F1 is the harmonic mean of the two:</p>
+          <p>F1 = 2 × precision × recall / (precision + recall). In this project, it is used per Fire Centre and per threshold, and the report averages those values across configurations. This is a good metric because wildfire positives are rare and raw accuracy would look artificially high.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Mean AP</span>
+          <strong>Average precision summarizes the whole precision-recall curve</strong>
+          <p>AP is especially important for rare positive events. Instead of relying on one threshold, it measures how well the model ranks true positives above negatives across all possible decision thresholds. Higher AP means the model assigns higher risk to real hotspot events more often than to non-events. In our work, AP is a strong indicator of ranking quality, while F1 is tied to the chosen operating threshold.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Active rows</span>
+          <strong>These are rows with recent activity in the location history</strong>
+          <p>An active row is a grid-cell-day where there has been recent hotspot activity in the recent past, typically the previous 7-day window. The project separates active vs quiet rows because they have very different behavior: active cells are much more likely to have a repeat event, while quiet cells dominate the dataset by volume but are much less likely to be positive.</p>
+        </div>
+
+        <div class="feature">
+          <span class="feature-role">Quiet rows</span>
+          <strong>These are rows with no recent detections in the relevant local window</strong>
+          <p>A quiet row means there was no recent hotspot activity in the cell, or in the cell and neighbours for the spatial version. Quiet rows make up the majority of the dataset. Because positives are so rare, models tend to over-predict the negative class unless the training design explicitly handles class imbalance.</p>
+        </div>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>How Experiment 05 works</h3>
+        <p>Experiment 05 is the full-data CatBoost ablation. It trains on all 2018–2021 rows without quiet-negative undersampling. It compares:</p>
+        <ul>
+          <li>unweighted CatBoost on the full dataset</li>
+          <li>balanced CatBoost using class weights</li>
+          <li>cell_only vs cell_plus_neighbours features</li>
+        </ul>
+        <p><strong>Why do this?</strong> Because the real data are heavily skewed: most cell-days are quiet, and only a small portion are hotspot-positive. If we train on the raw data without rebalancing, the model can learn to ignore the rare event class and optimize for the majority class. This experiment tells us whether the task is mostly an imbalance problem or whether the risk signal is strong enough to learn even in the hardest setting.</p>
+        <p><strong>Why use class weighting in the same experiment?</strong> The balanced version keeps the same data but changes the loss function so a missed hotspot is counted as more important than a correct quiet prediction. This is useful because the default objective would otherwise reward “always predict no hotspot,” which looks good in raw accuracy but fails the actual forecasting goal.</p>
+        <p><strong>Why compare cell_only vs cell_plus_neighbours?</strong> The answer is that we want to know whether the signal is mostly local and temporal or whether nearby-cell context adds meaningful fire risk information. If the neighbour-aware version wins, it means hotspot risk is not only about a single cell’s own history but also about surrounding local activity patterns.</p>
+        <p>The point is to ask: if we do not undersample the quiet negatives, can CatBoost still learn a useful signal? This tests the model in the hardest setting: a giant majority negative class with only a small positive rate.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>How Experiment 06 works</h3>
+        <p>Experiment 06 is the fair baseline. It keeps every positive row, every active row, and a randomly sampled subset of quiet negatives, roughly 1%. This is the same idea used in the earlier learned baselines, so it makes the comparison fair. Because the training sample is biased toward quiet negatives being underrepresented, the model receives a corrected score at prediction time:</p>
+        <p>odds = p / (1-p), corrected_odds = odds × 0.01, corrected_probability = corrected_odds / (1 + corrected_odds).</p>
+        <p><strong>Why do this?</strong> The majority of rows are quiet; if we train on all of them, the model spends almost all of its learning signal on the no-event class. That makes the model too conservative and often turns it into a “predict no hotspot” system. By retaining all the high-value positive and active rows and discarding a large fraction of the quiet negative rows, we make the learning problem tractable while preserving the rare-event signal.</p>
+        <p><strong>Why is the probability correction needed?</strong> Because the training distribution is no longer the real distribution. We intentionally removed many quiet rows, so the raw model output is biased. The correction restores the probability scale so that the final score represents the real risk more faithfully. In other words, we use undersampling to learn, and then use the correction to make the score honest again.</p>
+        <p><strong>Why do active rows stay unchanged?</strong> Because active rows are not the overwhelming majority; they are still part of the event-related signal. The real problem is the quiet negatives, not the active rows. Keeping active rows in full gives the model enough examples of the local conditions that precede hotspot activity while still making training feasible.</p>
+        <p>This is a sampling correction, not a separate calibration model. It adjusts for the fact that quiet rows were downsampled during training. Active rows are left unchanged, because they were not downsampled.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>How Experiment 07 works</h3>
+        <p>Experiment 07 is the first hybrid TabPFN design. The logic is:</p>
+        <ul>
+          <li>score active rows with TabPFN</li>
+          <li>score quiet rows using the Experiment 06 CatBoost probability with the 0.01 quiet-row correction</li>
+          <li>choose the threshold on 2022 using F1, then apply it to 2023</li>
+        </ul>
+        <p><strong>Why a hybrid design at all?</strong> Because the problem is not uniform. Active rows are a small subset, but they are the hardest and most informative cases: they contain the temporal and spatial signals where hotspot risk is rising. Quiet rows are the majority and are comparatively easy to classify with a strong baseline. So it makes sense to use a stronger, more specialized model where the minority signal lives, while keeping a stable and efficient baseline for the large majority.</p>
+        <p><strong>Why TabPFN for active rows and CatBoost for quiet rows?</strong> TabPFN is a tabular foundation model that may capture subtle structure in sparse but informative examples. That makes it attractive for active rows, where the local pattern may be unusual and the signal is concentrated. CatBoost, by contrast, is already a strong baseline for the large quiet majority and is cheaper and more stable. The hybrid approach is about dividing the workload by where each model is most useful.</p>
+        <p><strong>Why choose the threshold on 2022 and then apply it to 2023?</strong> Because this is how we choose the operating point without leaking future information. The 2022 period acts as a validation year to pick the alert threshold that maximizes the chosen metric, and then the model is evaluated on a later, unseen year. This keeps the comparison honest and mirrors the deployment setting: train and tune on earlier years, score on a later year.</p>
+        <p>Active rows are a small but high-signal subset, so the idea is to let TabPFN handle those more difficult local patterns while keeping the strong CatBoost baseline for the majority quiet cases. It is a prototype, not a final model, but it is a useful test of whether the foundation model adds signal where the data are sparse but structurally informative.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>What CatBoost is and how it works</h3>
+        <p>CatBoost is a gradient-boosted decision tree model developed for tabular data. It builds a sequence of shallow decision trees that each correct the errors of the previous trees. In practice, it is strong on heterogeneous tables with mixed numerical and categorical features, and it is especially well regarded for structured prediction problems like this one.</p>
+        <p>In our task, CatBoost learns a mapping from features such as recent hotspot counts, local history, and day-of-year to a probability-like score for whether a cell-day is a recorded hotspot. The trees split on feature thresholds that best separate positive and negative examples. It works well here because the data are tabular and highly structured, and the model is fast to train relative to larger deep-learning options.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>What TabPFN is and how it works</h3>
+        <p>TabPFN is a tabular foundation model: a pretrained transformer that has been trained on many synthetic and real tabular datasets. Instead of training a new model from scratch on our dataset, it uses a small set of labelled examples as context and then makes a prediction for new rows in one forward pass.</p>
+        <p>For this project, the idea is: feed the model an active-row context from 2018–2021, let it rank or score new active rows, then combine that with the CatBoost quiet-row score. The main advantage is potential efficiency and strong performance on structured tabular tasks when labelled data are limited. The main limitation is that the model context size is capped, so it cannot ingest the whole dataset at once, and large-scale full-population scoring can be computationally expensive.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>Why TabPFN may or may not be superior to CatBoost</h3>
+        <p>TabPFN may be superior when the signal is concentrated in a specific subset, especially if the model has a strong prior over tabular patterns. It can be powerful on relatively small labeled datasets and may capture structure that a tree ensemble misses. However, it is not automatically better for every problem. In this wildfire task, the full dataset is massive and extremely imbalanced, and the majority of rows are quiet. CatBoost is simple, robust, and already has a strong baseline. TabPFN may help on the active rows, but it may also fail to scale or may not beat a well-tuned CatBoost on the full population.</p>
+        <p>So the right question is not “which model is universally best,” but “which model is strongest on the decision boundary that matters here?” In this setting, the hybrid structure is a sensible test because it leverages each model where it is strongest.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>What we are trying to find in these models</h3>
+        <p>We are not looking for confirmed ignition events in the traditional sense. We are trying to estimate the probability that a given grid cell on a given day will have recorded hotspot activity, using geospatial and temporal features. In other words, we are building a risk model for hotspot occurrence in space and time, using the recent local history, neighbourhood context, and seasonality as inputs.</p>
+        <p>That is why the target is a detection label from FIRMS, not a fully verified fire start. The objective is to detect unusual local risk early enough to flag where a hotspot is likely to appear or persist, not to predict final fire size or ignition certainty.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>Cell_only vs cell_plus_neighbours</h3>
+        <p><strong>cell_only</strong> uses only information from the individual cell: counts over 1, 3, and 7 days, days since previous detection, left-censoring history, day-of-year, and quiet-stratum. This measures the local temporal pattern.</p>
+        <p><strong>cell_plus_neighbours</strong> adds neighbouring grid cells and their recent counts, as well as an in-region neighbours feature. This is important because wildfire risk is spatially contagious: local ignition clusters, spread, and nearby activity often carry information that the cell alone does not. Across the runs, the neighbour-aware version usually performs better, which supports the idea that local spatial context matters.</p>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <h3>Why a time-based split is the correct design principle</h3>
+        <p>A random train/test split would be misleading in this setting because adjacent days and nearby cells are not independent. If a fire event appears in both train and test, the model can “memorize” the same spatial-temporal pattern and overstate performance. That is especially risky with wildfire data because the signal is clustered in time and space.</p>
+        <p>Training on 2018–2021 and evaluating on 2023 gives a realistic out-of-time test. It asks: can the model learn general patterns from earlier years and then detect hotspot risk in a later year without seeing those future time points? This is the right design because it reflects the actual deployment setting: forecast next-period hotspot risk from historical and current patterns, not just from random records in the same season.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Git branch and commit story</h2>
+      <div class="branch-box">
+        <p>The project work naturally split into two parallel experiment tracks:</p>
+        <ul>
+          <li><strong>catboost-experiments-05-06</strong> — branch for the CatBoost full-data and undersampled runs, culminating in commit 0145139 and a follow-up results commit sequence.</li>
+          <li><strong>feature/tabpfn</strong> — branch for the TabPFN prototype, with the work introduced in commit 8aecdb0 and merged into main.</li>
+          <li><strong>main</strong> — retains the baseline CEMS work and then incorporates the CatBoost and TabPFN experiment branches as the project matured.</li>
+        </ul>
+        <p>From a presentation standpoint, this is useful framing: the week was not one monolithic experiment; it was a structured progression from baseline + CatBoost ablations to the first TabPFN attempt, with the branch history showing that the work was intentionally staged and reviewable.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Why the 02/regions data is transformed into this tabular format</h2>
+      <div class="checklist">
+        <p>The 02/regions data is not raw imagery or a single dense map. It is a transformed tabular dataset that converts geospatial wildfire dynamics into a daily cell-level forecasting table. This is the crucial engineering step that makes the model work possible.</p>
+        <p>Each region folder contains yearly feature parquet files such as features_2018.parquet through features_2023.parquet. For each region, the data are organized by grid cell and date, so each row represents one cell on one day. That layout matters because the target is a cell-day label: did a hotspot appear in this cell on this date? The features are then built from past history in that same cell and its local neighbourhood, which is why the dataset includes lagged counts such as local_count_1d, local_count_3d, local_count_7d, neighbour_count_1d, neighbour_count_3d, neighbour_count_7d, days_since_previous_detection, and history_left_censored.</p>
+        <p>Why transform the data this way? Because CatBoost and TabPFN operate on tabular rows, not on raw GIS rasters or a continuous spatial field. A tree ensemble or tabular transformer expects features in columns, with one observation per row. By reshaping the geospatial time series into cell-day rows, we can train a classifier on the same structure repeatedly across all regions and time periods. The model can then learn patterns like “this cell has had no detections for a long time,” “neighbouring cells are active,” or “the same grid cell is repeating hotspot activity over a multi-day period.”</p>
+        <p>The formatting also solves the problem of spatiotemporal dependence. Rather than modeling the whole map as one object, we create a local prediction problem: for every cell and day, predict hotspot risk from the recent local history. This makes the task computationally manageable and interpretable. It also makes the class imbalance explicit: most cell-days are quiet, but a small subset are active and rare, which is exactly the setting the sampling and threshold procedures in Experiments 05–07 are designed to handle.</p>
+        <p>In other words, the 02/regions pipeline is not just data storage; it is the conversion of a spatial wildfire process into a supervised learning problem. The resulting table is the reason the CatBoost and TabPFN experiments can train on the same feature schema across regions, tune thresholds on 2022, and evaluate on 2023 with a consistent time-based split.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Presentation takeaway</h2>
+      <div class="takeaway">
+        <p><strong>My core message for tomorrow:</strong> This week I built the experimental backbone for the project’s model comparison. I verified that CatBoost is a strong and interpretable baseline, demonstrated that the undersampled design is the correct fair comparison, and ran a first TabPFN hybrid prototype that suggests there may be real value in an active-row foundation-model approach. The literature review reinforces that this is a meaningful research problem: TabPFN has shown promise in related wildfire tasks, but our next-day hotspot detection setup remains an open and relevant gap.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Week 2 summary prepared for presentation. Built from the experiment outputs in experiments/05, 06, and 07, the TabPFN research notes in tabpfn-research.md, and the repo branch/commit history.
+  </footer>
+</body>
+</html>

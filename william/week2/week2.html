@@ -515,6 +515,25 @@
         <p><strong>My core message for tomorrow:</strong> This week I built the experimental backbone for the project’s model comparison. I verified that CatBoost is a strong and interpretable baseline, demonstrated that the undersampled design is the correct fair comparison, and ran a first TabPFN hybrid prototype that suggests there may be real value in an active-row foundation-model approach. The literature review reinforces that this is a meaningful research problem: TabPFN has shown promise in related wildfire tasks, but our next-day hotspot detection setup remains an open and relevant gap.</p>
       </div>
     </section>
+
+    <section>
+      <h2>Big picture summary (for a 10-year-old)</h2>
+      <div class="checklist">
+        <p><strong>Slide idea:</strong> We are trying to predict when a small part of the map is likely to become a hotspot risk, before it gets worse.</p>
+
+        <ul>
+          <li><strong>What is the problem?</strong> We split British Columbia into many tiny grid cells and ask, for each cell and each day, “Is this place becoming risky?”</li>
+          <li><strong>What do we look at?</strong> We use recent activity, whether nearby cells are active, and whether a place has been quiet for a long time. It is like checking the neighborhood and recent history before deciding if something is suspicious.</li>
+          <li><strong>Why is it hard?</strong> Most cells are calm most of the time. That means the data are very uneven: lots of “no hotspot” days and only a few “risky” days. A model can get tricked into always saying “nothing is happening.”</li>
+          <li><strong>Experiment 05:</strong> We tested the full data without hiding the quiet days. This asks whether the model can still learn when the majority of rows are boring and non-event, and whether class weighting helps when the rare risky cases are underrepresented.</li>
+          <li><strong>Experiment 06:</strong> We kept the important risky rows and only kept a small sample of the quiet rows, then corrected the final score to account for that imbalance. This gives a fairer baseline and teaches the model without letting the “no hotspot” pattern dominate everything.</li>
+          <li><strong>Experiment 07:</strong> We tried a hybrid approach: TabPFN looked at the rare, high-signal risky rows, while CatBoost handled the many quiet rows. This tests whether the more advanced model helps in the hard cases without losing the strong baseline behaviour on the majority class.</li>
+          <li><strong>Why does this matter?</strong> We are not trying to predict every fire perfectly. We are trying to spot early warning signs, so the right places can be monitored sooner and resources can be focused where risk is highest.</li>
+        </ul>
+
+        <p><strong>Simple takeaway:</strong> This project is like teaching a computer to notice “something looks wrong” early, using lots of small clues across time and space. The model is not guessing wildly — it is learning patterns from past behavior and trying to warn us before the risk becomes much bigger.</p>
+      </div>
+    </section>
   </main>
 
   <footer>

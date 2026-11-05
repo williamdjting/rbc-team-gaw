@@ -236,7 +236,13 @@ data/exploration/
 # Ignore all files in datasets/ except explicitly allowed ones (<100 MB)
 datasets/*
 !datasets/bc_legal_boundary.geojson
+datasets/ERA5 dataset/
 dataset_CEMS_*.csv
+dataset_CEMS_*.parquet
+dataset_ERA5_*.csv
+dataset_ERA5_*.parquet
+dataset_FIRMS_*.csv
+dataset_FIRMS_*.parquet
 dataset_18_*.csv
 
 # macOS system files

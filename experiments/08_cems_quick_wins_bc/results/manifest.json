@@ -1,0 +1,50 @@
+{
+  "regions": [
+    "Cariboo",
+    "Coastal",
+    "Kamloops",
+    "Northwest",
+    "Prince George",
+    "Southeast"
+  ],
+  "training_years": [
+    2018,
+    2019,
+    2020,
+    2021
+  ],
+  "selection_year": 2022,
+  "evaluation_year": 2023,
+  "holdout_loaded": false,
+  "models_evaluated": [
+    "M0_firms_only",
+    "M1_raw_cems",
+    "M2_frp_brightness",
+    "M3_engineered_cems",
+    "M4_frp_plus_eng_cems",
+    "M5_ensemble_5seeds",
+    "04a_gnn_cems",
+    "M6_gbdt_gnn_blend"
+  ],
+  "feature_counts": {
+    "M0_firms_only": 11,
+    "M1_raw_cems": 15,
+    "M2_frp_brightness": 24,
+    "M3_engineered_cems": 26,
+    "M4_frp_plus_eng_cems": 35
+  },
+  "seeds_ensemble": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "bootstrap_replicates": 1000,
+  "runtime_seconds": 1581.5,
+  "versions": {
+    "sklearn": "1.6.1",
+    "pandas": "2.3.3",
+    "numpy": "2.0.2"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "onset_ring": 2,
+  "onset_lookback_days": 7,
+  "perimeter_buffer_km": 2.0,
+  "point_buffer_km": 5.0,
+  "start_match_km": 5.0,
+  "start_window_days": [
+    -3,
+    5
+  ],
+  "early_growth_days": 5,
+  "near_active_km": 10.0,
+  "grow_min_cell_days": 3,
+  "out_day_default": 150,
+  "fires": 7867,
+  "fires_with_perimeter": 2463,
+  "perimeter_only_fires": 515,
+  "events": {
+    "B": 5291,
+    "A": 1504,
+    "C": 25
+  },
+  "mask_rows": {
+    "spread_or_flareup": 3448,
+    "static_source": 698,
+    "late_season_firms_only": 444,
+    "fading_firms_only": 307,
+    "near_active_fire": 306
+  },
+  "early_in_footprint_days": -14,
+  "static_min_years": 2,
+  "late_season_month": 9,
+  "static_cells": 428,
+  "firms_cell_days_in_static_cells": 1680,
+  "date_source": {
+    "bc": 6604,
+    "firms_earlier_than_bc": 191,
+    "firms_onset": 25
+  },
+  "footprint_rows": 20545
+}

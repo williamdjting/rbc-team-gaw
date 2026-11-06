@@ -1,0 +1,15 @@
+{
+  "firms_detections": 747669,
+  "firms_cell_days_in_season": 94655,
+  "incidents": 6438,
+  "incidents_window_complete": 6206,
+  "incidents_seen_5km": 0.24959716403480503,
+  "lag_median": 1.0,
+  "onset_classes": {
+    "unexplained_firms_only": 2958,
+    "spread_or_flareup_of_active_fire": 2611,
+    "matches_bc_ignition": 1542,
+    "near_recent_bc_fire": 421
+  },
+  "bc_seen_with_onset": 0.6204002582311169
+}

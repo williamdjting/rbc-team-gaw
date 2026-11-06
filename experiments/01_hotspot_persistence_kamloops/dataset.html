@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dataset explained: H3, active and quiet cells | Experiment 01 · Kamloops</title>
+<style>
+:root{--ink:#17362f;--muted:#536b63;--green:#126650;--paper:#f5f4ec;--line:#d8dfd3;--orange:#b64a20}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,sans-serif}main,header,footer{max-width:1100px;margin:auto;padding:32px}header{padding-top:65px;padding-bottom:45px}.eyebrow{font-size:12px;font-weight:750;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(42px,7vw,78px);line-height:1.03;letter-spacing:-.055em;max-width:850px;margin:22px 0}h2{font-size:30px;letter-spacing:-.025em;line-height:1.2;margin:0 0 20px}h3{font-size:19px;line-height:1.3;margin:0 0 10px}.intro{font-size:21px;max-width:760px;color:var(--muted)}a{color:var(--green);text-underline-offset:4px}nav{display:flex;flex-wrap:wrap;gap:22px;margin-top:27px;font-size:14px}section{margin-bottom:56px;scroll-margin-top:24px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card,.panel{background:#fffef8;border:1px solid var(--line);border-radius:16px;padding:25px}.card p:last-child{margin-bottom:0}.number{font-size:36px;font-weight:750;line-height:1.2}.small,figcaption{font-size:14px;color:var(--muted)}.split{display:grid;grid-template-columns:1.15fr 1fr;gap:30px;align-items:center}.tag{display:inline-block;background:#e1eddf;border-radius:30px;padding:4px 12px;font-size:13px}.note{border-left:4px solid var(--orange);padding:15px 22px;background:#fff0df;border-radius:0 10px 10px 0}.steps{counter-reset:step;display:grid;gap:14px}.step{counter-increment:step;position:relative;padding:18px 20px 18px 65px;border-top:1px solid var(--line)}.step:before{content:counter(step,decimal-leading-zero);position:absolute;left:12px;font-weight:750;color:var(--green)}p{margin:10px 0 17px}code{font: .88em ui-monospace,Consolas,monospace;background:#eaf0e7;padding:2px 5px;border-radius:4px}pre{background:#193c33;color:#f5f4ec;padding:22px;border-radius:12px;overflow:auto;font-size:14px}pre code{background:none;padding:0;color:inherit}table{border-collapse:collapse;width:100%;font-size:15px}th,td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--line)}th{color:var(--muted)}.chosen{background:#e5efdf}button,select{font:inherit;padding:9px 13px;border:1px solid var(--green);border-radius:8px;background:white;color:var(--ink)}button{cursor:pointer}button:hover{background:#e5efdf}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--orange);outline-offset:4px}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px}svg{width:100%;height:auto;display:block}.result{font-size:21px;font-weight:700;margin:18px 0 5px}.tablewrap{overflow-x:auto}footer{border-top:1px solid var(--line);font-size:14px;padding-bottom:60px}li{margin-bottom:8px}@media(max-width:720px){.grid,.split{grid-template-columns:1fr}main,header,footer{padding:24px}header{padding-top:40px}h2{font-size:26px}}@media print{body{background:white;font-size:11pt}header{padding-top:0}h1{font-size:38pt}.card,.panel{break-inside:avoid}button,nav{display:none}section{margin-bottom:25px}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">Field notes / Experiment 01 / Kamloops Fire Centre</div>
+<h1>A shared address<br>for every hotspot.</h1>
+<p class="intro">H3 turns latitude and longitude into a reusable grid-cell ID. That lets us ask a consistent question: <strong>does recent activity here—or next door—help predict a recorded hotspot tomorrow?</strong></p>
+<nav aria-label="Page sections"><a href="#basics">How H3 works</a><a href="#demo">Try the neighbourhood</a><a href="#experiment">Our experiment</a><a href="#active-quiet">Active &amp; quiet cells</a><a href="#limits">Limits</a><a href="RESULTS.html">Experiment results ↗</a></nav>
+</header>
+<main>
+<section class="grid" aria-label="Experiment settings">
+<div class="card"><div class="eyebrow">Spatial scale</div><div class="number">Resolution 7</div><p>One fixed grid for the whole experiment.</p></div>
+<div class="card"><div class="eyebrow">Typical cell area</div><div class="number">≈ 5.16 km²</div><p>Global average hexagon area, not the exact area of each Kamloops cell. <a href="https://h3geo.org/docs/core-library/restable/">Source</a></p></div>
+<div class="card"><div class="eyebrow">History windows</div><div class="number">1 · 3 · 7 days</div><p>Past counts in a cell and its immediate neighbours.</p></div>
+</section>
+<section id="basics">
+<div class="eyebrow">01 / The idea</div><h2>From scattered points to comparable places</h2>
+<p>Satellite records arrive as locations and dates. Exact coordinates can differ between observations, so comparing identical latitude–longitude pairs is a poor way to track activity in the same area. H3 assigns each point to a cell at a chosen resolution. Points assigned to that cell share an ID and can be counted together.</p>
+<div class="steps">
+<div class="step"><h3>Cover the Earth with an indexed grid</h3>H3 is a global system made mostly of hexagons, with 12 pentagons at every resolution. Each cell has a unique index, commonly represented as a hexadecimal string. <a href="https://h3geo.org/docs/">H3 introduction</a></div>
+<div class="step"><h3>Choose a resolution</h3>Resolutions run from 0 to 15; higher numbers mean smaller cells. The resolution determines how much spatial detail is retained. <a href="https://h3geo.org/docs/core-library/restable/">Resolution statistics</a></div>
+<div class="step"><h3>Assign each observation</h3><code>h3.latlng_to_cell(latitude, longitude, 7)</code> returns the containing resolution-7 cell. The experiment checks that the IDs in the input match this assignment.</div>
+<div class="step"><h3>Group by cell and UTC date</h3>Three records in cell A on one date become one cell-day row with <code>detection_count = 3</code>. This is a count of records, not necessarily three different fires.</div>
+</div>
+<div class="panel" style="margin-top:22px"><h3>What does “hierarchical” mean?</h3><p>Cells have parents at coarser resolutions and children at finer ones. A hexagonal parent has seven immediate children in the index hierarchy. This supports aggregation across scales, but the children’s geographic outlines do not fit perfectly inside the parent. Logical membership is exact; geographic containment across resolutions is approximate. <a href="https://h3geo.org/docs/highlights/indexing/">Hierarchy explained</a></p></div>
+</section>
+<section id="demo">
+<div class="eyebrow">02 / Interactive example</div><h2>“Here” and “next door” become explicit</h2>
+<p>A typical hexagon has six edge-sharing neighbours. This gives a simple neighbourhood without choosing between square-grid edge and diagonal connections. Actual H3 shapes and distances vary across the globe.</p>
+<div class="panel split">
+<figure style="margin:0"><svg id="hex-demo" viewBox="0 0 440 370" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Illustrative central cell and six neighbours</title><desc id="diagram-desc">Cell A has zero past detections. Two surrounding cells have two and one detections. Including neighbours changes the illustrative prediction to positive.</desc></svg><figcaption>Illustrative flat grid, not a Kamloops map. Numbers represent recorded detections during the selected past window.</figcaption></figure>
+<div><span class="tag">Predict for central cell A</span><h3 style="margin-top:18px">No activity here. Activity nearby.</h3><p>Cell A has 0 detections in this example. Its six neighbours have 3 in total. Should the persistence rule include them?</p><div class="controls"><label for="scope">Use</label><select id="scope"><option value="local">Cell A only</option><option value="neighbours">Cell A + neighbours</option></select></div><div aria-live="polite"><p class="result" id="prediction">Score 0 → predict no recorded detection</p><p id="explanation">The local rule sees no past detections in cell A.</p></div><p class="small">Rule: predict positive when the past count is greater than zero. This demo changes the input area, not the actual next-day outcome.</p><noscript><p>With neighbours included, the score is 3 and the rule predicts a recorded detection.</p></noscript></div>
+</div>
+<p class="small">In the experiment, <code>h3.grid_disk(cell, 1)</code> supplies the cell and its immediate neighbours. The code removes the central cell and keeps only neighbours in the fixed regional grid.</p>
+</section>
+<section>
+<div class="eyebrow">03 / Why it helps</div><h2>A stable unit for space, time and comparison</h2>
+<div class="grid"><article class="card"><h3>Track the same area</h3><p>A fixed cell ID lets us compare today with yesterday even when recorded point locations move within that cell.</p></article><article class="card"><h3>Measure nearby activity</h3><p>Neighbour sums provide a simple spatial signal. They can capture adjacent recorded activity, although they do not model wind, terrain or physical fire spread.</p></article><article class="card"><h3>Build a regular table</h3><p>One row per cell per date supports rolling counts, repeatable rules and consistent evaluation. Dates with no records remain in the table.</p></article></div>
+<p>H3 can also provide a shared key for future weather, vegetation or terrain features once those datasets are appropriately aggregated to the same grid. Those joins are a possible extension; this experiment uses hotspot history.</p>
+</section>
+<section id="experiment">
+<div class="eyebrow">04 / The implementation</div><h2>How experiment 1 uses H3</h2>
+<div class="steps">
+<div class="step"><h3>Define the grid before looking at detections</h3><a href="prepare_daily_grid.py">prepare_daily_grid.py</a> keeps resolution-7 cells whose polygons intersect the Kamloops Fire Centre boundary. Grid membership does not depend on where fires were later recorded.</div>
+<div class="step"><h3>Keep in-region observations and complete every cell-day</h3>Only detection points inside or on the regional boundary are counted. For May–September in 2018–2023, the code creates every date × cell combination and fills missing record counts with zero. Observation coverage remains “unknown.”</div>
+<div class="step"><h3>Construct past-only features</h3><a href="run_persistence.py">run_persistence.py</a> sums local and neighbouring counts over the previous 1, 3 and 7 days. For target date D, the window stops at D−1. The first seven days of each season are excluded from evaluation.</div>
+<div class="step"><h3>Apply and evaluate persistence rules</h3>A local rule uses the cell’s history; a local-or-neighbour rule adds neighbouring history. A positive score predicts at least one recorded detection on D. The target is 1 if D has records and 0 otherwise. Rules are selected using 2022, then evaluated on 2023; 2024 is excluded.</div>
+</div>
+<pre><code># Simplified logic for a target cell c and date D
+local = sum(count[c, day] for day in previous_days)
+nearby = sum(count[n, day]
+             for n in in_region_neighbours[c]
+             for day in previous_days)
+
+predict_local = local > 0
+predict_local_or_neighbour = (local + nearby) > 0
+target = count[c, D] > 0  # recorded activity on the target day</code></pre>
+<p class="note"><strong>H3 supplies the spatial structure; the persistence rule supplies the prediction.</strong> H3 itself does not learn, forecast wildfire ignition, or estimate a probability.</p>
+</section>
+<section>
+<div class="eyebrow">05 / Choosing scale</div><h2>Smaller cells give detail—and sparser histories</h2>
+<h3>What is resolution?</h3>
+<p>Resolution is H3’s numbered level of spatial detail: it controls the size of the cells used to group locations. It runs from 0 (coarsest) to 15 (finest). <strong>Resolution 7 does not mean 7 kilometres or seven neighbours.</strong> It is a grid level, not a distance, and changing it does not improve the satellite’s measurement accuracy.</p>
+<h3>How does changing it work?</h3>
+<p>Moving up one level makes the average hexagon area about seven times smaller and creates roughly seven times as many cells over the same area. Moving down one level groups space more coarsely. For example, resolution 6 averages about 36.13 km² per hexagon; resolution 7 averages 5.16 km²; resolution 8 averages 0.74 km². These are global averages, not exact local cell sizes. <a href="https://h3geo.org/docs/core-library/restable/">H3 resolution statistics</a></p>
+<p>When indexing the original coordinates at a finer resolution, points that shared a coarse cell can receive different cell IDs. The experiment would then rebuild its cell-day counts and neighbours at that scale. A one-step neighbourhood also covers a smaller physical area at finer resolutions. Parent–child IDs support aggregation, but their geographic boundaries only approximately nest, as explained above.</p>
+<div class="panel"><h3>Why did we choose resolution 7?</h3><p><strong>Resolution 7 was a starting value for the baseline experiment.</strong> It provides a practical initial scale for exploring local hotspot persistence: more spatial detail than resolution 6, with less fragmentation and fewer cell-day rows than resolution 8.</p><p>This is a rationale for starting at 7, not evidence that 7 is the best scale. We did not select it through a comparison of predictive performance across resolutions. Keeping it fixed lets this experiment first examine the effect of history windows and neighbouring activity.</p><p>A useful next experiment would compare resolutions 6, 7 and 8 using the same time splits, while reporting changes in cell count, target prevalence, precision and recall. Because the prediction area changes with resolution, those scores need to be interpreted alongside the spatial scale.</p></div>
+<div class="tablewrap"><table><caption class="small">Global average hexagon areas from the <a href="https://h3geo.org/docs/core-library/restable/">official H3 statistics</a>.</caption><thead><tr><th scope="col">Resolution</th><th scope="col">Average area</th><th scope="col">Implication for this type of experiment</th></tr></thead><tbody><tr><td>6</td><td>36.13 km²</td><td>Coarser pooling; nearby but distinct activity is more likely to share a cell.</td></tr><tr class="chosen"><td><strong>7 · used here</strong></td><td><strong>5.16 km²</strong></td><td>A fixed intermediate scale for this experiment; not proven optimal.</td></tr><tr><td>8</td><td>0.74 km²</td><td>Finer localisation; more cells and typically more empty cell-days.</td></tr></tbody></table></div>
+<p>Changing resolution changes the prediction unit, counts and target prevalence. Compare resolutions with an explicit evaluation design rather than assuming a higher resolution is better.</p>
+</section>
+<section id="active-quiet">
+<div class="eyebrow">06 / Reading the dataset</div><h2>Active and quiet: two ways to look at a cell</h2>
+<p>A cell can have a recorded detection on one day and none on the next. Separately, this experiment selects a few <strong>active and quiet example cells using the whole May–September 2018 season</strong>. Those example groups help us inspect time series; they do not replace the daily prediction target.</p>
+<div class="grid">
+<article class="card"><h3>Daily recorded activity</h3><p>For each cell-day, a count greater than zero means a recorded detection. A count of zero means no recorded detection that day. The same cell can alternate between these states.</p></article>
+<article class="card"><h3>Active examples</h3><p>Add up each cell’s records over May–September 2018. Select the <strong>three cells with the highest totals</strong>. An active example can still have many zero-count days.</p></article>
+<article class="card"><h3>Quiet examples</h3><p>Find cells with <strong>zero records throughout May–September 2018</strong>. Randomly select up to three without replacement, using seed 42 for reproducibility. They may have detections in later years.</p></article>
+</div>
+<div class="panel" style="margin-top:22px">
+<span class="tag">Interactive teaching example · invented counts</span>
+<h3 style="margin-top:18px">A cell’s daily state can change; its example group stays fixed</h3>
+<p>Switch between two illustrative cells and years. The bars show a ten-day excerpt, not the full selection season. The group was assigned from the full 2018 season and is not recalculated using 2023.</p>
+<div class="controls"><label for="sample-cell">Example cell</label><select id="sample-cell"><option value="active">A · selected as active in 2018</option><option value="quiet">Q · selected as quiet in 2018</option></select><label for="sample-year">View year</label><select id="sample-year"><option value="2018">2018</option><option value="2023">2023</option></select></div>
+<figure style="margin:20px 0"><svg id="activity-chart" viewBox="0 0 780 270" role="img" aria-labelledby="activity-title activity-desc"><title id="activity-title">Daily recorded detections in an illustrative cell</title><desc id="activity-desc">Choose an example cell and year to view a ten-day excerpt.</desc></svg><figcaption>Orange bars = one or more recorded detections. Outlined baseline circles = zero records. Counts and cells are illustrative, not measured experiment results.</figcaption></figure>
+<div aria-live="polite"><p id="activity-summary" class="result"></p><p id="activity-lesson"></p></div>
+<details><summary>View the illustrative counts as a table</summary><div class="tablewrap"><table><caption>Ten-day excerpt used in the chart</caption><thead><tr><th scope="col">Day</th><th scope="col">Recorded detections</th><th scope="col">Daily state</th></tr></thead><tbody id="activity-table"></tbody></table></div></details>
+<noscript><p>Illustration: an active example has counts 0, 4, 8, 2, 0, 0, 6, 3, 0, 1 in a 2018 ten-day excerpt. A quiet example has ten zeros in 2018, but can have counts 0, 0, 2, 5, 1, 0, 0, 3, 0, 0 in 2023. Its “quiet in 2018” group remains unchanged.</p></noscript>
+</div>
+<p class="note"><strong>These are diagnostic samples, not a balanced training dataset.</strong> All fixed-grid cells remain in the full cell-day table and evaluation. Choosing three active and up to three quiet examples does not make the full dataset half active and half quiet. “Quiet” means no records in the selection season, not confirmed fire absence or permanent safety.</p>
+<p class="small">Selection logic: <a href="prepare_daily_grid.py">prepare_daily_grid.py</a>, variables <code>totals_2018</code>, <code>active_sample</code> and <code>quiet_pool</code>. Using 2018 for selection avoids choosing these examples based on future evaluation-year activity.</p>
+</section>
+<section id="limits">
+<div class="eyebrow">07 / Read the results correctly</div><h2>What the grid cannot tell us</h2>
+<div class="grid"><article class="card"><h3>Zero records ≠ no fire</h3><p>Missing detections can reflect observation conditions or coverage. The experiment does not establish true fire absence on zero-count days.</p></article><article class="card"><h3>Cell boundaries matter</h3><p>Close points can fall on opposite sides of a cell boundary. Neighbour features help include nearby activity, but can also flag cells with no next-day records.</p></article><article class="card"><h3>Region edges matter</h3><p>Border cells may extend outside Kamloops. Only in-region points are counted, and neighbours outside the fixed grid are omitted. Some cells therefore have fewer usable neighbours.</p></article></div>
+<p>Cells are not exactly equal in area. A count is not an area-normalised density, a burned-area estimate or a severity measure. Repeated observations can contribute multiple records for the same ongoing fire.</p>
+</section>
+</main>
+<footer><strong>Sources &amp; next steps</strong><p>Experiment details: <a href="prepare_daily_grid.py">grid preparation</a> · <a href="run_persistence.py">features and rules</a> · <a href="RESULTS.html">results report</a>.</p><p>H3 references: <a href="https://h3geo.org/docs/">introduction</a> · <a href="https://h3geo.org/docs/highlights/indexing/">index hierarchy</a> · <a href="https://h3geo.org/docs/core-library/restable/">cell statistics</a>. This explainer runs offline; external reference links require internet access.</p></footer>
+<script>
+const svg=document.getElementById('hex-demo');
+const ns='http://www.w3.org/2000/svg';
+const cells=[{x:220,y:185,count:0,name:'A'},{x:220,y:81,count:2,name:'N1'},{x:310,y:133,count:0,name:'N2'},{x:310,y:237,count:1,name:'N3'},{x:220,y:289,count:0,name:'N4'},{x:130,y:237,count:0,name:'N5'},{x:130,y:133,count:0,name:'N6'}];
+const polygons=[];
+cells.forEach((cell,i)=>{
+ const polygon=document.createElementNS(ns,'polygon');
+ polygon.setAttribute('points',Array.from({length:6},(_,j)=>{const a=j*Math.PI/3;return `${cell.x+58*Math.cos(a)},${cell.y+58*Math.sin(a)}`;}).join(' '));
+ polygon.setAttribute('stroke',i===0?'#126650':'#9aa99a');polygon.setAttribute('stroke-width',i===0?'3':'1.5');svg.appendChild(polygon);polygons.push(polygon);
+ const label=document.createElementNS(ns,'text');label.setAttribute('x',cell.x);label.setAttribute('y',cell.y-9);label.setAttribute('text-anchor','middle');label.setAttribute('fill','#17362f');label.setAttribute('font-size','13');label.textContent=cell.name;svg.appendChild(label);
+ const count=document.createElementNS(ns,'text');count.setAttribute('x',cell.x);count.setAttribute('y',cell.y+20);count.setAttribute('text-anchor','middle');count.setAttribute('fill','#17362f');count.setAttribute('font-size','26');count.setAttribute('font-weight','700');count.textContent=cell.count;svg.appendChild(count);
+});
+function update(){const include=document.getElementById('scope').value==='neighbours';polygons.forEach((p,i)=>p.setAttribute('fill',i===0?'#c8e6cf':include?(cells[i].count?'#f6c795':'#e4eddc'):'#f0f1ea'));document.getElementById('prediction').textContent=include?'Score 3 → predict a recorded detection':'Score 0 → predict no recorded detection';document.getElementById('explanation').textContent=include?'0 local + 3 neighbouring records. The broader rule flags A even though A itself had no past records.':'The local rule sees no past detections in cell A.';}
+document.getElementById('scope').addEventListener('change',update);update();
+const activityData={active:{2018:[0,4,8,2,0,0,6,3,0,1],2023:[0,0,0,2,0,1,0,0,0,0]},quiet:{2018:[0,0,0,0,0,0,0,0,0,0],2023:[0,0,2,5,1,0,0,3,0,0]}};
+function chartElement(tag,attrs,text){const element=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([key,value])=>element.setAttribute(key,value));if(text!==undefined)element.textContent=text;return element;}
+function updateActivity(){
+ const group=document.getElementById('sample-cell').value,year=document.getElementById('sample-year').value;
+ const counts=activityData[group][year],chart=document.getElementById('activity-chart'),table=document.getElementById('activity-table');
+ chart.replaceChildren(chartElement('title',{id:'activity-title'},`Illustrative ${group} example, ${year}`),chartElement('desc',{id:'activity-desc'},`Daily counts: ${counts.join(', ')}. The example group is fixed using the 2018 season.`));table.replaceChildren();
+ [0,2,4,6,8].forEach(tick=>{const y=210-tick*20;chart.appendChild(chartElement('line',{x1:55,y1:y,x2:760,y2:y,stroke:'#d8dfd3'}));chart.appendChild(chartElement('text',{x:40,y:y+5,'text-anchor':'end',fill:'#536b63','font-size':14},tick));});
+ chart.appendChild(chartElement('text',{x:55,y:22,fill:'#536b63','font-size':14},'Recorded detections · fixed scale across views'));
+ counts.forEach((count,i)=>{const x=88+i*70;chart.appendChild(count?chartElement('rect',{x:x-19,y:210-count*20,width:38,height:count*20,rx:4,fill:'#b64a20'}):chartElement('circle',{cx:x,cy:210,r:5,fill:'#fffef8',stroke:'#536b63','stroke-width':2}));chart.appendChild(chartElement('text',{x,y:count?200-count*20:194,'text-anchor':'middle',fill:'#17362f','font-size':15},count));chart.appendChild(chartElement('text',{x,y:242,'text-anchor':'middle',fill:'#536b63','font-size':13},`Day ${i+1}`));const row=document.createElement('tr');[i+1,count,count>0?'Recorded detection':'No recorded detection'].forEach(value=>{const td=document.createElement('td');td.textContent=value;row.appendChild(td);});table.appendChild(row);});
+ const positive=counts.filter(count=>count>0).length;
+ document.getElementById('activity-summary').textContent=`${positive} of 10 days have records · group: ${group} in 2018`;
+ document.getElementById('activity-lesson').textContent=group==='active'?'An active example was selected for a high full-season 2018 total. That does not mean it has detections every day or remains highly active in later years.':year==='2018'?'This quiet example had no records anywhere in the 2018 selection season, so every day in this excerpt is zero. Observation coverage is still unknown.':'This cell now has recorded detections, but it remains a “quiet in 2018” example. Daily activity changes; the historical sampling label stays fixed.';
+}
+document.getElementById('sample-cell').addEventListener('change',updateActivity);document.getElementById('sample-year').addEventListener('change',updateActivity);updateActivity();
+</script>
+</body>
+</html>

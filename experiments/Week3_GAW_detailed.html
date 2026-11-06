@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BC Hotspot Forecasting Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f7f5f2;
+  --surface: #ffffff;
+  --surface-2: #efebe6;
+  --fg: #1c1916;
+  --fg-2: #4d4740;
+  --muted: #7a7168;
+  --rule: #ddd6ce;
+  --accent: #b8430f;
+  --accent-soft: #f6e3d8;
+  --good: #1d7a46;
+  --bad: #a3262a;
+  --series-rule: #eb6834;
+  --series-model: #2a78d6;
+  --series-old: #9a928a;
+  --band: #e6efe3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #171513;
+    --surface: #211e1b;
+    --surface-2: #2a2622;
+    --fg: #f1ede8;
+    --fg-2: #c9c1b8;
+    --muted: #9b9188;
+    --rule: #3a3530;
+    --accent: #f08a55;
+    --accent-soft: #3a2519;
+    --good: #5cc28a;
+    --bad: #f07a7d;
+    --series-rule: #d95926;
+    --series-model: #3987e5;
+    --series-old: #7d756e;
+    --band: #1f2e22;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #171513;
+  --surface: #211e1b;
+  --surface-2: #2a2622;
+  --fg: #f1ede8;
+  --fg-2: #c9c1b8;
+  --muted: #9b9188;
+  --rule: #3a3530;
+  --accent: #f08a55;
+  --accent-soft: #3a2519;
+  --good: #5cc28a;
+  --bad: #f07a7d;
+  --series-rule: #d95926;
+  --series-model: #3987e5;
+  --series-old: #7d756e;
+  --band: #1f2e22;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 17px/1.5 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+.deck { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+.stage { flex: 1; position: relative; min-height: 0; }
+.slide {
+  position: absolute; inset: 0;
+  overflow-y: auto;
+  padding-block: clamp(24px, 5vh, 56px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.inner { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; min-height: 100%; }
+.kicker {
+  font: 500 12px/1 "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h1 { font-size: clamp(32px, 5vw, 54px); line-height: 1.08; font-weight: 700; }
+h2 { font-size: clamp(24px, 3.4vw, 36px); line-height: 1.15; font-weight: 650; }
+h3 { font-size: 17px; font-weight: 600; }
+p { margin: 0; max-width: 68ch; color: var(--fg-2); }
+.lede { font-size: clamp(17px, 2vw, 21px); color: var(--fg-2); max-width: 60ch; }
+strong { color: var(--fg); font-weight: 600; }
+ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--fg-2); max-width: 72ch; }
+li::marker { color: var(--accent); }
+code, .mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: .88em; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.grid2 > *, .grid3 > * { min-width: 0; }
+.card {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;
+}
+.card.accent { border-left: 4px solid var(--accent); }
+.card.good { border-left: 4px solid var(--good); }
+.card.bad { border-left: 4px solid var(--bad); }
+.card p, .card li { font-size: 15.5px; }
+.tag {
+  align-self: flex-start;
+  font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 4px; background: var(--surface-2); color: var(--fg-2);
+}
+.tag.good { color: var(--good); }
+.tag.bad { color: var(--bad); }
+.tag.warn { color: var(--accent); }
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat .num { font: 600 clamp(30px, 4vw, 44px)/1 "IBM Plex Sans", system-ui, sans-serif; letter-spacing: -.02em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.stat .lab { font-size: 14px; color: var(--muted); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11.5px/1.3 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.hi td { background: var(--accent-soft); }
+td .sub { display: block; color: var(--muted); font-size: 13px; }
+.note { font-size: 13px; color: var(--muted); max-width: 90ch; }
+.spacer { flex: 1; }
+/* bar chart */
+.bars { display: grid; gap: 7px; }
+.bar-row { display: grid; grid-template-columns: minmax(130px, 240px) 1fr 52px; gap: 10px; align-items: center; font-size: 14px; }
+.bar-row .name { color: var(--fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { position: relative; height: 16px; }
+.bar { height: 100%; border-radius: 0 4px 4px 0; background: var(--series-model); }
+.bar.rule { background: var(--series-rule); }
+.bar-row .val { font-variant-numeric: tabular-nums; text-align: right; color: var(--fg); }
+.refline { position: absolute; top: -4px; bottom: -4px; width: 0; border-left: 2px dashed var(--fg-2); }
+.axis { display: grid; grid-template-columns: minmax(130px, 240px) 1fr 52px; gap: 10px; font-size: 12px; color: var(--muted); }
+.axis .ticks { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--fg-2); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.sw.dot { border-radius: 50%; }
+/* dot plot */
+.dotplot { position: relative; overflow-x: auto; }
+.dotplot svg { width: 100%; min-width: 620px; height: auto; display: block; overflow: visible; }
+.dotplot text { fill: var(--fg-2); font: 13px "IBM Plex Sans", system-ui, sans-serif; }
+.dotplot .tick text { fill: var(--muted); font-size: 12px; }
+.dotplot .grid { stroke: var(--rule); stroke-width: 1; }
+.dotplot .band { fill: var(--band); }
+.dotplot .bandlab { fill: var(--good); font-size: 12px; font-weight: 500; }
+.dotplot .connector { stroke: var(--rule); stroke-width: 2; }
+.dotplot .pt { stroke: var(--surface); stroke-width: 2; cursor: default; }
+.dotplot .pt.rule { fill: var(--series-rule); }
+.dotplot .pt.model { fill: var(--series-model); }
+.dotplot .pt.old { fill: var(--series-old); }
+.dotplot .vlab { fill: var(--fg); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--fg); color: var(--bg);
+  padding: 6px 9px; border-radius: 6px; font-size: 13px; white-space: nowrap; transform: translate(-50%, -120%);
+}
+/* fire strip */
+.strip { display: grid; grid-template-columns: 150px repeat(5, minmax(40px, 1fr)); gap: 4px; font-size: 14px; align-items: center; max-width: 620px; }
+.strip .h { color: var(--muted); font: 500 12px "IBM Plex Mono", ui-monospace, monospace; text-align: center; }
+.strip .lab { color: var(--fg-2); }
+.cell { height: 34px; border-radius: 5px; display: grid; place-items: center; font: 500 13px "IBM Plex Mono", ui-monospace, monospace; }
+.cell.on { background: var(--series-rule); color: #fff; }
+.cell.off { background: var(--surface-2); color: var(--muted); border: 2px dashed var(--bad); }
+.cell.fill { background: var(--accent-soft); color: var(--accent); border: 2px solid var(--series-rule); }
+/* flow */
+.flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.flow .step { flex: 1 1 150px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.flow .step .mono { color: var(--accent); font-size: 12px; }
+.flow .step b { font-weight: 600; font-size: 15px; }
+.flow .step span:last-child { font-size: 13.5px; color: var(--muted); }
+/* chrome */
+.bar-nav {
+  display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--rule); background: var(--surface);
+  padding-block: 8px; padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bar-nav button {
+  font: 500 14px "IBM Plex Sans", system-ui, sans-serif; color: var(--fg); background: var(--surface-2);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 14px; cursor: pointer; min-height: 36px;
+}
+.bar-nav button:disabled { opacity: .4; cursor: default; }
+.bar-nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.progress { flex: 1; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+.progress div { height: 100%; background: var(--accent); width: 0; transition: width .2s; }
+.count { font: 500 13px "IBM Plex Mono", ui-monospace, monospace; color: var(--muted); min-width: 56px; text-align: right; }
+.section-name { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 30vw; }
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .section-name { display: none; }
+  .bar-row, .axis { grid-template-columns: 110px 1fr 44px; }
+  .strip { grid-template-columns: 96px repeat(5, minmax(28px, 1fr)); }
+}
+@media print { body { overflow: visible; } }
+</style>
+</head>
+<body>
+<div class="deck">
+<main class="stage" id="stage">
+
+<!-- 1 -->
+<section class="slide" data-section="Title">
+<div class="inner">
+  <div class="spacer"></div>
+  <span class="kicker">RBC team GAW · BC wildfire · November 2026</span>
+  <h1>Next-day wildfire hotspot forecasting in British Columbia</h1>
+  <p class="lede">Where we started, the 15 experiments since, what the data taught us, and what we test next.</p>
+  <div class="grid3" style="margin-top:12px">
+    <div class="stat"><span class="num">15</span><span class="lab">experiments, 01 → 15</span></div>
+    <div class="stat"><span class="num">0.810</span><span class="lab">best 2023 F1 so far (one-cell margin): a rule, not a model</span></div>
+    <div class="stat"><span class="num">0</span><span class="lab">models that clearly beat persistence (yet)</span></div>
+  </div>
+  <div class="spacer"></div>
+  <p class="note">Use ← → or the buttons below to move between slides. All numbers are from saved result files in <code>rbc-team-gaw/experiments/</code>.</p>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-section="The problem">
+<div class="inner">
+  <span class="kicker">The problem</span>
+  <h2>Will a satellite see fire in this cell tomorrow?</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>The forecast</h3>
+      <ul>
+        <li>BC is split into <strong>H3 resolution-7 cells</strong> (≈5 km² each): 234,554 cells across the six BC Wildfire Service Fire Centres.</li>
+        <li>For every cell, every day from May to September: will VIIRS record at least one hotspot there <strong>tomorrow (UTC day)</strong>?</li>
+        <li>Fires are rare: 0.135% of 2023 cell-days are positive.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>The rules of the game</h3>
+      <ul>
+        <li><strong>Train</strong> on 2018–2021, <strong>choose thresholds</strong> on 2022, <strong>evaluate</strong> on 2023.</li>
+        <li><strong>2024 is never loaded.</strong> It is kept for one final test.</li>
+        <li>Score: F1 per Fire Centre and BC-wide, with week-block bootstrap intervals for "model minus rule".</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card accent">
+    <h3>The goal</h3>
+    <p><strong>F1 of 0.70–0.80</strong>, with a machine-learning model <strong>clearly beating the persistence rule</strong>: "a cell that had fire yesterday will have fire today".</p>
+  </div>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-section="Where we started">
+<div class="inner">
+  <span class="kicker">Where we started · Experiments 01–02</span>
+  <h2>The baseline: yesterday's fire is tomorrow's fire</h2>
+  <p class="lede">Before training anything, we measured how far simple persistence rules go, using 1-, 3- and 7-day counts in the cell and its neighbours.</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="tag">01 · Kamloops pilot</span>
+      <div class="stat"><span class="num">0.579</span><span class="lab">2023 F1, one Fire Centre</span></div>
+      <p>We built the pipeline and splits on one region first.</p>
+    </div>
+    <div class="card">
+      <span class="tag">02 · all six Fire Centres</span>
+      <div class="stat"><span class="num">0.543</span><span class="lab">2023 F1, mean of six centres</span></div>
+      <p>The selected rule was nearly always the simplest one: <strong>detected in this cell yesterday</strong>.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Data at this stage</h3>
+    <p><strong>NASA FIRMS VIIRS S-NPP</strong> detections only: one satellite, May–September 2018–2023, assigned to H3 cells. Feature tables built in Experiment 02 are reused by every later experiment.</p>
+  </div>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-section="Phase 1 · models">
+<div class="inner">
+  <span class="kicker">Phase 1 · Experiments 03–07</span>
+  <h2>Throw models at it: none beat the rule</h2>
+  <p>Why: a model can combine many history signals (neighbours, counts, timing) where the rule uses one. We tried every common family.</p>
+  <div class="legend"><span><i class="sw" style="background:var(--series-rule)"></i>Persistence rule (02)</span><span><i class="sw" style="background:var(--series-model)"></i>Learned model</span><span><i class="sw" style="border-left:2px dashed var(--fg-2);border-radius:0;width:2px"></i>Rule F1 0.543</span></div>
+  <div class="bars" id="phase1"></div>
+  <div class="axis"><span></span><div class="ticks"><span>0</span><span>0.15</span><span>0.30</span><span>0.45</span><span>0.60</span></div><span></span></div>
+  <p class="note">2023 F1, mean of six Fire Centres, exact cell, S-NPP label, thresholds chosen on 2022. "+ CEMS" adds four Copernicus fire-weather indices (0.25° grid, previous day). The best model's average precision (ranking quality) was higher than the rule's, but its F1 was not.</p>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-section="Diagnosis">
+<div class="inner">
+  <span class="kicker">Diagnosis · end of October</span>
+  <h2>Not a bug: the inputs hit an information limit</h2>
+  <p class="lede">Before adding more models, we checked whether the problem itself capped the score.</p>
+  <div class="grid3">
+    <div class="card"><div class="stat"><span class="num">0.49–0.66</span><span class="lab">F1 of a cheating "lookup" model</span></div><p>Even a table fitted on 2023 itself, using the same history inputs, couldn't do much better.</p></div>
+    <div class="card"><div class="stat"><span class="num">≈0.55</span><span class="lab">P(fire today | fire yesterday)</span></div><p>Half of "fire yesterday" cells show nothing today in the S-NPP label.</p></div>
+    <div class="card"><div class="stat"><span class="num">10–22%</span><span class="lab">of days inside a fire run have no detection</span></div><p>A single satellite misses burning cells (cloud, smoke, scan gaps).</p></div>
+    <div class="card"><div class="stat"><span class="num">10–19%</span><span class="lab">of positives come from fully quiet areas</span></div><p>No fire nearby in the last 7 days: invisible to any history input.</p></div>
+    <div class="card"><div class="stat"><span class="num">0.00–0.03</span><span class="lab">F1 lost from 2022 thresholds</span></div><p>Thresholds transferring between years were not the problem.</p></div>
+  </div>
+  <div class="card accent"><p>Three possible ways forward: <strong>richer fire history</strong>, a <strong>fairer target</strong>, or <strong>better labels and new drivers</strong>. We tried them in that order.</p></div>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-section="Phase 2 · richer history">
+<div class="inner">
+  <span class="kicker">Phase 2 · Experiments 13, 15, 17, 18</span>
+  <h2>Richer fire history: better rankings, same F1</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Exp.</th><th>What we added</th><th>Why</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">08</td><td>Fire radiative power, day/night, wider rings, fire-complex size, BCWS incident locations</td><td>Describe the fire around each cell, not just whether it burned</td><td>Average precision <strong>+0.045</strong>; F1 <strong>ties</strong> the rule (all bootstrap intervals include 0)</td></tr>
+      <tr><td class="mono">10</td><td>One CatBoost per lead time: 1, 2, 3, 5, 7 days</td><td>Expected models to win big at longer leads</td><td>Only <strong>+0.01 to +0.03</strong> over the best rule at every lead. My prediction was wrong.</td></tr>
+      <tr><td class="mono">12</td><td>30-day, season and prior-year history; target restricted to BCWS-linked wildfires</td><td>Separate recurring non-wildfire burning from wildfire</td><td><strong>No gain</strong> (margin F1 0.749 vs 0.761 for the 08 model)</td></tr>
+      <tr><td class="mono">13</td><td>Static layers: farmland reserve, oil &amp; gas facilities and wells, cutblocks, terrain, fuels</td><td>Explain where non-wildfire and new fires appear</td><td>F1 change <strong>±0.01</strong>. Run stopped by memory at Prince George 2023 (10 of 12 region-years)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card bad"><p><strong>Conclusion:</strong> everything that can be derived from past detections has been used. More history gives better rankings, not better yes/no forecasts.</p></div>
+</div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-section="Phase 3 · target">
+<div class="inner">
+  <span class="kicker">Phase 3 · Experiment 14</span>
+  <h2>Is the target too strict? Allowing a one-cell margin</h2>
+  <p>Why: <strong>40% of the rule's false alarms and 49% of its misses</strong> were a fire one cell away. At 5 km² cells, a detection one cell over is often the same fire.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>2023 F1 (median of six centres)</th><th class="n">Exact cell</th><th class="n">One-cell margin</th></tr></thead>
+    <tbody>
+      <tr><td>Rule: detected yesterday</td><td class="n">0.544</td><td class="n">0.745</td></tr>
+      <tr class="hi"><td>CatBoost (trained on exact cell)</td><td class="n">0.538</td><td class="n"><strong>0.761</strong></td></tr>
+      <tr><td>CatBoost (trained on cell-or-neighbour target)</td><td class="n">0.354</td><td class="n">0.648</td></tr>
+      <tr><td>Rule at coarser res-6 cells</td><td class="n">0.617</td><td class="n">0.776</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="card good"><span class="tag good">Solved</span><p>With the margin, <strong>5 of 6 centres reached 0.70</strong>. The goal range is reachable under a reasonable scoring definition.</p></div>
+    <div class="card bad"><span class="tag bad">Not solved</span><p>The model's lead over the rule was tiny (+0.016). Training directly on the looser target made it worse.</p></div>
+  </div>
+  <p class="note">Margin scoring: a forecast counts as correct if fire appears in the cell or one of its six neighbours, and a fire counts as caught if the cell or a neighbour was flagged.</p>
+</div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-section="Quiet fires">
+<div class="inner">
+  <span class="kicker">Side investigation · Experiments 16, 18</span>
+  <h2>What are the fires that appear from nowhere?</h2>
+  <p>Why: no history model can predict a cell that had no fire nearby for a week. We wanted to know what those fires are.</p>
+  <div class="grid3">
+    <div class="card"><div class="stat"><span class="num">48%</span><span class="lab">no BCWS wildfire record</span></div><p>Mostly Peace region, autumn, same places each year: likely agricultural, slash or industrial burning.</p></div>
+    <div class="card"><div class="stat"><span class="num">30%</span><span class="lab">older wildfires flaring up</span></div><p>Fires the BC Wildfire Service already knew about.</p></div>
+    <div class="card"><div class="stat"><span class="num">22%</span><span class="lab">genuinely new wildfires</span></div><p>71% of these were started by lightning.</p></div>
+  </div>
+  <div class="card accent">
+    <h3>A different use: a watch list (Experiment 18, partial run)</h3>
+    <p>Rank quiet cells by risk each day and list the top 50 per Fire Centre. The models' lists contained <strong>23–40%</strong> of 2023's quiet fires at some point in the week before they appeared, against <strong>1–20%</strong> for simple rankings and <strong>≈0.3%</strong> for a random list. Not a yes/no forecast, but useful to a duty officer.</p>
+  </div>
+</div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-section="Phase 4 · labels">
+<div class="inner">
+  <span class="kicker">Phase 4 · Experiment 19 · why new data</span>
+  <h2>The label itself was noisy: one satellite misses burning fires</h2>
+  <p>S-NPP passes over BC about twice a day. Cloud, smoke, the edge of the scan or a weak, smouldering fire means a burning cell is recorded as "no fire". A forecaster can then be marked wrong twice for one missed pass.</p>
+  <div class="strip" role="img" aria-label="A fire burning five days; S-NPP misses day 3; gap filling restores it">
+    <span></span><span class="h">Day 1</span><span class="h">Day 2</span><span class="h">Day 3</span><span class="h">Day 4</span><span class="h">Day 5</span>
+    <span class="lab">Actually burning</span><span class="cell on">yes</span><span class="cell on">yes</span><span class="cell on">yes</span><span class="cell on">yes</span><span class="cell on">yes</span>
+    <span class="lab">S-NPP label</span><span class="cell on">1</span><span class="cell on">1</span><span class="cell off">0</span><span class="cell on">1</span><span class="cell on">1</span>
+    <span class="lab">New label</span><span class="cell on">1</span><span class="cell on">1</span><span class="cell fill">1</span><span class="cell on">1</span><span class="cell on">1</span>
+  </div>
+  <p class="note">Day 3 in the S-NPP label: a correct "fire" forecast counts as a false alarm, and day 4's forecast (made from day 3's empty record) becomes a miss.</p>
+  <div class="grid2">
+    <div class="card accent">
+      <h3>Fix 1: a second satellite</h3>
+      <p><strong>NOAA-20</strong> carries the same VIIRS instrument in the same orbit, about 50 minutes behind S-NPP. A cell counts as burning if <strong>either</strong> satellite saw it.</p>
+    </div>
+    <div class="card accent">
+      <h3>Fix 2: fill single-day gaps</h3>
+      <p>If a cell burned the day before and the day after, the day in between counts as burning. The persistence rule still only sees what was actually observed, so there's no look-ahead.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-section="Data">
+<div class="inner">
+  <span class="kicker">Data we used, and why</span>
+  <h2>Data sources so far</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Source</th><th>What it gives</th><th>Why we added it</th><th>Used in</th></tr></thead>
+    <tbody>
+      <tr><td><strong>NASA FIRMS</strong> VIIRS S-NPP</td><td>Hotspot detections, 375 m, 2018–2023</td><td>The original label and history inputs</td><td class="mono">01–15</td></tr>
+      <tr><td><strong>Copernicus CEMS</strong> fire weather</td><td>Four fire-weather indices, 0.25° grid, previous day</td><td>First test of weather</td><td class="mono">03a, 04a</td></tr>
+      <tr><td><strong>BC Wildfire Service</strong> incidents &amp; perimeters</td><td>Ignition points, cause, final fire perimeters</td><td>Fire context, and separating wildfire from other burning</td><td class="mono">08, 11, 12, 14</td></tr>
+      <tr><td><strong>DataBC</strong> static layers</td><td>Farmland reserve, oil &amp; gas, cutblocks, terrain, fuels</td><td>Explain where non-wildfire and new fires appear</td><td class="mono">13</td></tr>
+      <tr class="hi"><td><strong>CWFIS</strong> hotspot archive (NRCan)</td><td>2.15 M BC detections: S-NPP, NOAA-20, MODIS, AVHRR</td><td>Open, no account, and already includes NOAA-20 while the FIRMS NOAA-20 request is pending</td><td class="mono">14, 15</td></tr>
+      <tr class="hi"><td><strong>BCWS DataMart</strong> station weather</td><td>213,328 station-days: noon temperature, humidity, wind, 24 h rain, fire-weather indices</td><td>Inputs that could explain spread and fires going out</td><td><em>downloaded, not yet used</em></td></tr>
+    </tbody>
+  </table></div>
+  <div class="card bad"><p><strong>Gap:</strong> CWFIS carries NOAA-20 fully only from 2021 (partially for 2019–2020, not at all for 2018). Full NOAA-20 coverage for 2018–2020 needs the <strong>FIRMS J1V-C2 archive</strong>, which has been requested.</p></div>
+</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-section="What labels solved">
+<div class="inner">
+  <span class="kicker">Experiment 19 · results</span>
+  <h2>The better label made the target far more consistent</h2>
+  <div class="grid3">
+    <div class="card good"><div class="stat"><span class="num">40% → 27%</span><span class="lab">of days inside fire runs with no record</span></div></div>
+    <div class="card good"><div class="stat"><span class="num">0.536 → 0.624</span><span class="lab">rule F1, exact cell, 2023 BC-wide</span></div></div>
+    <div class="card good"><div class="stat"><span class="num">0.740 → 0.810</span><span class="lab">rule F1, one-cell margin, 2023 BC-wide</span></div></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Label (rule F1, 2023 BC-wide)</th><th class="n">Exact</th><th class="n">Margin</th></tr></thead>
+    <tbody>
+      <tr><td>S-NPP only (original)</td><td class="n">0.536</td><td class="n">0.740</td></tr>
+      <tr><td>S-NPP, gaps filled</td><td class="n">0.586</td><td class="n">0.780</td></tr>
+      <tr><td>S-NPP or NOAA-20</td><td class="n">0.576</td><td class="n">0.773</td></tr>
+      <tr class="hi"><td><strong>S-NPP or NOAA-20, gaps filled</strong></td><td class="n"><strong>0.624</strong></td><td class="n"><strong>0.810</strong></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>MODIS adds nothing</strong> on top of the two VIIRS satellites.</li>
+    <li>CWFIS's own S-NPP copy drops some non-wildfire hotspots that FIRMS keeps.</li>
+    <li>A leak we caught: an earlier 0.815 let the rule see a filled day that depends on the future. The honest number is 0.780.</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-section="Phase 5 · retrain">
+<div class="inner">
+  <span class="kicker">Phase 5 · Experiment 20</span>
+  <h2>Retrained on the new label: the two-satellite rule still wins</h2>
+  <p>Why: if the label is cleaner, a model trained on it should finally pull ahead. Without NOAA-20 for 2018–2020 we used a <strong>stopgap label</strong>: 2018–2020 S-NPP gap-filled, 2021 S-NPP or NOAA-20 gap-filled. 2022 and 2023 are always scored on the full new label.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>2023, BC-wide, new label</th><th class="n">F1 exact</th><th class="n">F1 margin</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td><strong>Rule: S-NPP or NOAA-20 yesterday</strong></td><td class="n"><strong>0.624</strong></td><td class="n"><strong>0.810</strong></td></tr>
+      <tr><td>Rule: S-NPP yesterday (old rule)</td><td class="n">0.584</td><td class="n">0.785</td></tr>
+      <tr><td>CatBoost, Experiment 13 (old label)</td><td class="n">0.582</td><td class="n">0.795</td></tr>
+      <tr><td>CatBoost, stopgap label 2018–2021</td><td class="n">0.582</td><td class="n">0.790</td></tr>
+      <tr><td>CatBoost, 2021 only</td><td class="n">0.556</td><td class="n">0.774</td></tr>
+      <tr><td>CatBoost, 2021 only + NOAA-20 inputs<span class="sub">only model that can see NOAA-20</span></td><td class="n">0.568</td><td class="n">0.790</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="card good"><span class="tag good">Solved</span><p>With the margin, the two-satellite rule puts <strong>all 6 Fire Centres at or above 0.70</strong> (lowest: Cariboo, 0.740).</p></div>
+    <div class="card bad"><span class="tag bad">Not solved</span><p>Every model is below that rule; week-block bootstrap intervals are <strong>entirely below zero</strong>. NOAA-20 inputs helped (+0.01 to 0.02), but one training season didn't transfer.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-section="Baseline not ceiling">
+<div class="inner">
+  <span class="kicker">Is the rule a ceiling?</span>
+  <h2>No: the rule is wrong about 86,000 times in 2023</h2>
+  <p>Persistence would be a ceiling if fires only ever stopped on their last day. The data says otherwise.</p>
+  <div class="grid3">
+    <div class="card"><div class="stat"><span class="num">110,244</span><span class="lab">cells on fire yesterday: the rule's forecasts</span></div></div>
+    <div class="card"><div class="stat"><span class="num">117,828</span><span class="lab">cells on fire today: the truth</span></div></div>
+    <div class="card"><div class="stat"><span class="num">71,106</span><span class="lab">on fire on both days: correct forecasts</span></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card bad">
+      <span class="tag bad">39,138 false alarms · 35.5%</span>
+      <p>Precision 71,106 / 110,244 = <strong>0.645</strong>. The fire moved on, died down or was put out. Many cells burn for only a day or two.</p>
+    </div>
+    <div class="card bad">
+      <span class="tag bad">46,722 misses · 39.7%</span>
+      <p>Recall 71,106 / 117,828 = <strong>0.603</strong>. Fire spreading into a neighbouring cell (most of them) or fire appearing in a quiet area (9%; about half of those are non-wildfire burning).</p>
+    </div>
+  </div>
+  <div class="card accent"><p>The real ceiling is label noise and what is truly unpredictable. A model can beat the rule by predicting <strong>which way a fire spreads</strong> and <strong>which fires stop</strong>. Both depend on wind, slope, fuel, humidity and rain, which are inputs the models haven't had yet.</p></div>
+  <p class="note">S-NPP or NOAA-20 gap-filled label, all six Fire Centres pooled, exact cell. F1 = 2 × 0.645 × 0.603 / (0.645 + 0.603) ≈ 0.624.</p>
+</div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-section="Why models lose">
+<div class="inner">
+  <span class="kicker">Why the models still lose</span>
+  <h2>Same recall as the rule, lower precision</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>2023, exact cell, median of six centres</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">F1</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td>Rule: S-NPP or NOAA-20 yesterday</td><td class="n"><strong>0.642</strong></td><td class="n">0.602</td><td class="n"><strong>0.621</strong></td></tr>
+      <tr><td>Rule: S-NPP yesterday</td><td class="n">0.663</td><td class="n">0.517</td><td class="n">0.581</td></tr>
+      <tr><td>CatBoost, stopgap label</td><td class="n">0.496</td><td class="n"><strong>0.613</strong></td><td class="n">0.573</td></tr>
+      <tr><td>CatBoost, Experiment 13</td><td class="n">0.552</td><td class="n">0.590</td><td class="n">0.573</td></tr>
+      <tr><td>CatBoost, 2021 + NOAA-20 inputs</td><td class="n">0.536</td><td class="n">0.613</td><td class="n">0.576</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="card"><h3>1 · Most models can't see NOAA-20</h3><p>The 08 and stopgap models only have S-NPP history, so they can't even copy the two-satellite rule. They land next to the S-NPP rule (0.58).</p></div>
+    <div class="card"><h3>2 · No inputs for spread or stopping</h3><p>A burning cell has 6 neighbours. Without wind or slope, flagging them adds more false alarms than catches, which is exactly the precision drop.</p></div>
+    <div class="card"><h3>3 · Little training fire</h3><p>2019 and 2020 were near-empty seasons. The stopgap model's top input is <code>day_of_year</code>: it memorised when 2018 and 2021 peaked.</p></div>
+    <div class="card"><h3>4 · Thresholds from a quiet year</h3><p>2022 had ≈9,000 fire cells against ≈118,000 in 2023. A threshold tuned on 2022 is likely too low for 2023. The rule has no threshold to get wrong.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-section="Where we stand">
+<div class="inner">
+  <span class="kicker">Where we stand</span>
+  <h2>The goal range is reached by the rule, not yet by a model</h2>
+  <div class="legend"><span><i class="sw dot" style="background:var(--series-old)"></i>Rule, S-NPP label</span><span><i class="sw dot" style="background:var(--series-rule)"></i>Rule, two-satellite label</span><span><i class="sw dot" style="background:var(--series-model)"></i>Best model, two-satellite label</span><span><i class="sw" style="background:var(--band)"></i>Goal 0.70–0.80</span></div>
+  <div class="dotplot" id="standplot"></div>
+  <div class="grid3">
+    <div class="card good"><span class="tag good">Met</span><p><strong>F1 0.70–0.80</strong> with the one-cell margin: 0.810 BC-wide, all six centres ≥ 0.70.</p></div>
+    <div class="card bad"><span class="tag bad">Not met</span><p><strong>Exact-cell F1</strong> is 0.624 at best. Even the cleaner label disagrees with itself too often at single 5 km² cells.</p></div>
+    <div class="card bad"><span class="tag bad">Not met</span><p><strong>A model clearly beating persistence.</strong> Every model so far ties it or loses.</p></div>
+  </div>
+  <p class="note">2023, BC-wide pooled F1, thresholds chosen on 2022. 2023 has been looked at many times, so it is a development set; only 2024 will give an untouched final number.</p>
+</div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-section="What's next">
+<div class="inner">
+  <span class="kicker">What's next</span>
+  <h2>Give the models what the rule can't see</h2>
+  <div class="flow">
+    <div class="step"><span class="mono">Next · 16</span><b>Station weather as inputs</b><span>BCWS wind, humidity, rain and fire-weather indices on the two-satellite label. Data already downloaded.</span></div>
+    <div class="step"><span class="mono">Same run</span><b>Two cheap checks</b><span>Drop <code>day_of_year</code>; choose thresholds on pooled years rather than 2022 alone.</span></div>
+    <div class="step"><span class="mono">When FIRMS arrives</span><b>Full NOAA-20 2018–2020</b><span>Rerun Experiment 20 with the full label and NOAA-20 inputs in every training year: the fair test.</span></div>
+    <div class="step"><span class="mono">Then</span><b>Lightning, ERA5-Land</b><span>Lightning for new ignitions; ERA5-Land wind and rain on a grid (needs a CDS key).</span></div>
+    <div class="step"><span class="mono">Last</span><b>2024 final test</b><span>Once, with the chosen model and rule, after all decisions are made.</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card accent"><h3>What would count as success</h3><p>A model whose week-block bootstrap interval against the two-satellite rule is <strong>entirely above zero</strong>, gaining by catching spread (recall) without adding false alarms (precision).</p></div>
+    <div class="card"><h3>Loose ends</h3><ul><li>Finish Experiment 18 (make it resumable so memory stops don't lose work).</li><li>Revisit the GNN once drivers exist: message passing should help most for spread.</li><li>Report the watch list as a separate product for quiet-area fires.</li></ul></div>
+  </div>
+</div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-section="Appendix">
+<div class="inner">
+  <span class="kicker">Appendix · experiment index</span>
+  <h2>All experiments at a glance</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Folder</th><th>Question</th><th>Answer</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">01_hotspot_persistence_kamloops</td><td>How far does persistence go in one region?</td><td>F1 0.579</td></tr>
+      <tr><td class="mono">02_hotspot_persistence_bc</td><td>…across all six Fire Centres?</td><td>F1 0.543; "yesterday" rule wins</td></tr>
+      <tr><td class="mono">03 / 03a</td><td>Do logistic regression and boosting beat it? With CEMS weather?</td><td>No (0.49–0.52)</td></tr>
+      <tr><td class="mono">04 / 04a</td><td>Does a graph neural network help?</td><td>No (0.53–0.54)</td></tr>
+      <tr><td class="mono">05 / 06</td><td>CatBoost, full data or sampled?</td><td>No (0.47–0.51)</td></tr>
+      <tr><td class="mono">07_tabpfn</td><td>Does a tabular foundation model help?</td><td>No (0.52–0.54)</td></tr>
+      <tr><td class="mono">13_exp_fire_context_bc</td><td>Do richer fire descriptors help?</td><td>Better ranking, F1 ties</td></tr>
+      <tr><td class="mono">14_exp_target_definitions_bc</td><td>Is a one-cell margin fairer?</td><td>Yes: 0.761 vs 0.745</td></tr>
+      <tr><td class="mono">15_exp_lead_time_bc</td><td>Do models win at longer leads?</td><td>Only +0.01–0.03</td></tr>
+      <tr><td class="mono">16_exp_new_fire_onsets_bc</td><td>What are quiet-area fires?</td><td>48% non-wildfire, 30% flare-ups, 22% new</td></tr>
+      <tr><td class="mono">17_exp_history_nonwildfire_bc</td><td>Long history, wildfire-only target?</td><td>No gain</td></tr>
+      <tr><td class="mono">18_exp_static_layers_watchlist_bc</td><td>Static layers; a quiet-cell watch list?</td><td>±0.01; list catches 23–40% (partial run)</td></tr>
+      <tr><td class="mono">19_exp_multisensor_labels_bc</td><td>Does NOAA-20 make labels consistent?</td><td>Yes: rule 0.624 / 0.810</td></tr>
+      <tr><td class="mono">20_exp_retrain_multisensor_label_bc</td><td>Do models win on the new label?</td><td>Not yet: rule wins</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Scores before Experiment 14 are means of six centres on the S-NPP label; 09–15 tables use medians of centres or BC-wide pooled F1 as marked. Each folder has its own RESULTS.html with details.</p>
+</div>
+</section>
+
+</main>
+<nav class="bar-nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <button id="next" aria-label="Next slide">→</button>
+  <span class="section-name" id="sname"></span>
+  <div class="progress"><div id="pbar"></div></div>
+  <span class="count" id="count"></span>
+</nav>
+</div>
+
+<script>
+(function () {
+  // Phase 1 bar chart: 2023 F1, mean of six Fire Centres (EXPERIMENTS_OVERVIEW.html)
+  const phase1 = [
+    ["02 · Persistence rule", 0.543, true],
+    ["03 · Logistic + neighbours", 0.511],
+    ["03 · Boosting + neighbours", 0.503],
+    ["03a · Boosting + CEMS", 0.519],
+    ["04 · MLP control", 0.537],
+    ["04 · GNN", 0.530],
+    ["04a · GNN + CEMS", 0.539],
+    ["05 · CatBoost, full data", 0.512],
+    ["06 · CatBoost, sampled", 0.513],
+    ["07 · TabPFN hybrid", 0.535]
+  ];
+  const max = 0.6, ref = 0.543;
+  const host = document.getElementById("phase1");
+  phase1.forEach(([name, v, isRule]) => {
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.title = name + ": F1 " + v.toFixed(3);
+    row.innerHTML = '<span class="name"></span><div class="bar-track"><div class="bar' + (isRule ? " rule" : "") +
+      '" style="width:' + (v / max * 100) + '%"></div><div class="refline" style="left:' + (ref / max * 100) +
+      '%"></div></div><span class="val">' + v.toFixed(3) + "</span>";
+    row.querySelector(".name").textContent = name;
+    host.appendChild(row);
+  });
+
+  // Where-we-stand dot plot: 2023 BC-wide pooled F1
+  const rows = [
+    { label: "Exact cell", pts: [["old", 0.536, "Rule, S-NPP label"], ["model", 0.582, "Best model (08 / stopgap)"], ["rule", 0.624, "Rule, two-satellite label"]] },
+    { label: "One-cell margin", pts: [["old", 0.740, "Rule, S-NPP label"], ["model", 0.795, "Best model (Experiment 13)"], ["rule", 0.810, "Rule, two-satellite label"]] }
+  ];
+  const W = 900, H = 190, L = 130, R = 20, T = 30, rowH = 62, lo = 0.5, hi = 0.9;
+  const x = v => L + (v - lo) / (hi - lo) * (W - L - R);
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", "2023 F1: exact cell 0.536 old rule, 0.582 best model, 0.624 two-satellite rule; margin 0.740, 0.795, 0.810; goal band 0.70 to 0.80");
+  const el = (tag, attrs, text) => { const e = document.createElementNS(ns, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; svg.appendChild(e); return e; };
+  el("rect", { class: "band", x: x(0.7), y: T - 18, width: x(0.8) - x(0.7), height: rows.length * rowH + 6 });
+  el("text", { class: "bandlab", x: (x(0.7) + x(0.8)) / 2, y: T - 4, "text-anchor": "middle" }, "goal 0.70–0.80");
+  for (let t = lo; t <= hi + 1e-9; t += 0.1) {
+    el("line", { class: "grid", x1: x(t), x2: x(t), y1: T + 4, y2: T + rows.length * rowH - 6 });
+    const g = el("g", { class: "tick" });
+    const tx = document.createElementNS(ns, "text");
+    tx.setAttribute("x", x(t)); tx.setAttribute("y", T + rows.length * rowH + 14); tx.setAttribute("text-anchor", "middle");
+    tx.textContent = t.toFixed(1); g.appendChild(tx);
+  }
+  const plot = document.getElementById("standplot");
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; plot.appendChild(tip);
+  rows.forEach((r, i) => {
+    const cy = T + i * rowH + rowH / 2;
+    el("text", { x: 0, y: cy + 4 }, r.label);
+    const vals = r.pts.map(p => p[1]);
+    el("line", { class: "connector", x1: x(Math.min(...vals)), x2: x(Math.max(...vals)), y1: cy, y2: cy });
+    r.pts.forEach(([cls, v, name], j) => {
+      const c = el("circle", { class: "pt " + cls, cx: x(v), cy: cy, r: 8 });
+      el("text", { class: "vlab", x: x(v), y: j === 1 ? cy + 24 : cy - 14, "text-anchor": "middle" }, v.toFixed(3));
+      const show = () => {
+        const box = plot.getBoundingClientRect(), b = c.getBoundingClientRect();
+        tip.textContent = r.label + " · " + name + ": " + v.toFixed(3);
+        tip.style.left = (b.left + b.width / 2 - box.left) + "px"; tip.style.top = (b.top - box.top) + "px"; tip.hidden = false;
+      };
+      c.addEventListener("mouseenter", show); c.addEventListener("mouseleave", () => { tip.hidden = true; });
+    });
+  });
+  plot.insertBefore(svg, tip);
+
+  // Navigation
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const prev = document.getElementById("prev"), next = document.getElementById("next");
+  let i = 0;
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => { s.hidden = k !== i; });
+    slides[i].scrollTop = 0;
+    document.getElementById("count").textContent = (i + 1) + " / " + slides.length;
+    document.getElementById("sname").textContent = slides[i].dataset.section;
+    document.getElementById("pbar").style.width = ((i + 1) / slides.length * 100) + "%";
+    prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+    try { history.replaceState(null, "", "#" + (i + 1)); } catch (e) {}
+  }
+  prev.addEventListener("click", () => show(i - 1));
+  next.addEventListener("click", () => show(i + 1));
+  document.addEventListener("keydown", e => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+  });
+  const start = parseInt((location.hash || "").slice(1), 10);
+  show(Number.isFinite(start) ? start - 1 : 0);
+})();
+</script>
+</body>
+</html>

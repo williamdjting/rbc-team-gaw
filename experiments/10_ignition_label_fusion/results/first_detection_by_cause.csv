@@ -1,0 +1,4 @@
+FIRE_CAUSE,incidents,seen_5km,median_lag_5km,median_size_ha
+Lightning,4571,0.27783854736381536,2.0,0.1
+Person,1474,0.15332428765264586,1.0,0.0325
+Unknown,161,0.32919254658385094,1.0,0.1

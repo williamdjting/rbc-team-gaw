@@ -226,6 +226,19 @@ __marimo__/
 /docs/gurleen-progress.md
 /experiments/firms_summer_2018_2024/data/
 /experiments/figures/
+/experiments/*/data/
+/experiments/**/*.zip
+/experiments/**/*.parquet
+/experiments/**/*.cbm
+/experiments/**/*.joblib
+/experiments/**/*.csv.gz
+/experiments/10_ignition_label_fusion/results/labels_v2/fires.csv
+/experiments/10_ignition_label_fusion/results/labels_v2/ignition_events.csv
+/experiments/10_ignition_label_fusion/results/labels_v2/onset_mask.csv
+/experiments/10_ignition_label_fusion/results/firms_onsets_k2_L7.csv
+/experiments/10_ignition_label_fusion/results/fused_ignition_events.csv
+/experiments/10_ignition_label_fusion/results/fused_label_mask.csv
+/experiments/10_ignition_label_fusion/results/incident_first_detection.csv
 
 # Ignore exploration outputs (plots and CSV summaries)
 data/exploration/

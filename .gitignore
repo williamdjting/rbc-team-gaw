@@ -262,3 +262,7 @@ dataset_18_*.csv
 .DS_Store
 
 
+
+# Large week4 raw inputs (>100 MB, exceed GitHub limit)
+william/week4/*_BCWS_WX_OBS.csv
+william/week4/BCGW_*/**/*.dbf

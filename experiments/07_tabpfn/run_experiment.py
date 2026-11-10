@@ -203,12 +203,15 @@ def main():
     parser.add_argument("--device", default="auto", help="auto, mps, cuda or cpu")
     parser.add_argument("--context-rows", type=int, help="override the context size per draw")
     parser.add_argument("--contexts", type=int, help="override the number of context draws")
+    parser.add_argument("--predict-batch", type=int, help="override the test rows per predict_proba call (lower if out of memory)")
     args = parser.parse_args()
     settings = dict(SETTINGS["quick" if args.quick else "full"])
     if args.context_rows:
         settings["context_rows"] = args.context_rows
     if args.contexts:
         settings["contexts"] = args.contexts
+    if args.predict_batch:
+        settings["predict_batch"] = args.predict_batch
     target_device = device(args.device)
     print(f"TabPFN on {target_device} with {settings}", flush=True)
 

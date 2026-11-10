@@ -1,3 +1,7 @@
 feature_set,draw,context_rows,context_positives,fit_seconds
-cell_only,0,2000,504,210.2
-cell_plus_neighbours,0,2000,252,1.1
+cell_only,0,5000,1355,2.1
+cell_only,1,5000,1316,0.4
+cell_only,2,5000,1324,0.3
+cell_plus_neighbours,0,5000,521,0.3
+cell_plus_neighbours,1,5000,528,0.5
+cell_plus_neighbours,2,5000,571,0.6

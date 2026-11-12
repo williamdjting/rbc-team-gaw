@@ -62,6 +62,44 @@ STATIC_VARS_BY_FILE = {
     "geo.nc": "z",
     "lsm.nc": "lsm",
 }
+DAILY_SUM_VARS = {
+    "evabs", "evatc", "evavt", "pev", "slhf", "ssr", "ssrd", "str", "tp",
+}
+
+
+def aggregate_daily_values(
+    values: np.ndarray,
+    day_codes: np.ndarray,
+    n_days: int,
+    method: str,
+) -> np.ndarray:
+    """Aggregate time samples by day, ignoring missing values."""
+    if method not in {"mean", "sum"}:
+        raise ValueError(f"Unsupported daily aggregation method: {method}")
+
+    n_points = values.shape[1]
+    if len(values) % n_days == 0 and np.array_equal(
+        day_codes, np.repeat(np.arange(n_days), len(values) // n_days)
+    ):
+        grouped_values = values.reshape(n_days, len(values) // n_days, n_points)
+        valid = np.isfinite(grouped_values)
+        totals = np.where(valid, grouped_values, 0).sum(axis=1)
+        counts = valid.sum(axis=1)
+    else:
+        totals = np.zeros((n_days, n_points), dtype=values.dtype)
+        counts = np.zeros((n_days, n_points), dtype=np.int32)
+        valid = np.isfinite(values)
+        np.add.at(totals, day_codes, np.where(valid, values, 0))
+        np.add.at(counts, day_codes, valid)
+
+    if method == "mean":
+        daily_values = np.full(totals.shape, np.nan, dtype=np.float32)
+        np.divide(totals, counts, out=daily_values, where=counts > 0)
+        return daily_values
+
+    daily_values = totals.astype(np.float32, copy=False)
+    daily_values[counts == 0] = np.nan
+    return daily_values
 
 
 def open_standardized_bc_nc(nc_path: Path) -> xr.Dataset:
@@ -176,14 +214,9 @@ with tempfile.TemporaryDirectory() as tmp_work:
             for var_name in var_list:
                 # Extract only valid BC land cells: shape (n_timestamps, n_valid_points)
                 vals = ds[var_name].values[:, valid_grid_mask].astype(np.float32)
-                # Aggregate 5 daily timestamps to daily mean per (date, grid_point)
-                if len(vals) == n_days * 5:
-                    daily_vals = vals.reshape(n_days, 5, n_valid_points).mean(axis=1)
-                else:
-                    daily_vals = np.zeros((n_days, n_valid_points), dtype=np.float32)
-                    counts = np.bincount(day_codes, minlength=n_days).astype(np.float32)[:, None]
-                    np.add.at(daily_vals, day_codes, vals)
-                    daily_vals /= np.maximum(1.0, counts)
+                # Treat accumulated fluxes as daily totals and state variables as means.
+                method = "sum" if var_name in DAILY_SUM_VARS else "mean"
+                daily_vals = aggregate_daily_values(vals, day_codes, n_days, method)
                 month_vars[var_name] = daily_vals.ravel()
             ds.close()
 
@@ -206,9 +239,27 @@ with tempfile.TemporaryDirectory() as tmp_work:
 dataset_18_24 = pd.concat(monthly_frames, ignore_index=True)
 del monthly_frames
 
-# Sort chronologically and add calendar features matching check_CEMS_coverage.py
+# Guarantee one row per day and normalized grid point, even if monthly archives overlap.
 dataset_18_24["valid_time"] = pd.to_datetime(dataset_18_24["valid_time"])
+daily_keys = ["valid_time", "latitude", "longitude_deg"]
+daily_aggregations = {}
+for column in dataset_18_24.columns:
+    if column in daily_keys:
+        continue
+    if column == "longitude" or column in STATIC_VARS_BY_FILE.values():
+        daily_aggregations[column] = "first"
+    elif column in DAILY_SUM_VARS:
+        daily_aggregations[column] = "sum"
+    else:
+        daily_aggregations[column] = "mean"
+dataset_18_24 = dataset_18_24.groupby(
+    daily_keys, as_index=False, sort=False
+).agg(daily_aggregations)
+
+# Sort chronologically and add calendar features matching check_CEMS_coverage.py
 dataset_18_24.sort_values(["valid_time", "latitude", "longitude_deg"], inplace=True, ignore_index=True)
+if dataset_18_24.duplicated(daily_keys).any():
+    raise RuntimeError("ERA5 daily aggregation did not produce unique date/grid-point rows.")
 dataset_18_24["year"] = dataset_18_24["valid_time"].dt.year.astype(np.int16)
 dataset_18_24["month"] = dataset_18_24["valid_time"].dt.month.astype(np.int8)
 
@@ -254,4 +305,3 @@ dataset_18_24.to_csv(output_full_csv, index=False)
 dataset_18_24[dataset_18_24["year"] <= 2023].to_csv(output_dev_csv, index=False)
 dataset_18_24[dataset_18_24["year"] == 2024].to_csv(output_holdout_csv, index=False)
 print("Saved successfully!")
-

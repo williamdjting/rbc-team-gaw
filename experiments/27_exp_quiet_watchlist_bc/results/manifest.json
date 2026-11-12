@@ -1,0 +1,40 @@
+{
+  "regions": [
+    "Cariboo",
+    "Coastal",
+    "Kamloops",
+    "Northwest",
+    "Prince George",
+    "Southeast"
+  ],
+  "years": [
+    2022,
+    2023,
+    2024
+  ],
+  "list_sizes": [
+    10,
+    25,
+    50,
+    100
+  ],
+  "watch_days": 7,
+  "quiet": "no S-NPP detection in the cell or an in-region ring-1 neighbour over the 7 days to the history day (Experiment 25's quiet_stratum, same definition as Experiments 13 and 18)",
+  "caught_within_7d": "quiet fire whose cell was on the list on any of the 7 days up to and including the fire day",
+  "rankings": {
+    "catboost_13": "Experiment 13 catboost__all (2023 only)",
+    "gbm_13": "Experiment 13 gradient_boosting__all (2023 only)",
+    "mlp_lightning": "Experiment 25 mlp_score",
+    "mlp_no_lightning": "Experiment 26 scores_without_lightning",
+    "nearby_activity": "Experiment 18: rings to nearest detection in 30 days, then active cells within 5 rings",
+    "burned_before": "Experiment 18: earlier seasons (from 2018) the cell, then its ring-1 disk, had a detection"
+  },
+  "not_scored": "Experiment 22 MLP/GRU: weather and lightning preprocessing inputs are missing from this checkout",
+  "bootstrap": "2000 resamples of whole ISO weeks, pooled over the six centres",
+  "sources": [
+    "experiments\\firms_summer_2018_2024\\data\\firms_h3_cell_date.csv",
+    "experiments\\16_exp_new_fire_onsets_bc\\results\\onset_cells.csv",
+    "experiments\\16_exp_new_fire_onsets_bc\\results\\onset_clusters.csv"
+  ],
+  "runtime_minutes": 4.7
+}

@@ -1,0 +1,689 @@
+{
+  "frozen_date": "2026-11-11",
+  "status": "frozen_not_evaluated",
+  "evaluation_year": 2024,
+  "primary_model": "mlp",
+  "baseline": "rule_pair_yesterday",
+  "training_years": [
+    2018,
+    2019,
+    2020,
+    2021
+  ],
+  "threshold_selection_year": 2022,
+  "regions": [
+    "Cariboo",
+    "Coastal",
+    "Kamloops",
+    "Northwest",
+    "Prince George",
+    "Southeast"
+  ],
+  "target_dates": [
+    "2024-05-08",
+    "2024-09-30"
+  ],
+  "history_start": "2024-05-01",
+  "primary_metric": "BC-wide pooled exact-cell F1 at frozen per-centre thresholds",
+  "secondary_metrics": [
+    "per-centre F1, precision, recall and average precision",
+    "median per-centre average precision",
+    "one-cell-margin F1 at separately frozen 2022 thresholds",
+    "paired ISO-week bootstrap F1 difference versus persistence"
+  ],
+  "label": "D(t) OR (D(t-1) AND D(t+1)); D is S-NPP FIRMS or NOAA-20 CWFIS detection in the cell",
+  "season_boundary": "Preserve original May-September shift behaviour; no off-season gap filling.",
+  "inputs": [
+    "local_count_1d",
+    "local_count_3d",
+    "local_count_7d",
+    "days_since_previous_detection",
+    "history_left_censored",
+    "neighbour_count_1d",
+    "neighbour_count_3d",
+    "neighbour_count_7d",
+    "in_region_neighbours",
+    "frp_sum_1d",
+    "frp_max_1d",
+    "frp_sum_7d",
+    "night_count_1d",
+    "disk1_frp_sum_1d",
+    "disk1_night_count_1d",
+    "ring2_count_1d",
+    "ring2_count_7d",
+    "ring3_count_1d",
+    "ring3_count_7d",
+    "dist_nearest_1d",
+    "dist_nearest_3d",
+    "active_cells_disk5_3d",
+    "complex_size_3d",
+    "complex_frp_3d",
+    "active_days_7d",
+    "disk1_active_days_7d",
+    "disk1_days_since_first_7d",
+    "bcws_dist_active_km",
+    "bcws_n_active_25km",
+    "bcws_nearest_age_days",
+    "bcws_nearest_lightning",
+    "bcws_dist_recent_out_km",
+    "bcws_n_new_25km_3d",
+    "n20_cell_1d",
+    "n20_cell_3d",
+    "n20_disk1_1d",
+    "n20_disk1_3d",
+    "pair_cell_days_7d",
+    "pair_disk1_1d",
+    "pair_disk1_days_7d",
+    "wx_temp",
+    "wx_rh",
+    "wx_wind",
+    "wx_precip_24h",
+    "wx_ffmc",
+    "wx_dmc",
+    "wx_dc",
+    "wx_bui",
+    "wx_isi",
+    "wx_fwi",
+    "wx_precip_3d",
+    "wx_station_km",
+    "ltg_cell_1d",
+    "ltg_3x3_1d",
+    "ltg_3x3_3d",
+    "ltg_9x9_1d",
+    "ltg_9x9_3d",
+    "ltg_days_since_3x3",
+    "upwind_ring1_1d",
+    "upwind_ring2_1d",
+    "upwind_ring1_x_wind",
+    "upwind_ring2_x_wind",
+    "quiet_stratum"
+  ],
+  "scaler": {
+    "local_count_1d": {
+      "signed_log": true,
+      "mean": 0.04594512656331062,
+      "std": 0.3144040107727051,
+      "missing_flag": false
+    },
+    "local_count_3d": {
+      "signed_log": true,
+      "mean": 0.09441908448934555,
+      "std": 0.49032169580459595,
+      "missing_flag": false
+    },
+    "local_count_7d": {
+      "signed_log": true,
+      "mean": 0.17115645110607147,
+      "std": 0.6869890093803406,
+      "missing_flag": false
+    },
+    "days_since_previous_detection": {
+      "signed_log": true,
+      "mean": 1.6984657049179077,
+      "std": 0.8545758724212646,
+      "missing_flag": true
+    },
+    "history_left_censored": {
+      "signed_log": false,
+      "mean": 0.8959900140762329,
+      "std": 0.3053421974182129,
+      "missing_flag": false
+    },
+    "neighbour_count_1d": {
+      "signed_log": true,
+      "mean": 0.17117621004581451,
+      "std": 0.6556844115257263,
+      "missing_flag": false
+    },
+    "neighbour_count_3d": {
+      "signed_log": true,
+      "mean": 0.3195987641811371,
+      "std": 0.9530196785926819,
+      "missing_flag": false
+    },
+    "neighbour_count_7d": {
+      "signed_log": true,
+      "mean": 0.5378047823905945,
+      "std": 1.2591336965560913,
+      "missing_flag": false
+    },
+    "in_region_neighbours": {
+      "signed_log": false,
+      "mean": 5.936669826507568,
+      "std": 0.38061070442199707,
+      "missing_flag": false
+    },
+    "frp_sum_1d": {
+      "signed_log": true,
+      "mean": 0.0825016126036644,
+      "std": 0.5726174116134644,
+      "missing_flag": false
+    },
+    "frp_max_1d": {
+      "signed_log": true,
+      "mean": 0.060068223625421524,
+      "std": 0.41837745904922485,
+      "missing_flag": false
+    },
+    "frp_sum_7d": {
+      "signed_log": true,
+      "mean": 0.29440826177597046,
+      "std": 1.1782095432281494,
+      "missing_flag": false
+    },
+    "night_count_1d": {
+      "signed_log": true,
+      "mean": 0.036644935607910156,
+      "std": 0.27188295125961304,
+      "missing_flag": false
+    },
+    "disk1_frp_sum_1d": {
+      "signed_log": true,
+      "mean": 0.3015764355659485,
+      "std": 1.1424933671951294,
+      "missing_flag": false
+    },
+    "disk1_night_count_1d": {
+      "signed_log": true,
+      "mean": 0.1455560326576233,
+      "std": 0.5992842316627502,
+      "missing_flag": false
+    },
+    "ring2_count_1d": {
+      "signed_log": true,
+      "mean": 0.20822757482528687,
+      "std": 0.7829239964485168,
+      "missing_flag": false
+    },
+    "ring2_count_7d": {
+      "signed_log": true,
+      "mean": 0.579725980758667,
+      "std": 1.4738144874572754,
+      "missing_flag": false
+    },
+    "ring3_count_1d": {
+      "signed_log": true,
+      "mean": 0.20130310952663422,
+      "std": 0.7866112589836121,
+      "missing_flag": false
+    },
+    "ring3_count_7d": {
+      "signed_log": true,
+      "mean": 0.5411150455474854,
+      "std": 1.4740314483642578,
+      "missing_flag": false
+    },
+    "dist_nearest_1d": {
+      "signed_log": false,
+      "mean": 5.412660121917725,
+      "std": 1.602658987045288,
+      "missing_flag": false
+    },
+    "dist_nearest_3d": {
+      "signed_log": false,
+      "mean": 5.133705139160156,
+      "std": 1.9220726490020752,
+      "missing_flag": false
+    },
+    "active_cells_disk5_3d": {
+      "signed_log": true,
+      "mean": 0.36375975608825684,
+      "std": 0.8926908373832703,
+      "missing_flag": false
+    },
+    "complex_size_3d": {
+      "signed_log": true,
+      "mean": 0.34384414553642273,
+      "std": 0.9671769142150879,
+      "missing_flag": false
+    },
+    "complex_frp_3d": {
+      "signed_log": true,
+      "mean": 0.8748904466629028,
+      "std": 2.394965648651123,
+      "missing_flag": false
+    },
+    "active_days_7d": {
+      "signed_log": false,
+      "mean": 0.18645000457763672,
+      "std": 0.7939860224723816,
+      "missing_flag": false
+    },
+    "disk1_active_days_7d": {
+      "signed_log": false,
+      "mean": 0.6089649796485901,
+      "std": 1.4619466066360474,
+      "missing_flag": false
+    },
+    "disk1_days_since_first_7d": {
+      "signed_log": false,
+      "mean": 1.1107699871063232,
+      "std": 2.3044934272766113,
+      "missing_flag": false
+    },
+    "bcws_dist_active_km": {
+      "signed_log": true,
+      "mean": 3.9902584552764893,
+      "std": 1.2862834930419922,
+      "missing_flag": false
+    },
+    "bcws_n_active_25km": {
+      "signed_log": true,
+      "mean": 0.3118332624435425,
+      "std": 0.5995681285858154,
+      "missing_flag": false
+    },
+    "bcws_nearest_age_days": {
+      "signed_log": true,
+      "mean": 2.655348539352417,
+      "std": 1.2244017124176025,
+      "missing_flag": true
+    },
+    "bcws_nearest_lightning": {
+      "signed_log": false,
+      "mean": 0.6767730116844177,
+      "std": 0.45309266448020935,
+      "missing_flag": true
+    },
+    "bcws_dist_recent_out_km": {
+      "signed_log": true,
+      "mean": 4.755671977996826,
+      "std": 0.7703025341033936,
+      "missing_flag": false
+    },
+    "bcws_n_new_25km_3d": {
+      "signed_log": false,
+      "mean": 0.09754499793052673,
+      "std": 0.686707079410553,
+      "missing_flag": false
+    },
+    "n20_cell_1d": {
+      "signed_log": false,
+      "mean": 0.03337487205862999,
+      "std": 0.17957840859889984,
+      "missing_flag": true
+    },
+    "n20_cell_3d": {
+      "signed_log": false,
+      "mean": 0.0986436977982521,
+      "std": 0.4436624348163605,
+      "missing_flag": true
+    },
+    "n20_disk1_1d": {
+      "signed_log": false,
+      "mean": 0.22847700119018555,
+      "std": 0.8312370181083679,
+      "missing_flag": true
+    },
+    "n20_disk1_3d": {
+      "signed_log": true,
+      "mean": 0.2286490947008133,
+      "std": 0.5872929096221924,
+      "missing_flag": true
+    },
+    "pair_cell_days_7d": {
+      "signed_log": false,
+      "mean": 0.2830362319946289,
+      "std": 0.9754714965820312,
+      "missing_flag": true
+    },
+    "pair_disk1_1d": {
+      "signed_log": false,
+      "mean": 0.28043562173843384,
+      "std": 0.9211037158966064,
+      "missing_flag": true
+    },
+    "pair_disk1_days_7d": {
+      "signed_log": false,
+      "mean": 0.8778783082962036,
+      "std": 1.7252004146575928,
+      "missing_flag": true
+    },
+    "wx_temp": {
+      "signed_log": true,
+      "mean": 2.90028715133667,
+      "std": 0.3702986240386963,
+      "missing_flag": true
+    },
+    "wx_rh": {
+      "signed_log": true,
+      "mean": 3.8652050495147705,
+      "std": 0.42323270440101624,
+      "missing_flag": true
+    },
+    "wx_wind": {
+      "signed_log": true,
+      "mean": 2.1693577766418457,
+      "std": 0.4895816445350647,
+      "missing_flag": true
+    },
+    "wx_precip_24h": {
+      "signed_log": true,
+      "mean": 0.5124306678771973,
+      "std": 0.8477339148521423,
+      "missing_flag": true
+    },
+    "wx_ffmc": {
+      "signed_log": true,
+      "mean": 4.274702548980713,
+      "std": 0.4498814642429352,
+      "missing_flag": true
+    },
+    "wx_dmc": {
+      "signed_log": true,
+      "mean": 3.4130542278289795,
+      "std": 1.0955864191055298,
+      "missing_flag": true
+    },
+    "wx_dc": {
+      "signed_log": true,
+      "mean": 5.517363548278809,
+      "std": 0.880042314529419,
+      "missing_flag": true
+    },
+    "wx_bui": {
+      "signed_log": true,
+      "mean": 3.7678847312927246,
+      "std": 1.0418941974639893,
+      "missing_flag": true
+    },
+    "wx_isi": {
+      "signed_log": true,
+      "mean": 1.3881678581237793,
+      "std": 0.8693373203277588,
+      "missing_flag": true
+    },
+    "wx_fwi": {
+      "signed_log": true,
+      "mean": 2.0274178981781006,
+      "std": 1.2810007333755493,
+      "missing_flag": true
+    },
+    "wx_precip_3d": {
+      "signed_log": true,
+      "mean": 1.112990379333496,
+      "std": 1.1593254804611206,
+      "missing_flag": true
+    },
+    "wx_station_km": {
+      "signed_log": true,
+      "mean": 3.3123812675476074,
+      "std": 0.6860169768333435,
+      "missing_flag": true
+    },
+    "ltg_cell_1d": {
+      "signed_log": true,
+      "mean": 0.026103273034095764,
+      "std": 0.1969640851020813,
+      "missing_flag": false
+    },
+    "ltg_3x3_1d": {
+      "signed_log": true,
+      "mean": 0.11214219778776169,
+      "std": 0.49863240122795105,
+      "missing_flag": false
+    },
+    "ltg_3x3_3d": {
+      "signed_log": true,
+      "mean": 0.294670045375824,
+      "std": 0.8168554306030273,
+      "missing_flag": false
+    },
+    "ltg_9x9_1d": {
+      "signed_log": true,
+      "mean": 0.3852027654647827,
+      "std": 1.0606461763381958,
+      "missing_flag": false
+    },
+    "ltg_9x9_3d": {
+      "signed_log": true,
+      "mean": 0.8687523603439331,
+      "std": 1.5646330118179321,
+      "missing_flag": false
+    },
+    "ltg_days_since_3x3": {
+      "signed_log": true,
+      "mean": 2.2278289794921875,
+      "std": 0.8349730968475342,
+      "missing_flag": false
+    },
+    "upwind_ring1_1d": {
+      "signed_log": false,
+      "mean": -0.0004900622880086303,
+      "std": 0.28872668743133545,
+      "missing_flag": true
+    },
+    "upwind_ring2_1d": {
+      "signed_log": false,
+      "mean": -0.0017989104380831122,
+      "std": 0.445132851600647,
+      "missing_flag": true
+    },
+    "upwind_ring1_x_wind": {
+      "signed_log": true,
+      "mean": -0.0008725881925784051,
+      "std": 0.6138102412223816,
+      "missing_flag": true
+    },
+    "upwind_ring2_x_wind": {
+      "signed_log": true,
+      "mean": -0.002681522164493799,
+      "std": 0.7022097706794739,
+      "missing_flag": true
+    },
+    "quiet_stratum": {
+      "signed_log": false,
+      "mean": 0.7797099947929382,
+      "std": 0.41453462839126587,
+      "missing_flag": false
+    }
+  },
+  "neural": {
+    "hidden": [
+      256,
+      256,
+      128
+    ],
+    "gru_hidden": 64,
+    "dropout": 0.1,
+    "batch": 2048,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "max_epochs": 20,
+    "patience": 3,
+    "validation": "history days whose 7-day block index is a multiple of 6",
+    "threads": 10
+  },
+  "preprocessing": {
+    "clip": 8.0,
+    "quiet_sample_rate": 0.01,
+    "quiet_log_odds_correction": "log(0.01) * quiet_stratum",
+    "feature_cutoff": "t-1; BCWS incident context through t-2",
+    "day_of_year": false
+  },
+  "thresholds": [
+    {
+      "region": "Cariboo",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_exact",
+      "threshold": 0.5
+    },
+    {
+      "region": "Cariboo",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_margin1",
+      "threshold": 0.5
+    },
+    {
+      "region": "Cariboo",
+      "model": "mlp",
+      "definition": "res7_exact",
+      "threshold": 0.20296997084522075
+    },
+    {
+      "region": "Cariboo",
+      "model": "mlp",
+      "definition": "res7_margin1",
+      "threshold": 0.20296997084522075
+    },
+    {
+      "region": "Coastal",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_exact",
+      "threshold": 0.5
+    },
+    {
+      "region": "Coastal",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_margin1",
+      "threshold": 0.5
+    },
+    {
+      "region": "Coastal",
+      "model": "mlp",
+      "definition": "res7_exact",
+      "threshold": 0.21510850858381061
+    },
+    {
+      "region": "Coastal",
+      "model": "mlp",
+      "definition": "res7_margin1",
+      "threshold": 0.14901681602739658
+    },
+    {
+      "region": "Kamloops",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_exact",
+      "threshold": 0.5
+    },
+    {
+      "region": "Kamloops",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_margin1",
+      "threshold": 0.5
+    },
+    {
+      "region": "Kamloops",
+      "model": "mlp",
+      "definition": "res7_exact",
+      "threshold": 0.23753208177454155
+    },
+    {
+      "region": "Kamloops",
+      "model": "mlp",
+      "definition": "res7_margin1",
+      "threshold": 0.135450560437744
+    },
+    {
+      "region": "Northwest",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_exact",
+      "threshold": 0.5
+    },
+    {
+      "region": "Northwest",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_margin1",
+      "threshold": 0.5
+    },
+    {
+      "region": "Northwest",
+      "model": "mlp",
+      "definition": "res7_exact",
+      "threshold": 0.19240050412508258
+    },
+    {
+      "region": "Northwest",
+      "model": "mlp",
+      "definition": "res7_margin1",
+      "threshold": 0.32008259402625444
+    },
+    {
+      "region": "Prince George",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_exact",
+      "threshold": 0.5
+    },
+    {
+      "region": "Prince George",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_margin1",
+      "threshold": 0.5
+    },
+    {
+      "region": "Prince George",
+      "model": "mlp",
+      "definition": "res7_exact",
+      "threshold": 0.2123413589457581
+    },
+    {
+      "region": "Prince George",
+      "model": "mlp",
+      "definition": "res7_margin1",
+      "threshold": 0.21178691156210241
+    },
+    {
+      "region": "Southeast",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_exact",
+      "threshold": 0.5
+    },
+    {
+      "region": "Southeast",
+      "model": "rule_pair_yesterday",
+      "definition": "res7_margin1",
+      "threshold": 0.5
+    },
+    {
+      "region": "Southeast",
+      "model": "mlp",
+      "definition": "res7_exact",
+      "threshold": 0.3129478019226259
+    },
+    {
+      "region": "Southeast",
+      "model": "mlp",
+      "definition": "res7_margin1",
+      "threshold": 0.19575474449594105
+    }
+  ],
+  "checkpoint": "artifacts/mlp.pt",
+  "checkpoint_sha256": "1abc59cba5d4e1e14632e6e0ed57430fc165771ebc507b262941940c5b6561c4",
+  "source_sha256": {
+    "experiments/22_exp_neural_models_bc/results/models/mlp.pt": "1abc59cba5d4e1e14632e6e0ed57430fc165771ebc507b262941940c5b6561c4",
+    "experiments/22_exp_neural_models_bc/results/manifest.json": "10a6bb3d5e10a276f4cd2c9b1bc8dbd4d01a8bc436e1d334f030d2b92d952709",
+    "experiments/22_exp_neural_models_bc/results/metrics_by_year.csv": "3798dcf3672dd97e4695badcbb762c91b137617076e1c53862eea331cc230ed9",
+    "experiments/13_exp_fire_context_bc/build_report.py": "48645fb3019b872d80dead41606ef1c7844d1aa6dba54060eba6e60aaf8af802",
+    "experiments/13_exp_fire_context_bc/f1_checks.py": "a6ad38d3d972bdea779064dfe26b119aedade8e446d003371035f9f327a0a33f",
+    "experiments/13_exp_fire_context_bc/fetch_bcws_incidents.py": "f522015afbc5e5a50a365de5fc4349cfe5928b290bd43ba053fc77a99408ff69",
+    "experiments/13_exp_fire_context_bc/run_experiment.py": "7a81be5d17d37cfe2db6d9ed2c0b0ae30bec1698c24ef18a08777f69987f5579",
+    "experiments/14_exp_target_definitions_bc/build_report.py": "ae90aec10e97103aae94e59e18d0604aa8ccfda32e705b0dc755cf7e78d1f5b2",
+    "experiments/14_exp_target_definitions_bc/run_experiment.py": "202a3065033ca3c90019810c72d78e66011cb6f4acbacec8c9524a4b1ee6cdd9",
+    "experiments/15_exp_lead_time_bc/build_report.py": "a70671bddb541843e8a4406f198689f1a94ed0a93791ba2bbca92f3fd60a9c18",
+    "experiments/15_exp_lead_time_bc/quiet_cell_catch.py": "6efda5339921af22506b5d19d0debf1b224753e1e934c716ce7ce9faddca6a1c",
+    "experiments/15_exp_lead_time_bc/run_experiment.py": "4bada614347d1c65f867235b0b3624b0fdcaa11891941f3a75a718ab02c74350",
+    "experiments/16_exp_new_fire_onsets_bc/analyze_onsets.py": "1c38a344b8a5e19bad8364789526d867713c2267a6a9e46b32d51bd415c95a23",
+    "experiments/17_exp_history_nonwildfire_bc/build_report.py": "b8a09202ac596624ce9a2d0a65cea7a470c8eefeda71d06ecd30b9e5d2823f7e",
+    "experiments/17_exp_history_nonwildfire_bc/fetch_bcws_perimeters.py": "a6ac5c2e69ddb62e1130bbc75de60b0abe41b651ff502d65473743c7c8e90e8c",
+    "experiments/17_exp_history_nonwildfire_bc/run_experiment.py": "5616b64686605c212b0c5981aa4565c81c04a077742dd94961cfc8d64a00aa9b",
+    "experiments/18_exp_static_layers_watchlist_bc/build_report.py": "befb0493926166804b1af077d1ef8f8ec66f010681321be9b7150424d5b0a84d",
+    "experiments/18_exp_static_layers_watchlist_bc/run_experiment.py": "ea8c39f6e97d2667b3fefdb188cf648c3ffc22ee3f5a8b8d4a1f9b2237d6fe2a",
+    "experiments/19_exp_multisensor_labels_bc/analyze_labels.py": "16ebf6a3842da8177c5ebf9bb690cead285bc97813a107fb94206e90075e7762",
+    "experiments/19_exp_multisensor_labels_bc/build_report.py": "a706cc14cdb1ee34c36ccc93c9495f7b4d1edb68e5711f8c01c23f5623a885da",
+    "experiments/20_exp_retrain_multisensor_label_bc/build_report.py": "70a2772ee4ed042fe960b267c1b064c928dd24dcbfc564d2c0d10854fca22924",
+    "experiments/20_exp_retrain_multisensor_label_bc/run_experiment.py": "0e6739f9585ed8ad652f1d8d6581cd2ff8964d04f48de20375ecd614bc2500e4",
+    "experiments/21_exp_weather_lightning_spread_bc/build_report.py": "1e1c59e43a041c6cc9a1a15b0488ae8d53d44c2e58f7c66e6c2553db1b96b601",
+    "experiments/21_exp_weather_lightning_spread_bc/run_experiment.py": "5e9fe1ea8bea854d88e96daf49a8bab3e57cbf8188d801afb29b8dc1d738e8f6",
+    "experiments/22_exp_neural_models_bc/build_report.py": "b9c9a11548a4a1b8a4f8d7b1f92010ed0c73cbeede414bacc2f0bdd2d8cfd138",
+    "experiments/22_exp_neural_models_bc/run_experiment.py": "190d4dcbb34688b06335e46c19b441645d99668e87deeaf7262c8379765de615"
+  },
+  "constraints": [
+    "No retraining or scaler refitting",
+    "No threshold selection on 2023 or 2024",
+    "No model selection after inspecting 2024 results",
+    "Reproduce saved 2023 MLP metrics before opening holdout labels",
+    "Keep original region grids and feature semantics",
+    "Do not substitute ERA5 or a different weather schema",
+    "Full-grid evaluation; no negative sampling in evaluation"
+  ]
+}

@@ -9,13 +9,13 @@ See `FINDINGS.md`.
 & C:/Users/sgurl/anaconda3/python.exe experiments/10_ignition_label_fusion/run_analysis.py
 ```
 
-Inputs: `data/firms_with_cems_18_24.csv` (2024 dropped, weather ignored),
-`data/bc_historical_incidents_2018_2023.csv` (timestamp and completeness audit),
+Inputs: `data/firms_cems/bc_firms_snpp_detections_with_cems_fwi_2018_2024.csv` (2024 dropped, weather ignored),
+`data/bcws_incidents/bc_historical_incidents_2018_2023.csv` (timestamp and completeness audit),
 and `experiments/09_firms_incident_diagnostics/results/incidents_in_scope.csv`
 (run Experiment 09 first). Runtime is about 30 s.
 
 **Frozen label (Week 3, Task 1):** `build_labels.py` → `results/labels_v2/`; see `LABEL_SPEC.md`.
-It needs `data/bc_fire_perimeters_2018_2023.geojson` (`scripts/download_bc_fire_perimeters.py`).
+It needs `data/bcws_perimeters/bc_fire_perimeters_2018_2023.geojson` (`scripts/download_bc_fire_perimeters.py`).
 
 ```powershell
 & C:/Users/sgurl/anaconda3/python.exe scripts/download_bc_fire_perimeters.py

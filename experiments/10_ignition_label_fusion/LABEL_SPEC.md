@@ -8,8 +8,8 @@ Built by `build_labels.py`; outputs in `results/labels_v2/`. Parameters are reco
 
 | Source | Role |
 |---|---|
-| BC historical incidents (`data/bc_historical_incidents_2018_2023.csv`) | Fire starts: local ignition date and point. `Fire` records inside BC only. |
-| BC historical fire perimeters (`data/bc_fire_perimeters_2018_2023.geojson`, `scripts/download_bc_fire_perimeters.py`) | Final burned area for fires of about 1 ha and larger (92-99% coverage). Used for attribution footprints, plus 515 fires missing from the incident file (385 in 2018). |
+| BC historical incidents (`data/bcws_incidents/bc_historical_incidents_2018_2023.csv`) | Fire starts: local ignition date and point. `Fire` records inside BC only. |
+| BC historical fire perimeters (`data/bcws_perimeters/bc_fire_perimeters_2018_2023.geojson`, `scripts/download_bc_fire_perimeters.py`) | Final burned area for fires of about 1 ha and larger (92-99% coverage). Used for attribution footprints, plus 515 fires missing from the incident file (385 in 2018). |
 | FIRMS VIIRS S-NPP type 0, H3 resolution 7 | Confirms starts, corrects late BC dates, locates perimeter-only fires, and drives the masks. Not a source of positives by default. |
 
 BC `IGNITION_DATE` is Pacific local clock time stored as if it were UTC. Use the date part as-is.

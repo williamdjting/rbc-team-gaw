@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Week 4 Progress Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f7f5f2; --surface: #ffffff; --surface-2: #efebe6;
+  --fg: #1c1916; --fg-2: #4d4740; --muted: #7a7168; --rule: #ddd6ce;
+  --accent: #b8430f; --accent-soft: #f6e3d8;
+  --good: #1d7a46; --good-soft: #e3f1e8; --bad: #a3262a; --bad-soft: #f7e1e1;
+  --neutral-soft: #ece8e3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #171513; --surface: #211e1b; --surface-2: #2a2622;
+    --fg: #f1ede8; --fg-2: #c9c1b8; --muted: #9b9188; --rule: #3a3530;
+    --accent: #f08a55; --accent-soft: #3a2519;
+    --good: #5cc28a; --good-soft: #1c2e23; --bad: #f07a7d; --bad-soft: #3a1e1f;
+    --neutral-soft: #2c2824;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #171513; --surface: #211e1b; --surface-2: #2a2622;
+  --fg: #f1ede8; --fg-2: #c9c1b8; --muted: #9b9188; --rule: #3a3530;
+  --accent: #f08a55; --accent-soft: #3a2519;
+  --good: #5cc28a; --good-soft: #1c2e23; --bad: #f07a7d; --bad-soft: #3a1e1f;
+  --neutral-soft: #2c2824;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 18px/1.55 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+.deck { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+header.bar {
+  display: flex; align-items: center; gap: 12px; padding: 10px 24px;
+  border-bottom: 1px solid var(--rule); font-size: 13px; color: var(--muted);
+}
+header.bar .brand { font-weight: 600; color: var(--fg-2); }
+header.bar .spacer { flex: 1; }
+header.bar button {
+  font: inherit; color: var(--fg-2); background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 4px 10px; cursor: pointer;
+}
+header.bar button:hover { border-color: var(--accent); color: var(--accent); }
+.progress { height: 3px; background: var(--surface-2); }
+.progress > div { height: 100%; background: var(--accent); width: 0; transition: width .25s ease; }
+main { flex: 1; position: relative; overflow: hidden; }
+section.slide {
+  position: absolute; inset: 0; overflow-y: auto; padding: 40px 56px 28px;
+  display: none; flex-direction: column;
+}
+section.slide.active { display: flex; }
+.inner { max-width: 1080px; width: 100%; margin: 0 auto; }
+.kicker {
+  font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin: 0 0 6px;
+}
+h1 { font-size: 42px; line-height: 1.12; margin: 0 0 14px; font-weight: 700; letter-spacing: -.01em; }
+h2 { font-size: 30px; line-height: 1.2; margin: 0 0 18px; font-weight: 650; letter-spacing: -.005em; }
+.lede { font-size: 19px; color: var(--fg-2); margin: 0 0 22px; max-width: 62ch; }
+ul.b { margin: 0; padding-left: 20px; }
+ul.b li { margin: 6px 0; color: var(--fg-2); }
+ul.b li strong { color: var(--fg); }
+.grid2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: start; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 20px; }
+.card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+.verdict {
+  margin-top: 20px; padding: 12px 16px; border-left: 4px solid var(--accent);
+  background: var(--accent-soft); border-radius: 0 8px 8px 0; font-weight: 500;
+}
+table { border-collapse: collapse; width: 100%; font-size: 16px; background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+th, td { padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { background: var(--surface-2); font-weight: 600; font-size: 13px; color: var(--fg-2); }
+tr:last-child td { border-bottom: none; }
+td.n, th.n { text-align: right; font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.base td { background: var(--neutral-soft); }
+.win { color: var(--good); font-weight: 600; }
+.tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 99px; white-space: nowrap; }
+.tag.g { background: var(--good-soft); color: var(--good); }
+.tag.r { background: var(--bad-soft); color: var(--bad); }
+.tag.n { background: var(--neutral-soft); color: var(--fg-2); }
+.note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+.tablewrap { overflow-x: auto; }
+.big { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 6px 0 24px; }
+.big .card .num { font-size: 36px; font-weight: 700; font-family: "IBM Plex Mono", monospace; letter-spacing: -.02em; }
+.big .card .cap { font-size: 15px; color: var(--fg-2); }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0 0 22px; }
+.steps .card { padding: 12px 14px; font-size: 15px; color: var(--fg-2); }
+.steps .card b { display: block; color: var(--accent); font-size: 13px; letter-spacing: .05em; margin-bottom: 4px; }
+.split { display: flex; height: 34px; border-radius: 8px; overflow: hidden; margin: 6px 0 8px; font-size: 13px; font-weight: 600; }
+.split div { display: flex; align-items: center; padding: 0 10px; color: #fff; white-space: nowrap; }
+.split .c { background: #2a78d6; }
+.split .s { background: #eb6834; }
+.split .q { background: #a3262a; }
+.legend { font-size: 13px; color: var(--muted); }
+footer.nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 24px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted);
+}
+footer.nav button {
+  font: inherit; font-size: 14px; color: var(--fg); background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 6px 14px; cursor: pointer; min-width: 44px; min-height: 36px;
+}
+footer.nav button:disabled { opacity: .4; cursor: default; }
+footer.nav button:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 860px) {
+  body { font-size: 16px; }
+  section.slide { padding: 22px 16px; }
+  h1 { font-size: 30px; } h2 { font-size: 24px; }
+  .grid2, .big, .steps { grid-template-columns: 1fr; }
+  header.bar, footer.nav { padding: 8px 16px; }
+  table { font-size: 14px; } th, td { padding: 7px 9px; }
+  .split { font-size: 11px; }
+}
+@media print {
+  body { overflow: visible; }
+  .deck { height: auto; }
+  header.bar, footer.nav, .progress { display: none; }
+  main { overflow: visible; }
+  section.slide { position: static; display: flex !important; page-break-after: always; overflow: visible; }
+}
+</style>
+</head>
+<body>
+<div class="deck">
+<header class="bar">
+  <span class="brand">GAW · BC Wildfire Forecasting</span>
+  <span>Progress through Week 4</span>
+  <span class="spacer"></span>
+  <button id="theme" type="button" aria-label="Toggle colour theme">Theme</button>
+</header>
+<div class="progress"><div id="prog"></div></div>
+<main>
+
+<!-- 1 -->
+<section class="slide">
+<div class="inner">
+  <p class="kicker">Weeks 1–4 · 28 experiments</p>
+  <h1>Where we stand</h1>
+  <p class="lede">Question: will a satellite see fire in this 5 km² cell tomorrow?</p>
+  <div class="big">
+    <div class="card"><div class="num">0.62</div><div class="cap">Simple rule: "fire here yesterday → fire here tomorrow"</div></div>
+    <div class="card"><div class="num">0.63</div><div class="cap">Our best model (MLP): a tie with the rule</div></div>
+    <div class="card"><div class="num">3×</div><div class="cap">New fires our watch list catches vs a simple rule</div></div>
+  </div>
+  <ul class="b">
+    <li><strong>Fires that keep burning:</strong> the simple rule is already as good as any model.</li>
+    <li><strong>New fires:</strong> the rule can't predict them, and that's where models can help.</li>
+  </ul>
+  <p class="note">Scores are F1 on 2023 (higher is better, max 1.0).</p>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+<div class="inner">
+  <p class="kicker">What we tried</p>
+  <h2>Better data helped; bigger models didn't</h2>
+  <div class="tablewrap"><table>
+    <tr><th>What we tried</th><th>Data used</th><th>Did it help?</th><th>In one line</th></tr>
+    <tr><td><strong>Second satellite</strong> for the label</td><td>NOAA-20 (CWFIS)</td><td><span class="tag g">Yes, most</span></td><td>Fewer missed days → score 0.54 → 0.62 (for every method)</td></tr>
+    <tr><td>Bigger models (CatBoost → GNN → MLP → GRU)</td><td>No new data</td><td><span class="tag n">A little</span></td><td>MLP slightly beats CatBoost, but only ties the rule</td></tr>
+    <tr><td>Fire intensity and nearby fires</td><td>NASA FIRMS</td><td><span class="tag n">A little</span></td><td>Better ranking, about +0.02</td></tr>
+    <tr><td>Fire weather</td><td>BCWS stations, CEMS</td><td><span class="tag r">No</span></td><td>About zero change (CEMS +0.01)</td></tr>
+    <tr><td>Lightning</td><td>CanCPLD</td><td><span class="tag r">No</span></td><td>+0.004, could be chance</td></tr>
+    <tr><td>Terrain, fuels, land use</td><td>Static map layers</td><td><span class="tag r">No</span></td><td>+0.002, could be chance</td></tr>
+    <tr><td>Longer history, 14-day sequences</td><td>NASA FIRMS</td><td><span class="tag r">No</span></td><td>Same or slightly worse</td></tr>
+    <tr><td><strong>BCWS fire reports</strong> for new fires</td><td>BCWS incidents</td><td><span class="tag g">Yes</span></td><td>Watch list catches 3× more new fires (slide 4)</td></tr>
+  </table></div>
+  <div class="verdict">Stop adding models. What the model is told matters more than how big it is.</div>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+<div class="inner">
+  <p class="kicker">Why the score is stuck</p>
+  <h2>Most fires are just yesterday's fire, still burning</h2>
+  <div class="split" role="img" aria-label="2023 fire cell-days: 60% continuing, 32% spread, 8% new">
+    <div class="c" style="width:60%">Still burning · 60%</div>
+    <div class="s" style="width:32%">Spread · 32%</div>
+    <div class="q" style="width:8%">New</div>
+  </div>
+  <p class="legend">2023 fire cells, approximate shares. The rule catches all "still burning" ones and none of the others.</p>
+  <div class="grid2" style="margin-top:18px">
+    <div class="tablewrap"><table>
+      <tr><th>Extra guess, to catch a new fire</th><th class="n">How often right</th><th>Effect on score</th></tr>
+      <tr><td>Next to a burning cell (spread)</td><td class="n">33%</td><td>Breaks even</td></tr>
+      <tr><td>In a quiet cell (new start)</td><td class="n">1.3%</td><td>Score drops</td></tr>
+    </table></div>
+    <ul class="b">
+      <li>An extra guess only raises the score if it's right <strong>more than 31%</strong> of the time.</li>
+      <li>New fires are rare, so guesses are mostly wrong.</li>
+      <li>So new-fire skill <strong>doesn't show up</strong> in the main score.</li>
+    </ul>
+  </div>
+  <div class="tablewrap" style="margin-top:18px"><table>
+    <tr><th>Who starts new fires (BCWS 2018–2023)</th><th class="n">Share</th><th>Why it's hard to predict</th></tr>
+    <tr><td><strong>Lightning</strong></td><td class="n">63%</td><td>Strikes land across huge remote areas; which strike starts a fire is close to random a day ahead</td></tr>
+    <tr><td><strong>People</strong> (campfires, equipment, sparks)</td><td class="n">34%</td><td>Depends on human behaviour; only "where people are" helps</td></tr>
+  </table></div>
+  <p class="note">7,364 BCWS fires; 3% unknown cause. In the May–September season, lightning is ~73%. One useful clue: storms come in bursts, so a new fire nearby yesterday raises the risk today.</p>
+  <div class="verdict">Measure new fires separately, not inside the main score.</div>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+<div class="inner">
+  <p class="kicker">Exp 27–28 · Watch list</p>
+  <h2>A daily list of quiet places to watch</h2>
+  <div class="steps">
+    <div class="card"><b>1 · TAKE</b>Quiet cells: no fire nearby for 7 days</div>
+    <div class="card"><b>2 · SCORE</b>Model gives each a risk score</div>
+    <div class="card"><b>3 · LIST</b>Top 50 per Fire Centre per day</div>
+    <div class="card"><b>4 · CHECK</b>How many new fires were on the list?</div>
+  </div>
+  <div class="grid2">
+    <div class="tablewrap"><table>
+      <tr><th>List made by</th><th class="n">New fires caught</th></tr>
+      <tr class="base"><td>Random cells</td><td class="n">~0.1%</td></tr>
+      <tr class="base"><td>Rule: "fire nearby recently"</td><td class="n">6%</td></tr>
+      <tr><td>TabPFN (satellite + lightning)</td><td class="n">10%</td></tr>
+      <tr><td>MLP (satellite + lightning)</td><td class="n">12%</td></tr>
+      <tr><td><strong>CatBoost + BCWS fire reports</strong></td><td class="n win">18%</td></tr>
+    </table></div>
+    <ul class="b">
+      <li>CatBoost wins in <strong>all 6</strong> Fire Centres.</li>
+      <li>The difference is <strong>BCWS reports</strong> of nearby fires, not model size: TabPFN and MLP see the same data and score about the same.</li>
+      <li>About <strong>1.3%</strong> of listed cells burn next day: ~100× better than random.</li>
+      <li>Most listed cells stay quiet. That's fine: it's a "look here first" list.</li>
+    </ul>
+  </div>
+  <p class="note">2023, all six Fire Centres; "caught" = on the list within 7 days before the fire started.</p>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+<div class="inner">
+  <p class="kicker">Understanding the labels</p>
+  <h2>What "fire" and "no fire" really mean</h2>
+  <div class="grid2">
+    <div class="tablewrap"><table>
+      <tr><th>Fact</th><th>What it means for us</th></tr>
+      <tr><td>Satellite files only list fires</td><td>Every "no fire" (99.8% of rows) is filled in by us</td></tr>
+      <tr><td>"No fire" = nothing seen</td><td>Clouds or smoke can hide a fire</td></tr>
+      <tr><td>Some heat isn't wildfire</td><td>Gas flares, mills, farm and slash burns</td></tr>
+      <tr><td>BCWS = official fire records</td><td>Confirms which heat is a real wildfire</td></tr>
+    </table></div>
+    <div class="card">
+      <h3>Heat with no BCWS record</h3>
+      <ul class="b">
+        <li><strong>Not all industrial:</strong> also missed or late-logged real fires.</li>
+        <li>In big fire years, only <strong>~3%</strong> of heat is unexplained.</li>
+        <li>But for <strong>new, isolated</strong> heat it's <strong>~45%</strong>.</li>
+        <li>So cleaning labels matters for new fires, not overall.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+<div class="inner">
+  <p class="kicker">Next steps</p>
+  <h2>More NOAA-20 data, then ERA5 weather</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Step</th><th>Data</th><th>Why</th><th>What should improve</th></tr>
+    <tr><td><strong>1 · Fill the NOAA-20 gap</strong></td><td>NOAA-20 VIIRS, 2018–2020 (NASA FIRMS)</td><td>Training years now use one satellite (NOAA-20 missing 2018, partial 2019–20)</td><td><strong>Labels</strong>: fewer missed fire days in training</td></tr>
+    <tr><td><strong>2 · Add ERA5 weather</strong></td><td>ERA5-Land, 2018–2024 (new)</td><td>Covers every 9 km cell, unlike sparse stations; adds soil moisture</td><td><strong>Features</strong>: spread and fires dying out</td></tr>
+  </table></div>
+  <div class="card" style="margin-top:20px">
+    <h3>How we'll judge each step</h3>
+    <ul class="b">
+      <li>Main score (F1) vs "fire yesterday" rule.</li>
+      <li>New fires caught by the watch list.</li>
+      <li>Keep a change only if the gain is clearly bigger than chance.</li>
+    </ul>
+  </div>
+  <div class="verdict">Story so far: "Models match persistence for burning fires; a watch list adds new-fire skill."</div>
+</div>
+</section>
+
+</main>
+<footer class="nav">
+  <button id="prev" type="button" aria-label="Previous slide">←</button>
+  <span id="count">1 / 1</span>
+  <button id="next" type="button" aria-label="Next slide">→</button>
+</footer>
+</div>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll("section.slide"));
+  var i = 0;
+  try { var h = parseInt(location.hash.slice(1), 10); if (h >= 1 && h <= slides.length) i = h - 1; } catch (e) {}
+  var prev = document.getElementById("prev"), next = document.getElementById("next");
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle("active", k === i); });
+    document.getElementById("count").textContent = (i + 1) + " / " + slides.length;
+    document.getElementById("prog").style.width = ((i + 1) / slides.length * 100) + "%";
+    prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+    try { history.replaceState(null, "", "#" + (i + 1)); } catch (e) {}
+  }
+  prev.onclick = function () { show(i - 1); };
+  next.onclick = function () { show(i + 1); };
+  document.addEventListener("keydown", function (e) {
+    if (["ArrowRight", "PageDown", " "].indexOf(e.key) >= 0) { e.preventDefault(); show(i + 1); }
+    else if (["ArrowLeft", "PageUp"].indexOf(e.key) >= 0) { e.preventDefault(); show(i - 1); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+  });
+  var sx = null;
+  document.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener("touchend", function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 60) show(i + (dx < 0 ? 1 : -1));
+    sx = null;
+  });
+  var root = document.documentElement;
+  try { var t = localStorage.getItem("gaw-theme"); if (t) root.setAttribute("data-theme", t); } catch (e) {}
+  document.getElementById("theme").onclick = function () {
+    var cur = root.getAttribute("data-theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var nt = cur === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", nt);
+    try { localStorage.setItem("gaw-theme", nt); } catch (e) {}
+  };
+  show(i);
+})();
+</script>
+</body>
+</html>

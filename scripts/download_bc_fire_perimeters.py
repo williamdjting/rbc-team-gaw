@@ -33,7 +33,7 @@ def main():
     parser.add_argument("--end-year", type=int, default=2023)
     parser.add_argument("--offset-deg", type=float, default=0.0005)
     parser.add_argument("--page", type=int, default=25)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "data")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "data" / "bcws_perimeters")
     args = parser.parse_args()
     where = f"FIRE_YEAR >= {args.start_year} AND FIRE_YEAR <= {args.end_year}"
     snapshot = query(where=where, returnIdsOnly="true", f="json")

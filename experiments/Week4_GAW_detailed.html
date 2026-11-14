@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Week 4 · BC Hotspot Forecasting · GAW</title><style>
+:root {
+  color-scheme: light;
+  --bg: #f7f5f2;
+  --surface: #ffffff;
+  --surface-2: #efebe6;
+  --fg: #1c1916;
+  --fg-2: #4d4740;
+  --muted: #7a7168;
+  --rule: #ddd6ce;
+  --accent: #b8430f;
+  --accent-soft: #f6e3d8;
+  --good: #1d7a46;
+  --bad: #a3262a;
+  --series-rule: #eb6834;
+  --series-model: #2a78d6;
+  --series-old: #9a928a;
+  --band: #e6efe3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #171513;
+    --surface: #211e1b;
+    --surface-2: #2a2622;
+    --fg: #f1ede8;
+    --fg-2: #c9c1b8;
+    --muted: #9b9188;
+    --rule: #3a3530;
+    --accent: #f08a55;
+    --accent-soft: #3a2519;
+    --good: #5cc28a;
+    --bad: #f07a7d;
+    --series-rule: #d95926;
+    --series-model: #3987e5;
+    --series-old: #7d756e;
+    --band: #1f2e22;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #171513;
+  --surface: #211e1b;
+  --surface-2: #2a2622;
+  --fg: #f1ede8;
+  --fg-2: #c9c1b8;
+  --muted: #9b9188;
+  --rule: #3a3530;
+  --accent: #f08a55;
+  --accent-soft: #3a2519;
+  --good: #5cc28a;
+  --bad: #f07a7d;
+  --series-rule: #d95926;
+  --series-model: #3987e5;
+  --series-old: #7d756e;
+  --band: #1f2e22;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 17px/1.5 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+.deck { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+.stage { flex: 1; position: relative; min-height: 0; }
+.slide {
+  position: absolute; inset: 0;
+  overflow-y: auto;
+  padding-block: clamp(24px, 5vh, 56px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.inner { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; min-height: 100%; }
+.kicker {
+  font: 500 12px/1 "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h1 { font-size: clamp(32px, 5vw, 54px); line-height: 1.08; font-weight: 700; }
+h2 { font-size: clamp(24px, 3.4vw, 36px); line-height: 1.15; font-weight: 650; }
+h3 { font-size: 17px; font-weight: 600; }
+p { margin: 0; max-width: 68ch; color: var(--fg-2); }
+.lede { font-size: clamp(17px, 2vw, 21px); color: var(--fg-2); max-width: 60ch; }
+strong { color: var(--fg); font-weight: 600; }
+ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--fg-2); max-width: 72ch; }
+li::marker { color: var(--accent); }
+code, .mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: .88em; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.grid2 > *, .grid3 > * { min-width: 0; }
+.card {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;
+}
+.card.accent { border-left: 4px solid var(--accent); }
+.card.good { border-left: 4px solid var(--good); }
+.card.bad { border-left: 4px solid var(--bad); }
+.card p, .card li { font-size: 15.5px; }
+.tag {
+  align-self: flex-start;
+  font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 4px; background: var(--surface-2); color: var(--fg-2);
+}
+.tag.good { color: var(--good); }
+.tag.bad { color: var(--bad); }
+.tag.warn { color: var(--accent); }
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat .num { font: 600 clamp(30px, 4vw, 44px)/1 "IBM Plex Sans", system-ui, sans-serif; letter-spacing: -.02em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.stat .lab { font-size: 14px; color: var(--muted); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11.5px/1.3 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.hi td { background: var(--accent-soft); }
+td .sub { display: block; color: var(--muted); font-size: 13px; }
+.note { font-size: 13px; color: var(--muted); max-width: 90ch; }
+.spacer { flex: 1; }
+/* bar chart */
+.bars { display: grid; gap: 7px; }
+.bar-row { display: grid; grid-template-columns: minmax(130px, 240px) 1fr 52px; gap: 10px; align-items: center; font-size: 14px; }
+.bar-row .name { color: var(--fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { position: relative; height: 16px; }
+.bar { height: 100%; border-radius: 0 4px 4px 0; background: var(--series-model); }
+.bar.rule { background: var(--series-rule); }
+.bar-row .val { font-variant-numeric: tabular-nums; text-align: right; color: var(--fg); }
+.refline { position: absolute; top: -4px; bottom: -4px; width: 0; border-left: 2px dashed var(--fg-2); }
+.axis { display: grid; grid-template-columns: minmax(130px, 240px) 1fr 52px; gap: 10px; font-size: 12px; color: var(--muted); }
+.axis .ticks { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--fg-2); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.sw.dot { border-radius: 50%; }
+/* dot plot */
+.dotplot { position: relative; overflow-x: auto; }
+.dotplot svg { width: 100%; min-width: 620px; height: auto; display: block; overflow: visible; }
+.dotplot text { fill: var(--fg-2); font: 13px "IBM Plex Sans", system-ui, sans-serif; }
+.dotplot .tick text { fill: var(--muted); font-size: 12px; }
+.dotplot .grid { stroke: var(--rule); stroke-width: 1; }
+.dotplot .band { fill: var(--band); }
+.dotplot .bandlab { fill: var(--good); font-size: 12px; font-weight: 500; }
+.dotplot .connector { stroke: var(--rule); stroke-width: 2; }
+.dotplot .pt { stroke: var(--surface); stroke-width: 2; cursor: default; }
+.dotplot .pt.rule { fill: var(--series-rule); }
+.dotplot .pt.model { fill: var(--series-model); }
+.dotplot .pt.old { fill: var(--series-old); }
+.dotplot .vlab { fill: var(--fg); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--fg); color: var(--bg);
+  padding: 6px 9px; border-radius: 6px; font-size: 13px; white-space: nowrap; transform: translate(-50%, -120%);
+}
+/* fire strip */
+.strip { display: grid; grid-template-columns: 150px repeat(5, minmax(40px, 1fr)); gap: 4px; font-size: 14px; align-items: center; max-width: 620px; }
+.strip .h { color: var(--muted); font: 500 12px "IBM Plex Mono", ui-monospace, monospace; text-align: center; }
+.strip .lab { color: var(--fg-2); }
+.cell { height: 34px; border-radius: 5px; display: grid; place-items: center; font: 500 13px "IBM Plex Mono", ui-monospace, monospace; }
+.cell.on { background: var(--series-rule); color: #fff; }
+.cell.off { background: var(--surface-2); color: var(--muted); border: 2px dashed var(--bad); }
+.cell.fill { background: var(--accent-soft); color: var(--accent); border: 2px solid var(--series-rule); }
+/* flow */
+.flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.flow .step { flex: 1 1 150px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.flow .step .mono { color: var(--accent); font-size: 12px; }
+.flow .step b { font-weight: 600; font-size: 15px; }
+.flow .step span:last-child { font-size: 13.5px; color: var(--muted); }
+/* chrome */
+.bar-nav {
+  display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--rule); background: var(--surface);
+  padding-block: 8px; padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bar-nav button {
+  font: 500 14px "IBM Plex Sans", system-ui, sans-serif; color: var(--fg); background: var(--surface-2);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 14px; cursor: pointer; min-height: 36px;
+}
+.bar-nav button:disabled { opacity: .4; cursor: default; }
+.bar-nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.progress { flex: 1; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+.progress div { height: 100%; background: var(--accent); width: 0; transition: width .2s; }
+.count { font: 500 13px "IBM Plex Mono", ui-monospace, monospace; color: var(--muted); min-width: 56px; text-align: right; }
+.section-name { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 30vw; }
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .section-name { display: none; }
+  .bar-row, .axis { grid-template-columns: 110px 1fr 44px; }
+  .strip { grid-template-columns: 96px repeat(5, minmax(28px, 1fr)); }
+}
+@media print { body { overflow: visible; } }
+
+.slide[hidden] { display:none; }
+a { color:var(--accent); text-underline-offset:3px; }
+.controls { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+select, .utility { font:inherit; font-size:14px; padding:7px 10px; border:1px solid var(--rule); border-radius:6px; background:var(--surface); color:var(--fg); max-width:100%; }
+.formula { font:500 clamp(14px,2.1vw,23px)/1.5 "IBM Plex Mono",monospace; padding:18px; background:var(--surface-2); border-radius:8px; overflow-x:auto; }
+.axis-label { color:var(--muted); font-size:12px; }
+.bar-nav select { width:230px; }
+.interval-line { stroke:var(--series-model); stroke-width:4; }
+.zero-line { stroke:var(--accent); stroke-width:2; stroke-dasharray:5 5; }
+button,select,a { touch-action:manipulation; }
+:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.topline { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+@media(max-width:650px) { .bar-nav { gap:6px; flex-wrap:wrap; } .bar-nav select { flex:1; width:110px; } .bar-nav button { padding:6px 10px; } .progress { display:none; } .bar-nav .print-button { display:none; } .grid2 { grid-template-columns:minmax(0,1fr); } .grid3 { grid-template-columns:minmax(0,1fr); } .slide { padding-top:24px; } }
+@media print { html,body,.deck,.stage { height:auto!important; overflow:visible!important; display:block; } .slide,.slide[hidden] { display:block!important; position:relative!important; inset:auto!important; overflow:visible!important; break-after:page; padding:24px 0; } .slide:last-child { break-after:auto; } .inner { min-height:0; gap:14px; } .bar-nav,.controls { display:none!important; } h2 { font-size:27px; } .card { break-inside:avoid; } table { font-size:12px; } th,td { padding:6px 9px; } .table-wrap { overflow:visible; } .dotplot svg { min-width:0; } body { font-size:14px; background:white; color:#1c1916; } :root { --bg:white; --surface:white; --surface-2:#efebe6; --fg:#1c1916; --fg-2:#4d4740; --muted:#7a7168; --rule:#ddd6ce; --accent:#b8430f; --accent-soft:#f6e3d8; } }
+</style></head><body><div class="deck"><main class="stage" id="stage"><section class="slide" id="slide-1" data-section="Week 4" aria-labelledby="heading-1"><div class="inner"><span class="kicker">RBC team GAW · Week 4 · updated November 12, 2026</span><h2 id="heading-1">From richer inputs to a 2024 test</h2><p class="lede">Continuing the Week 3 experiments: weather and neural models, a separate S-NPP test, and a matched check of what lightning adds.</p><div class="grid3"><div class="stat"><span class="num">21 → 26</span><span class="lab">six experiment records covered</span></div><div class="stat"><span class="num">34.24M</span><span class="lab">cell-days in the 2024 test</span></div><div class="stat"><span class="num">+0.385</span><span class="lab">F1 points from lightning in 2024; interval includes zero</span></div></div><div class="card accent"><h3>Main finding</h3><p>More inputs improve some rankings and reduce false alarms, but the tested MLP still does not clearly beat persistence on exact-cell F1.</p></div><p class="note">← → to navigate · select a slide below · print for a page-by-page version.</p></div></section><section class="slide" id="slide-2" data-section="Week 3 hand-off" aria-labelledby="heading-2"><div class="inner"><span class="kicker">Where we left off · local Experiments 19–20</span><h2 id="heading-2">Week 3 ended with a stronger label and a stubborn rule</h2><div class="grid2"><div class="card "><h3>What we had learned</h3><p>Combining S-NPP and NOAA-20 made hotspot labels more consistent. The two-satellite persistence rule reached <strong>0.624 exact-cell F1</strong> and <strong>0.810 with a one-cell margin</strong> on 2023.</p></div><div class="card accent"><h3>What Week 3 proposed next</h3><p>Add weather and lightning; test whether richer inputs or a different learner can beat the rule; then evaluate a fixed model on 2024.</p></div></div><div class="table-wrap"><table><thead><tr><th>Week 4 record</th><th>Question</th></tr></thead><tbody><tr><td>21 · drivers</td><td>Do weather, lightning and wind-related spread help?</td></tr><tr><td>22 · neural models</td><td>Does an MLP or GRU use those inputs better?</td></tr><tr><td>23–24 · status</td><td>Is regularisation complete, and can we run the frozen two-satellite test?</td></tr><tr><td>25–26 · S-NPP track</td><td>What happens in 2024, and what does lightning contribute?</td></tr></tbody></table></div><p class="note">Week 3 mixed contributor numbering with local folder numbering. This deck consistently uses local folders: contributor 16/17/18 → local 21/22/23. Earlier multisensor experiments are local 19/20.</p></div></section><section class="slide" id="slide-3" data-section="Task and label" aria-labelledby="heading-3"><div class="inner"><span class="kicker">The forecast · same grid, two distinct experiment tracks</span><h2 id="heading-3">Tomorrow’s hotspot activity, one H3 cell at a time</h2><div class="grid3"><div class="card "><h3>Input</h3><p>Past satellite observations and available environmental history, ending on UTC day <strong>t−1</strong>.</p></div><div class="card "><h3>Output</h3><p>A score and thresholded alert for each of <strong>234,554 H3 resolution-7 cell entries</strong> across six Fire Centres.</p></div><div class="card "><h3>Target</h3><p>A detection on day t, or a one-day missing observation bracketed by detections. This is hotspot activity, not verified ignition.</p></div></div><div class="formula">y(c,t) = D(c,t) OR [D(c,t−1) AND D(c,t+1)]</div><div class="table-wrap"><table><thead><tr><th>Track</th><th>What D means</th><th>Evaluation</th></tr></thead><tbody><tr><td>21–22</td><td>S-NPP OR NOAA-20 detection</td><td>2023; exact-cell and spatial-margin scores</td></tr><tr><td>25–26</td><td>S-NPP detection only</td><td>2023 and 2024; exact-cell scores only</td></tr></tbody></table></div><p class="note">Gap filling is for retrospective labels only, never input features. A zero label is not confirmed fire absence. H3 resolution 7 is approximately 5 km² per cell; lightning is coarser, on a 0.1° grid.</p></div></section><section class="slide" id="slide-4" data-section="Data" aria-labelledby="heading-4"><div class="inner"><span class="kicker">Which sources actually enter each model</span><h2 id="heading-4">The S-NPP test is a separate model configuration</h2><div class="table-wrap"><table><thead><tr><th>Source / feature group</th><th>Experiments 21–22</th><th>Experiments 25–26</th></tr></thead><tbody><tr><td>FIRMS S-NPP VIIRS</td><td>Hotspot counts, FRP, nearby history</td><td>15 S-NPP/history columns, including quiet indicator</td></tr><tr><td>CWFIS NOAA-20 VIIRS</td><td>Additional label and history information</td><td>Not used</td></tr><tr><td>BCWS weather and incidents</td><td>Station observations and incident context</td><td>Not used</td></tr><tr><td>CanCPLD cloud-to-ground lightning</td><td>Recent flash counts and nearby history</td><td>6 lightning columns; removed in the ablation</td></tr><tr><td>Wind-related spread / day of year</td><td>Spread inputs; final configuration removes day of year</td><td>Neither used</td></tr></tbody></table></div><div class="card accent"><h3>New data acquired this week</h3><p>Downloaded official CanCPLD files for <strong>2018–2024</strong>: seven annual files, about <strong>357 MB</strong>. Three-hour UTC flash counts are summed into daily grids; missing coverage remains missing.</p></div><p class="note">The earlier shared 2.87-million-row joined file covers only 2018–2023 and samples quiet rows. Experiment 25 rebuilt its own joins and evaluates all cell-days, including quiet negatives.</p></div></section><section class="slide" id="slide-5" data-section="21 · drivers" aria-labelledby="heading-5"><div class="inner"><span class="kicker">Experiment 21 · two-satellite label · 2023</span><h2 id="heading-5">Weather helps the spatial-margin result, not exact-cell F1</h2><div class="table-wrap"><table><thead><tr><th>Forecast</th><th>Exact-cell F1</th><th>One-cell-margin F1</th></tr></thead><tbody><tr><td>Two-satellite persistence</td><td>0.624</td><td>0.810</td></tr><tr><td>Fire-history CatBoost</td><td>0.582</td><td>0.790</td></tr><tr><td>+ weather + lightning</td><td>0.575</td><td>0.811</td></tr><tr><td>+ upwind spread</td><td>0.585</td><td>0.791</td></tr><tr><td>Same inputs, no day of year</td><td>0.607</td><td>0.824</td></tr></tbody></table></div><div class="grid2"><div class="card good"><h3>Margin improvement</h3><p>The no-calendar model reaches <strong>0.824</strong>, versus 0.810 for the rule. Difference ≈ +0.015; 95% interval <strong>[+0.005, +0.025]</strong>.</p></div><div class="card "><h3>Operating point matters</h3><p>At the rule’s daily alert count, margin F1 is <strong>0.807</strong>. The headline gain depends on the selected threshold and number of alerts, not just ranking.</p></div></div><p class="note">All numbers are BC-wide pooled F1. Thresholds were selected on 2022 separately by model, centre and scoring definition. Exact-cell and margin F1 are different tasks; F1 is not accuracy.</p></div></section><section class="slide" id="slide-6" data-section="22 · learners" aria-labelledby="heading-6"><div class="inner"><span class="kicker">Experiment 22 · same two-satellite features, different learner</span><h2 id="heading-6">The MLP closes the exact-cell gap to persistence</h2><div class="controls"><label for="dual-mode">Scoring definition</label><select id="dual-mode"><option value="res7_exact">Exact cell</option><option value="res7_margin1">One-cell margin</option></select><span class="tag">2023 · six centres</span></div><div id="dual-chart" class="bars" aria-live="polite"></div><p class="axis-label">F1 · zero-based bars, common scale 0–1</p><div class="grid2"><div class="card "><h3>MLP</h3><p>Three hidden layers: 256, 256, 128. Exact-cell F1 <strong>0.626</strong> vs CatBoost 0.607. Against the rule: <strong>+0.002</strong>, 95% interval <strong>[−0.003, +0.007]</strong>.</p></div><div class="card "><h3>MLP + GRU</h3><p>A 14-day sequence adds complexity but no clear gain: exact-cell F1 <strong>0.623</strong>, margin F1 <strong>0.816</strong>. The simpler MLP remains the stronger exact-cell candidate.</p></div></div><p class="note">Margin F1: CatBoost 0.824, MLP 0.820, GRU 0.816, persistence 0.810. The MLP improves on CatBoost but does not clearly beat persistence on the exact cell.</p></div></section><section class="slide" id="slide-7" data-section="23–24 · status" aria-labelledby="heading-7"><div class="inner"><span class="kicker">Experiment status · distinguish plans from completed evidence</span><h2 id="heading-7">Two items were not complete province-wide tests</h2><div class="grid2"><div class="card bad"><h3>23 · regularised networks</h3><p>The supplied HTML shows <strong>Kamloops only and two training epochs</strong>. Generic “BC-wide” captions do not make it a provincial result. The longer run log stops during evaluation; final tables are missing.</p></div><div class="card accent"><h3>24 · frozen two-satellite MLP</h3><p>We preserved the saved checkpoint, scaler and 2022 thresholds. Matching NOAA-20 and other 2024 inputs were unavailable, so <strong>this model was not tested on 2024</strong>.</p></div></div><div class="card "><h3>Decision</h3><p>Proceed with the sources available: a new S-NPP + lightning model. Keep the two-satellite model unchanged. This changes both the feature set and the label, so the new result cannot be compared directly with 0.626 from Experiment 22.</p></div><p class="note">Experiment 23’s preliminary exact-cell F1: original Kamloops MLP 0.645, regularised MLP 0.599, regularised GRU 0.610. These do not establish the outcome of a completed six-centre run.</p></div></section><section class="slide" id="slide-8" data-section="25 · design" aria-labelledby="heading-8"><div class="inner"><span class="kicker">Experiment 25 · S-NPP + lightning only</span><h2 id="heading-8">A clean new training run using available data</h2><div class="flow"><div class="step"><span class="mono">S-NPP</span><b>Fire history</b><span>Cell / neighbour counts, 1/3/7-day windows, FRP, night detections and time since detection.</span></div><div class="step"><span class="mono">Lightning</span><b>Recent flashes</b><span>Containing 0.1° cell, 3×3 and 9×9 blocks, three-day counts and time since nearby flashes.</span></div><div class="step"><span class="mono">Join</span><b>H3 cell + day</b><span>Only history through t−1. Missing flags retained. Same six regional grids.</span></div><div class="step"><span class="mono">MLP</span><b>Next-day score</b><span>21 features plus missing flags; 256/256/128 hidden layers; one fixed seed.</span></div></div><div class="grid2"><div class="card "><h3>Training sample</h3><p>Keep all positive and recently active rows, plus 1% of quiet negatives. Apply the matching quiet-row odds correction at prediction.</p></div><div class="card accent"><h3>Evaluation grid</h3><p>Keep <strong>every cell-day</strong>. Do not evaluate on a sampled set of quiet negatives. Save the joined features, labels and predictions for inspection.</p></div></div><p class="note">The persistence baseline uses only yesterday’s S-NPP detection. It has no lightning. That comparison tests whether the complete MLP beats the simple rule, not lightning’s contribution alone.</p></div></section><section class="slide" id="slide-9" data-section="25 · frozen protocol" aria-labelledby="heading-9"><div class="inner"><span class="kicker">Chronology before the first 2024 result</span><h2 id="heading-9">Train, select, freeze, then test</h2><div class="flow"><div class="step"><span class="mono">2018–2021</span><b>Fit the model</b><span>1,510,565 fitting rows; 251,393 held-out training-season rows for epoch selection.</span></div><div class="step"><span class="mono">2022</span><b>Select thresholds</b><span>Maximise full-grid F1 separately in each Fire Centre.</span></div><div class="step"><span class="mono">2023</span><b>Development check</b><span>Score unchanged. Do not tune from these results.</span></div><div class="step"><span class="mono">Freeze → 2024</span><b>Final test</b><span>Hash the model, scaler and sources; lock the thresholds before 2024 feature generation/scoring.</span></div></div><div class="grid3"><div class="stat"><span class="num">6</span><span class="lab">best training epoch</span></div><div class="stat"><span class="num">34,244,884</span><span class="lab">2024 cell-days evaluated</span></div><div class="stat"><span class="num">20,082</span><span class="lab">positive 2024 cell-day labels</span></div></div><div class="card good"><h3>Verification</h3><p>Independent recount of saved predictions matched the reported confusion counts. The full-grid row counts, source hashes and unchanged 2022 thresholds all passed.</p></div><p class="note">Target dates: May 8–September 30, with history starting May 1. Since this evaluation has happened, 2024 is no longer untouched for subsequent project decisions.</p></div></section><section class="slide" id="slide-10" data-section="25 · 2024 result" aria-labelledby="heading-10"><div class="inner"><span class="kicker">Experiment 25 · pooled exact-cell metrics</span><h2 id="heading-10">Fewer false alarms, but persistence still has higher F1</h2><div class="table-wrap"><table><thead><tr><th>2024 forecast</th><th>F1</th><th>Precision</th><th>Recall</th><th>Median centre AP</th></tr></thead><tbody><tr><td>MLP + lightning</td><td>0.5586</td><td>0.6298</td><td>0.5018</td><td>0.4765</td></tr><tr><td>S-NPP persistence</td><td>0.5670</td><td>0.5856</td><td>0.5496</td><td>0.3201</td></tr></tbody></table></div><div id="test-chart" class="bars"></div><p class="axis-label">F1 · zero-based bars, common scale 0–1</p><div class="grid2"><div class="card "><h3>What changes</h3><p>The MLP produces <strong>1,886 fewer false positives</strong> than persistence, but also <strong>959 fewer true positives</strong>. Higher precision comes at lower recall.</p></div><div class="card accent"><h3>Uncertainty</h3><p>MLP minus persistence: <strong>−0.0084 F1</strong>, paired 95% interval <strong>[−0.0184, +0.0023]</strong>. No demonstrated overall F1 improvement.</p></div></div><p class="note">This test uses the S-NPP-only label. Do not interpret the difference from Experiment 22’s 0.626 as a measured decline of the same model on the same target. AP is median per-centre AP, not pooled AP.</p></div></section><section class="slide" id="slide-11" data-section="25 · regional view" aria-labelledby="heading-11"><div class="inner"><span class="kicker">2024 · exact-cell F1 by Fire Centre</span><h2 id="heading-11">Regional gains do not guarantee a pooled gain</h2><div class="table-wrap"><table><thead><tr><th>Fire Centre</th><th>Persistence</th><th>MLP + lightning</th><th>MLP − persistence</th></tr></thead><tbody><tr><td>Cariboo</td><td>0.3606</td><td>0.4010</td><td>+0.0404</td></tr><tr><td>Coastal</td><td>0.4321</td><td>0.4105</td><td>-0.0216</td></tr><tr><td>Kamloops</td><td>0.5812</td><td>0.5890</td><td>+0.0078</td></tr><tr><td>Northwest</td><td>0.5730</td><td>0.5779</td><td>+0.0050</td></tr><tr><td>Prince George</td><td>0.5717</td><td>0.5605</td><td>-0.0112</td></tr><tr><td>Southeast</td><td>0.5586</td><td>0.5405</td><td>-0.0181</td></tr></tbody></table></div><div class="card "><h3>Why the provincial score matters</h3><p>The MLP leads in Cariboo, Kamloops and Northwest, and trails in Coastal, Prince George and Southeast. Pooled F1 combines confusion counts; it is <strong>not the average of the six F1 values</strong>.</p></div><p class="note">Prince George accounts for 15,299 of 20,082 positive 2024 cell-days in this grid. Its performance has a large effect on the pooled result. “Positive cell-days” does not mean distinct fires.</p></div></section><section class="slide" id="slide-12" data-section="The fair comparison" aria-labelledby="heading-12"><div class="inner"><span class="kicker">Two questions, two comparisons</span><h2 id="heading-12">Does the system work better—or does lightning help?</h2><div class="grid2"><div class="card accent"><h3>Experiment 25 · system comparison</h3><p><strong>S-NPP + lightning MLP vs S-NPP persistence.</strong><br>Fair for asking whether the complete system beats the simple baseline. Inputs do not need to match for that question.</p></div><div class="card good"><h3>Experiment 26 · feature ablation</h3><p><strong>The same MLP with vs without lightning.</strong><br>Needed to isolate the contribution of the lightning feature group while holding the rest of the training procedure fixed.</p></div></div><p class="lede">Failure to beat persistence does not, by itself, show that lightning is useless.</p></div></section><section class="slide" id="slide-13" data-section="26 · matched ablation" aria-labelledby="heading-13"><div class="inner"><span class="kicker">Experiment 26 · follow-up after the 2024 result</span><h2 id="heading-13">Retrain without lightning; keep the comparison matched</h2><div class="table-wrap"><table><thead><tr><th>Held fixed</th><th>What changed</th></tr></thead><tbody><tr><td>Same rows, labels, feature timing and data splits</td><td>Six lightning values and their missing flags set to zero</td></tr><tr><td>Same network shape, seed and initial parameter tensors</td><td>Mask applied during training and inference—not only at test time</td></tr><tr><td>Same S-NPP scaling, optimizer, batches and stopping policy</td><td>No-lightning model retrained from scratch</td></tr><tr><td>Same 2022 threshold-selection criterion</td><td>Each model selects its own 2022 thresholds</td></tr></tbody></table></div><div class="grid2"><div class="card "><h3>Checks passed</h3><p>Same fitting/validation rows and retained scaler statistics. Changing lightning values leaves the ablated input unchanged. Both models selected epoch 6.</p></div><div class="card accent"><h3>Status of the evidence</h3><p>This was requested <strong>after seeing 2024</strong>. It is a one-seed follow-up analysis, not a fresh untouched test. No settings were tuned from its 2023/2024 outcomes.</p></div></div></div></section><section class="slide" id="slide-14" data-section="26 · contribution" aria-labelledby="heading-14"><div class="inner"><span class="kicker">Matched ablation · use the year selector</span><h2 id="heading-14">Lightning improves ranking; the F1 effect is small</h2><div class="controls"><label for="ablation-year">Evaluation year</label><select id="ablation-year"><option>2024</option><option>2023</option></select><span class="tag">With vs without lightning</span></div><div id="ablation-table" aria-live="polite"></div><div id="ablation-chart" class="bars"></div><p id="ablation-delta" class="lede" aria-live="polite"></p><div class="card "><h3>Read the metrics separately</h3><p>F1 measures the selected yes/no alerts. Average precision measures ranking without one selected threshold. Median regional AP rises in both years, while the F1 change reverses sign.</p></div><p class="note">2023: F1 0.5833 → 0.5813; median AP 0.5790 → 0.5910. 2024: F1 0.5547 → 0.5586; median AP 0.4674 → 0.4765. These are observed differences from one matched seed.</p></div></section><section class="slide" id="slide-15" data-section="26 · uncertainty" aria-labelledby="heading-15"><div class="inner"><span class="kicker">How much? · paired whole-week bootstrap</span><h2 id="heading-15">Both F1 intervals include zero</h2><div id="interval-chart" class="dotplot"></div><div class="table-wrap"><table><thead><tr><th>Year</th><th>F1 change from lightning</th><th>95% interval, F1 points</th><th>Median AP change</th></tr></thead><tbody><tr><td>2023</td><td>-0.201 points</td><td>[-0.891, +0.486]</td><td>+0.0120</td></tr><tr><td>2024</td><td>+0.385 points</td><td>[-0.216, +0.994]</td><td>+0.0091</td></tr></tbody></table></div><div class="card accent"><h3>Conclusion</h3><p>The 2024 gain is <strong>+0.385 F1 percentage points</strong> (+0.69% relative), but it is not clearly distinguishable from zero. We do not yet have a consistent, clearly established F1 benefit.</p></div><p class="note">2,000 paired resamples of whole ISO weeks. Intervals describe within-year variation, not training-seed or future-season uncertainty. One F1 point = 0.01 F1, not one point of accuracy.</p></div></section><section class="slide" id="slide-16" data-section="26 · error trade-off" aria-labelledby="heading-16"><div class="inner"><span class="kicker">Lightning on vs off · 2024 matched models</span><h2 id="heading-16">511 fewer false alarms, 100 more missed positive cell-days</h2><div class="grid3"><div class="stat"><span class="num">−511</span><span class="lab">false-positive cell-days</span></div><div class="stat"><span class="num">−100</span><span class="lab">true-positive cell-days</span></div><div class="stat"><span class="num">+0.0091</span><span class="lab">median regional average precision</span></div></div><div class="table-wrap"><table><thead><tr><th>2024 outcome</th><th>Without lightning</th><th>With lightning</th></tr></thead><tbody><tr><td>True positives</td><td>10,178</td><td>10,078</td></tr><tr><td>False positives</td><td>6,435</td><td>5,924</td></tr><tr><td>Missed positives</td><td>9,904</td><td>10,004</td></tr><tr><td>Precision</td><td>0.6127</td><td>0.6298</td></tr><tr><td>Recall</td><td>0.5068</td><td>0.5018</td></tr></tbody></table></div><div class="card "><h3>Operational meaning</h3><p>The lightning model is more selective at its 2022-chosen thresholds. That may suit a lower-false-alarm workflow, but it does not establish stronger detection of new fire starts.</p></div><p class="note">This table compares two MLPs. The earlier 1,886-fewer-false-alarms result compared the lightning MLP with persistence. These are different comparisons, not conflicting counts.</p></div></section><section class="slide" id="slide-17" data-section="What we learned" aria-labelledby="heading-17"><div class="inner"><span class="kicker">Week 4 conclusion</span><h2 id="heading-17">The baseline remains hard to beat</h2><div class="grid2"><div class="card accent"><h3>Supported by this week’s results</h3><p><strong>21–22:</strong> richer inputs and an MLP narrow the gap on the two-satellite target.<br><strong>25:</strong> the S-NPP/lightning MLP does not clearly beat persistence in 2024.<br><strong>26:</strong> lightning improves observed median AP, but its F1 contribution is small and uncertain.</p></div><div class="card "><h3>What we cannot claim</h3><p>No proof that lightning has no value. No completed BC-wide regularisation result. No 2024 result for the frozen two-satellite MLP. No evidence that these hotspot models reliably predict verified ignitions.</p></div></div><div class="flow"><div class="step"><span class="mono">Next · development only</span><b>Check robustness</b><span>Repeat matched seeds and temporal folds within development years.</span></div><div class="step"><span class="mono">Next · operating objective</span><b>Choose alert costs</b><span>Set a recall or alert-budget objective before a new evaluation.</span></div><div class="step"><span class="mono">Next · data</span><b>Restore richer inputs</b><span>Obtain matching NOAA-20/weather and a fresh evaluation season before renewed final-test claims.</span></div></div><p class="note">2024 has now been inspected. Further model development must not present repeated 2024 comparisons as untouched holdout evidence.</p></div></section><section class="slide" id="slide-18" data-section="Sources and index" aria-labelledby="heading-18"><div class="inner"><span class="kicker">Appendix · local experiment numbering</span><h2 id="heading-18">Trace every claim to its experiment</h2><div class="table-wrap"><table><thead><tr><th>Experiment</th><th>Report / status</th></tr></thead><tbody><tr><td>21</td><td><a href="21_exp_weather_lightning_spread_bc/RESULTS.html">Weather / lightning / spread · completed 2023</a></td></tr><tr><td>22</td><td><a href="22_exp_neural_models_bc/RESULTS.html">MLP / GRU · completed 2023</a></td></tr><tr><td>23</td><td><a href="23_exp_regularised_neural_bc/RESULTS.html">Regularisation · preliminary Kamloops report</a></td></tr><tr><td>24</td><td><a href="24_exp_frozen_mlp_2024/README.md">Frozen two-satellite model · blocked</a></td></tr><tr><td>25</td><td><a href="25_exp_snpp_lightning_2024/RESULTS.md">S-NPP + lightning · completed 2024</a></td></tr><tr><td>26</td><td><a href="26_exp_lightning_ablation/RESULTS.md">Matched ablation · follow-up completed</a></td></tr></tbody></table></div><div class="grid2"><div class="card "><h3>Metric sources</h3><p>21–22: saved 2023 CSV summaries and HTML reports.<br>25–26: full-grid metric CSVs, paired bootstrap outputs, frozen protocols and completion checks. Values are embedded in this deck; no live data connection is needed.</p></div><div class="card "><h3>Data and continuity</h3><p><a href="Week3_GAW_detailed.html">Week 3 presentation</a><br><a href="../docs/data-guide.md">Local data guide</a><br><a href="https://crd-data-donnees-rdc.ec.gc.ca/CDAS/products/CanCPLD/CLDN/cg/">Official CanCPLD lightning source</a></p></div></div><p class="note">Built with build_week4_report.py. The presentation itself works offline. Relative source links require the repository; the official source link requires internet.</p></div></section></main><nav class="bar-nav" aria-label="Slide navigation"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><select id="jump" aria-label="Jump to slide"></select><div class="progress"><div id="pbar"></div></div><span class="count" id="count" aria-live="polite"></span><button id="theme" aria-label="Toggle colour theme">Theme</button><button id="print" class="print-button">Print</button></nav></div><noscript><style>.slide{position:relative;overflow:visible}.stage,.deck{height:auto}body{overflow:auto}.bar-nav{display:none}</style><p>This deck is readable without JavaScript; interactive charts require JavaScript.</p></noscript><script>
+const DATA = {"dual": {"res7_exact": [{"label": "Two-satellite persistence", "value": 0.6235399347574451, "rule": true}, {"label": "21 \u00b7 CatBoost", "value": 0.6066822766570606, "rule": false}, {"label": "22 \u00b7 MLP", "value": 0.6255785585133533, "rule": false}, {"label": "22 \u00b7 MLP + GRU", "value": 0.6225793055520242, "rule": false}], "res7_margin1": [{"label": "Two-satellite persistence", "value": 0.8096555530667228, "rule": true}, {"label": "21 \u00b7 CatBoost", "value": 0.8241901871576838, "rule": false}, {"label": "22 \u00b7 MLP", "value": 0.820027749773946, "rule": false}, {"label": "22 \u00b7 MLP + GRU", "value": 0.8158699967258609, "rule": false}]}, "full": {"2023": [{"year": "2023", "model": "mlp_snpp_lightning", "median_region_ap": "0.5910211608016123", "tp": "26714", "fp": "15021", "fn": "23463", "tn": "34179686", "precision": "0.640086258536001", "recall": "0.5323953205651992", "f1": "0.5812951518844112"}, {"year": "2023", "model": "snpp_persistence", "median_region_ap": "0.34744684858915154", "tp": "28519", "fp": "18334", "fn": "21658", "tn": "34176373", "precision": "0.6086910123151132", "recall": "0.5683679773601451", "f1": "0.5878388127383284"}], "2024": [{"year": "2024", "model": "mlp_snpp_lightning", "median_region_ap": "0.47654487048019084", "tp": "10078", "fp": "5924", "fn": "10004", "tn": "34218878", "precision": "0.6297962754655668", "recall": "0.5018424459715167", "f1": "0.5585855226693272"}, {"year": "2024", "model": "snpp_persistence", "median_region_ap": "0.3201375247030348", "tp": "11037", "fp": "7810", "fn": "9045", "tn": "34216992", "precision": "0.585610441980156", "recall": "0.5495966537197491", "f1": "0.5670322895527755"}]}, "ablation": {"2023": [{"year": "2023", "model": "without_lightning", "median_region_ap": "0.578994807418368", "tp": "27358", "fp": "16268", "fn": "22819", "tn": "34178439", "precision": "0.6271031036537844", "recall": "0.545229886202842", "f1": "0.5833075701203586"}, {"year": "2023", "model": "with_lightning", "median_region_ap": "0.5910211608016123", "tp": "26714", "fp": "15021", "fn": "23463", "tn": "34179686", "precision": "0.640086258536001", "recall": "0.5323953205651992", "f1": "0.5812951518844112"}], "2024": [{"year": "2024", "model": "without_lightning", "median_region_ap": "0.46744805298683956", "tp": "10178", "fp": "6435", "fn": "9904", "tn": "34218367", "precision": "0.6126527418286883", "recall": "0.5068220296783189", "f1": "0.5547349775173729"}, {"year": "2024", "model": "with_lightning", "median_region_ap": "0.47654487048019084", "tp": "10078", "fp": "5924", "fn": "10004", "tn": "34218878", "precision": "0.6297962754655668", "recall": "0.5018424459715167", "f1": "0.5585855226693272"}]}, "ci": {"2023": {"scope": "BC-wide", "year": "2023", "f1_difference": "-0.002012418235947444", "ci_low": "-0.008910017328979905", "ci_high": "0.004863435794292092"}, "2024": {"scope": "BC-wide", "year": "2024", "f1_difference": "0.0038505451519542655", "ci_low": "-0.0021617606142261964", "ci_high": "0.009938491086293114"}}};
+const $ = id => document.getElementById(id);
+function bars(host, rows) {
+  host.replaceChildren();
+  rows.forEach(r => {
+    const row=document.createElement('div');row.className='bar-row';
+    const name=document.createElement('span');name.className='name';name.textContent=r.label;name.title=r.label;
+    const track=document.createElement('div');track.className='bar-track';
+    const bar=document.createElement('div');bar.className='bar'+(r.rule?' rule':'');bar.style.width=(Number(r.value)*100)+'%';track.append(bar);
+    const value=document.createElement('span');value.className='val';value.textContent=Number(r.value).toFixed(4);
+    row.append(name,track,value);host.append(row);
+  });
+}
+function dual(){bars($('dual-chart'),DATA.dual[$('dual-mode').value]);}
+$('dual-mode').addEventListener('change',dual);dual();
+bars($('test-chart'),DATA.full['2024'].map(r=>({label:r.model==='snpp_persistence'?'S-NPP persistence':'MLP + lightning',value:r.f1,rule:r.model==='snpp_persistence'})));
+function ablation(){
+  const year=$('ablation-year').value,rows=DATA.ablation[year];
+  const table=document.createElement('table');
+  table.innerHTML='<thead><tr><th>Model</th><th>F1</th><th>Precision</th><th>Recall</th><th>Median centre AP</th></tr></thead>';
+  const tbody=document.createElement('tbody');
+  rows.forEach(r=>{const tr=document.createElement('tr');[r.model==='with_lightning'?'With lightning':'Without lightning',...['f1','precision','recall','median_region_ap'].map(k=>Number(r[k]).toFixed(4))].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td);});tbody.append(tr);});table.append(tbody);
+  $('ablation-table').className='table-wrap';$('ablation-table').replaceChildren(table);
+  bars($('ablation-chart'),rows.map(r=>({label:r.model==='with_lightning'?'With lightning':'Without lightning',value:r.f1,rule:r.model==='without_lightning'})));
+  const delta=Number(DATA.ci[year].f1_difference)*100;
+  $('ablation-delta').textContent=year+': '+(delta>=0?'+':'')+delta.toFixed(3)+' F1 points from lightning. The 95% interval includes zero.';
+}
+$('ablation-year').addEventListener('change',ablation);ablation();
+{
+  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 900 210');svg.setAttribute('role','img');svg.setAttribute('aria-label','Lightning F1 effect: 2023 minus 0.201 points, interval minus 0.891 to plus 0.486; 2024 plus 0.385, interval minus 0.216 to plus 0.994. Both cross zero.');
+  const x=v=>170+(v+1.1)/2.2*650;
+  function el(tag,attrs,text){const e=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));if(text!==undefined)e.textContent=text;svg.append(e);return e;}
+  [-1,-.5,0,.5,1].forEach(t=>{el('line',{x1:x(t),x2:x(t),y1:25,y2:155,class:t===0?'zero-line':'grid'});el('text',{x:x(t),y:182,'text-anchor':'middle'},(t>0?'+':'')+t.toFixed(1));});
+  ['2023','2024'].forEach((year,i)=>{const c=DATA.ci[year],y=60+i*65;el('text',{x:10,y:y+4},year+' · F1 change');el('line',{x1:x(Number(c.ci_low)*100),x2:x(Number(c.ci_high)*100),y1:y,y2:y,class:'interval-line'});el('circle',{cx:x(Number(c.f1_difference)*100),cy:y,r:7,fill:'var(--series-model)'});});
+  el('text',{x:495,y:207,'text-anchor':'middle'},'F1 percentage points · positive favours lightning');$('interval-chart').append(svg);
+}
+const slides=[...document.querySelectorAll('.slide')];let current=0;
+slides.forEach((s,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+s.dataset.section;$('jump').append(o);});
+function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>s.hidden=i!==current);slides[current].scrollTop=0;$('count').textContent=(current+1)+' / '+slides.length;$('jump').value=current;$('pbar').style.width=(current+1)/slides.length*100+'%';$('prev').disabled=current===0;$('next').disabled=current===slides.length-1;try{history.replaceState(null,'','#'+(current+1));}catch(e){}}
+$('prev').onclick=()=>show(current-1);$('next').onclick=()=>show(current+1);$('jump').onchange=e=>show(Number(e.target.value));
+document.addEventListener('keydown',e=>{if(e.target.closest('select,input,textarea,button,a'))return;if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1);}else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1);}else if(e.key==='Home'){e.preventDefault();show(0);}else if(e.key==='End'){e.preventDefault();show(slides.length-1);}});
+$('theme').onclick=()=>{const root=document.documentElement;const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;root.dataset.theme=dark?'light':'dark';$('theme').textContent=dark?'Dark':'Light';};
+$('print').onclick=()=>window.print();
+const initial=Number(location.hash.slice(1));show(Number.isInteger(initial)&&initial>0?initial-1:0);
+</script></body></html>

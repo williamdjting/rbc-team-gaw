@@ -1,0 +1,49 @@
+{
+  "tabpfn_package": "9.2.0",
+  "weights": "TabPFN v2 (ungated); newer weights need licence login",
+  "n_estimators": 1,
+  "device": "cpu",
+  "features": [
+    "days_since_detection",
+    "history_left_censored",
+    "ltg_cell_1d",
+    "ltg_3x3_1d",
+    "ltg_3x3_3d",
+    "ltg_9x9_1d",
+    "ltg_9x9_3d",
+    "ltg_days_since_3x3"
+  ],
+  "context": {
+    "quiet_rows_available": 1372968,
+    "quiet_positives_available": 5348,
+    "context_positives": 1000,
+    "context_negatives": 2000
+  },
+  "seed": 28,
+  "scoring": "every quiet cell-day, once per unique input row",
+  "timing": [
+    {
+      "year": 2022,
+      "quiet_cell_days": 34201821,
+      "unique_rows": 198777,
+      "seconds": 954,
+      "rows_per_second": 208
+    },
+    {
+      "year": 2023,
+      "quiet_cell_days": 33859190,
+      "unique_rows": 327231,
+      "seconds": 2109,
+      "rows_per_second": 155
+    },
+    {
+      "year": 2024,
+      "quiet_cell_days": 34061100,
+      "unique_rows": 173468,
+      "seconds": 1153,
+      "rows_per_second": 150
+    }
+  ],
+  "watch_list": "Experiment 27 definitions, tie-break seeds and bootstrap",
+  "runtime_minutes": 75.7
+}

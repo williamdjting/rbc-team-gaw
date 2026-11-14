@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--start-year", type=int, default=2018)
     parser.add_argument("--end-year", type=int, default=2023)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "data")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "data" / "bcws_incidents")
     args = parser.parse_args()
     if args.start_year > args.end_year:
         parser.error("Start year must not exceed end year")

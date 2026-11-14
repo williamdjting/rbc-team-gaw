@@ -1,6 +1,6 @@
 # FIRMS summer experiment: 2018–2024
 
-This experiment merges the new `DL_FIRE_SV-C2_830406.zip` archive with the existing `DL_FIRE_SV-C2_825835.zip` archive. It applies the same May–September and BC boundary rules to both sources.
+This experiment merges the new `data/raw_archives/firms_snpp_detections_2018_2020_order_830406.zip` archive with the existing `data/raw_archives/firms_snpp_detections_2021_2026_order_825835.zip` archive. It applies the same May–September and BC boundary rules to both sources.
 
 The preprocessing output is written to `data/bc_firms_summer_2018_2024.csv`. Train, validation, and test splits are intentionally postponed until after the complete dataset has been reviewed.
 

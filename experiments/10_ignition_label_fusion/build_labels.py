@@ -43,7 +43,7 @@ import run_analysis as ra  # noqa: E402
 ROOT = HERE.parents[1]
 OUT = HERE / "results" / "labels_v2"
 SPOT = OUT / "spotcheck"
-PERIMETERS = ROOT / "data/bc_fire_perimeters_2018_2023.geojson"
+PERIMETERS = ROOT / "data/bcws_perimeters/bc_fire_perimeters_2018_2023.geojson"
 BOUNDARY = ROOT / "datasets/bc_legal_boundary.geojson"
 KM_LAT = 110.574
 KM_LON_EQ = 111.320

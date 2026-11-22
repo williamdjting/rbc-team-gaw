@@ -1,0 +1,128 @@
+{
+ "dist": [
+  {
+   "year": 2018,
+   "fires": 36345,
+   "continuing": 24419,
+   "next_door_spread": 6455,
+   "recent_nearby": 2399,
+   "new_quiet": 3072
+  },
+  {
+   "year": 2019,
+   "fires": 1927,
+   "continuing": 671,
+   "next_door_spread": 185,
+   "recent_nearby": 278,
+   "new_quiet": 793
+  },
+  {
+   "year": 2020,
+   "fires": 1495,
+   "continuing": 668,
+   "next_door_spread": 136,
+   "recent_nearby": 223,
+   "new_quiet": 468
+  },
+  {
+   "year": 2021,
+   "fires": 21900,
+   "continuing": 13928,
+   "next_door_spread": 4293,
+   "recent_nearby": 1679,
+   "new_quiet": 2000
+  },
+  {
+   "year": 2022,
+   "fires": 5077,
+   "continuing": 2952,
+   "next_door_spread": 831,
+   "recent_nearby": 475,
+   "new_quiet": 819
+  },
+  {
+   "year": 2023,
+   "fires": 60907,
+   "continuing": 36839,
+   "next_door_spread": 12188,
+   "recent_nearby": 6548,
+   "new_quiet": 5332
+  }
+ ],
+ "watch_list_2023": {
+  "stk_top10": {
+   "listed": 8760,
+   "caught": 148,
+   "catch_share": 0.0277569392348087,
+   "precision": 0.016894977168949773
+  },
+  "stk_top25": {
+   "listed": 21900,
+   "caught": 258,
+   "catch_share": 0.04838709677419355,
+   "precision": 0.011780821917808219
+  },
+  "stk_top50": {
+   "listed": 43800,
+   "caught": 406,
+   "catch_share": 0.07614403600900226,
+   "precision": 0.009269406392694064
+  },
+  "stk_top100": {
+   "listed": 87600,
+   "caught": 586,
+   "catch_share": 0.10990247561890473,
+   "precision": 0.006689497716894977
+  },
+  "A_top10": {
+   "listed": 8760,
+   "caught": 162,
+   "catch_share": 0.030382595648912228,
+   "precision": 0.018493150684931507
+  },
+  "A_top25": {
+   "listed": 21900,
+   "caught": 276,
+   "catch_share": 0.051762940735183796,
+   "precision": 0.012602739726027398
+  },
+  "A_top50": {
+   "listed": 43800,
+   "caught": 401,
+   "catch_share": 0.07520630157539385,
+   "precision": 0.00915525114155251
+  },
+  "A_top100": {
+   "listed": 87600,
+   "caught": 591,
+   "catch_share": 0.11084021005251313,
+   "precision": 0.006746575342465753
+  },
+  "random_top10": {
+   "listed": 8760,
+   "caught": 2,
+   "catch_share": 0.00037509377344336085,
+   "precision": 0.00022831050228310502
+  },
+  "random_top25": {
+   "listed": 21900,
+   "caught": 4,
+   "catch_share": 0.0007501875468867217,
+   "precision": 0.00018264840182648402
+  },
+  "random_top50": {
+   "listed": 43800,
+   "caught": 7,
+   "catch_share": 0.001312828207051763,
+   "precision": 0.00015981735159817351
+  },
+  "random_top100": {
+   "listed": 87600,
+   "caught": 14,
+   "catch_share": 0.002625656414103526,
+   "precision": 0.00015981735159817351
+  },
+  "quiet_fires": 5332,
+  "quiet_cells_per_centre_day": 38604.083333333336
+ }
+}

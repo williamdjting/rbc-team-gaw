@@ -1,0 +1,174 @@
+{
+ "cell_days": 136193,
+ "base_burn_rate": 0.09559228447864428,
+ "burning neighbours (of 6)": [
+  {
+   "burning_neighbours": "1",
+   "cells": 89650,
+   "burn_rate": 0.06372559955382041,
+   "lift": 0.6666395713982228
+  },
+  {
+   "burning_neighbours": "2",
+   "cells": 33873,
+   "burn_rate": 0.1383402710123107,
+   "lift": 1.44719076196172
+  },
+  {
+   "burning_neighbours": "3",
+   "cells": 9223,
+   "burn_rate": 0.20232028624091944,
+   "lift": 2.1164917999853707
+  },
+  {
+   "burning_neighbours": "4-6",
+   "cells": 3447,
+   "burn_rate": 0.2187409341456339,
+   "lift": 2.288269762969223
+  }
+ ],
+ "newly burning neighbours (active front)": [
+  {
+   "new_neighbours": "0",
+   "cells": 72303,
+   "burn_rate": 0.08753440382833354,
+   "lift": 0.9157057424220163
+  },
+  {
+   "new_neighbours": "1",
+   "cells": 52680,
+   "burn_rate": 0.08583902809415338,
+   "lift": 0.8979702552597766
+  },
+  {
+   "new_neighbours": "2+",
+   "cells": 11210,
+   "burn_rate": 0.19339875111507582,
+   "lift": 2.0231627706133746
+  }
+ ],
+ "cell burned in previous 15 days": [
+  {
+   "burned_before": "False",
+   "cells": 94445,
+   "burn_rate": 0.06971253110275821,
+   "lift": 0.7292694330192756
+  },
+  {
+   "burned_before": "True",
+   "cells": 41748,
+   "burn_rate": 0.15413912043690717,
+   "lift": 1.6124640317738457
+  }
+ ],
+ "fire size: burning cells within 5 rings": [
+  {
+   "size5": "1-2",
+   "cells": 33967,
+   "burn_rate": 0.05611328642505962,
+   "lift": 0.587006438135659
+  },
+  {
+   "size5": "3-5",
+   "cells": 27207,
+   "burn_rate": 0.08608078803249164,
+   "lift": 0.9004993290198274
+  },
+  {
+   "size5": "6-15",
+   "cells": 47417,
+   "burn_rate": 0.10643861906067444,
+   "lift": 1.1134645399593235
+  },
+  {
+   "size5": "16-50",
+   "cells": 27232,
+   "burn_rate": 0.13513513513513514,
+   "lift": 1.4136615300299147
+  },
+  {
+   "size5": "50+",
+   "cells": 370,
+   "burn_rate": 0.11891891891891893,
+   "lift": 1.244022146426325
+  }
+ ],
+ "growth in 5 rings since day before": [
+  {
+   "growth5": "shrinking",
+   "cells": 36801,
+   "burn_rate": 0.0926061791799136,
+   "lift": 0.9687620678277881
+  },
+  {
+   "growth5": "flat",
+   "cells": 16243,
+   "burn_rate": 0.06452010096657021,
+   "lift": 0.674950926410638
+  },
+  {
+   "growth5": "+1-5",
+   "cells": 60427,
+   "burn_rate": 0.08190047495324937,
+   "lift": 0.8567686754211453
+  },
+  {
+   "growth5": "+6 or more",
+   "cells": 22722,
+   "burn_rate": 0.1590529002728633,
+   "lift": 1.6638675510301923
+  }
+ ],
+ "direction of recent growth": [
+  {
+   "growth_direction": "behind the front",
+   "cells": 38117,
+   "burn_rate": 0.11866096492378729,
+   "lift": 1.2413236650945052
+  },
+  {
+   "growth_direction": "side",
+   "cells": 19202,
+   "burn_rate": 0.11519633371523799,
+   "lift": 1.205079827765528
+  },
+  {
+   "growth_direction": "ahead of the front",
+   "cells": 11691,
+   "burn_rate": 0.10734753228979557,
+   "lift": 1.1229727678887877
+  }
+ ],
+ "FRP of burning neighbours (MW)": [
+  {
+   "frp_nb": "(0.079, 3.13]",
+   "cells": 34061,
+   "burn_rate": 0.043833122926514194,
+   "lift": 0.45854247720491187
+  },
+  {
+   "frp_nb": "(3.13, 13.14]",
+   "cells": 34052,
+   "burn_rate": 0.06742628920474568,
+   "lift": 0.7053528385945101
+  },
+  {
+   "frp_nb": "(13.14, 67.26]",
+   "cells": 34033,
+   "burn_rate": 0.09014779772573678,
+   "lift": 0.9430447050972631
+  },
+  {
+   "frp_nb": "(67.26, 16657.012]",
+   "cells": 34047,
+   "burn_rate": 0.18098510882016036,
+   "lift": 1.893302475270305
+  }
+ ],
+ "spill_km": {
+  "n": 13019,
+  "le_0_5": 0.11675243874337507,
+  "le_1": 0.2861970965511944,
+  "gt_2": 0.39880175128658113
+ }
+}

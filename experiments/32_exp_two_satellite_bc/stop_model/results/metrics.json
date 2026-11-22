@@ -1,0 +1,222 @@
+{
+ "continuing_rows_2023": 56746,
+ "continuing_fires_2023": 36839,
+ "stopped_2023": 19907,
+ "thresholds": {
+  "K0_base": {
+   "cariboo": 0.2573771884125296,
+   "coastal": 0.27805589577416523,
+   "kamloops": 0.41365077384830023,
+   "northwest": 0.4680696165618492,
+   "prince_george": 0.38270294767964486,
+   "southeast": 0.2769451578217148
+  },
+  "K1_life": {
+   "cariboo": 0.4099415267920387,
+   "coastal": 0.34272751713366945,
+   "kamloops": 0.3901014847414001,
+   "northwest": 0.42466987891567926,
+   "prince_george": 0.37137139469048086,
+   "southeast": 0.3404837713044302
+  },
+  "K2_rain": {
+   "cariboo": 0.2700848813028547,
+   "coastal": 0.36315803072502073,
+   "kamloops": 0.4121306305997637,
+   "northwest": 0.2380297705591659,
+   "prince_george": 0.4150269720473449,
+   "southeast": 0.34641643780622366
+  },
+  "K3_incidents": {
+   "cariboo": 0.27883670815412537,
+   "coastal": 0.34357728979370994,
+   "kamloops": 0.31315305731064136,
+   "northwest": 0.222327044261467,
+   "prince_george": 0.3700216892283489,
+   "southeast": 0.3306577299459694
+  },
+  "KU_target_day": {
+   "cariboo": 0.1280845594474039,
+   "coastal": 0.21770922497026507,
+   "kamloops": 0.4091139738892915,
+   "northwest": 0.17836482091382147,
+   "prince_george": 0.3155531524710997,
+   "southeast": 0.2050630209568809
+  }
+ },
+ "rule_all_flagged": {
+  "kept_burning_caught": 36839,
+  "false_alarms_on_stopped": 19907,
+  "burning_dropped": 0,
+  "stopped_correctly_dropped": 0,
+  "total_f1": 0.625408116143981,
+  "total_precision": 0.6173111985414068,
+  "total_recall": 0.6337202620388461
+ },
+ "G_lchw": {
+  "kept_burning_caught": 35702,
+  "false_alarms_on_stopped": 16748,
+  "burning_dropped": 1137,
+  "stopped_correctly_dropped": 3159,
+  "total_f1": 0.628872642420071,
+  "total_precision": 0.6433281813498197,
+  "total_recall": 0.6150524570246442
+ },
+ "ap_keep_burning": {
+  "G_lchw": 0.8227582098626871,
+  "K0_base": 0.8224810180309773,
+  "K1_life": 0.8320569205747218,
+  "K2_rain": 0.8404550895970697,
+  "K3_incidents": 0.8394571936650762,
+  "KU_target_day": 0.8858448894805733
+ },
+ "K0_base": {
+  "kept_burning_caught": 34670,
+  "false_alarms_on_stopped": 15251,
+  "burning_dropped": 2169,
+  "stopped_correctly_dropped": 4656,
+  "total_f1": 0.6248113336992316,
+  "total_precision": 0.6540098023374805,
+  "total_recall": 0.5981085917874793
+ },
+ "K1_life": {
+  "kept_burning_caught": 34544,
+  "false_alarms_on_stopped": 14918,
+  "burning_dropped": 2295,
+  "stopped_correctly_dropped": 4989,
+  "total_f1": 0.6251108489956866,
+  "total_precision": 0.6571630281307701,
+  "total_recall": 0.5960398640550347
+ },
+ "K2_rain": {
+  "kept_burning_caught": 34251,
+  "false_alarms_on_stopped": 13967,
+  "burning_dropped": 2588,
+  "stopped_correctly_dropped": 5940,
+  "total_f1": 0.6267786432270136,
+  "total_precision": 0.6668765509833697,
+  "total_recall": 0.5912292511533978
+ },
+ "K3_incidents": {
+  "kept_burning_caught": 34981,
+  "false_alarms_on_stopped": 14995,
+  "burning_dropped": 1858,
+  "stopped_correctly_dropped": 4912,
+  "total_f1": 0.6298483666629523,
+  "total_precision": 0.6589425353325202,
+  "total_recall": 0.6032147372223226
+ },
+ "KU_target_day": {
+  "kept_burning_caught": 34200,
+  "false_alarms_on_stopped": 12069,
+  "burning_dropped": 2639,
+  "stopped_correctly_dropped": 7838,
+  "total_f1": 0.636690392719289,
+  "total_precision": 0.690868220330842,
+  "total_recall": 0.5903919089759798
+ },
+ "bootstrap_95": {
+  "f1_K0_base_minus_G_lchw": [
+   -0.006706915961185833,
+   -0.001145238895100721
+  ],
+  "f1_K1_life_minus_G_lchw": [
+   -0.006903490271291573,
+   -0.0005297743102229304
+  ],
+  "f1_K2_rain_minus_G_lchw": [
+   -0.006933069095478273,
+   0.003803337627261912
+  ],
+  "f1_K3_incidents_minus_G_lchw": [
+   -0.0027099262034644494,
+   0.005777114012312142
+  ],
+  "f1_KU_target_day_minus_G_lchw": [
+   -0.004175562563112451,
+   0.023084481111858297
+  ],
+  "ap_K1_life_minus_K0_base": [
+   0.005260442644815869,
+   0.01573495106881693
+  ],
+  "ap_K2_rain_minus_K1_life": [
+   0.003043260289818747,
+   0.014502398699133053
+  ],
+  "ap_K3_incidents_minus_K2_rain": [
+   -0.0033493759727136418,
+   0.0012552984572126251
+  ],
+  "ap_KU_target_day_minus_K3_incidents": [
+   0.030463361998730797,
+   0.0694758870661503
+  ],
+  "ap_K0_base_minus_G_score": [
+   -0.00687286250310506,
+   0.005926995278105421
+  ]
+ },
+ "importance_K3": [
+  [
+   "rn_precip1",
+   12.18
+  ],
+  [
+   "lf_day1",
+   8.66
+  ],
+  [
+   "ltg_days_since_3x3",
+   8.55
+  ],
+  [
+   "lf_frp1",
+   6.14
+  ],
+  [
+   "frp_sum_1d",
+   5.82
+  ],
+  [
+   "disk1_active_days_7d",
+   5.75
+  ],
+  [
+   "local_count_1d",
+   5.29
+  ],
+  [
+   "in_age_active",
+   4.92
+  ],
+  [
+   "hw_rh_min",
+   4.22
+  ],
+  [
+   "hw_temp_max",
+   4.09
+  ],
+  [
+   "hw_isi_max",
+   3.4
+  ],
+  [
+   "hw_v",
+   3.0
+  ],
+  [
+   "hw_gust_max",
+   2.74
+  ],
+  [
+   "hw_ffmc_max",
+   2.72
+  ],
+  [
+   "lf_nsat1",
+   1.87
+  ]
+ ]
+}

@@ -1,0 +1,231 @@
+{
+ "thresholds_2022": {
+  "cariboo": {
+   "A_full_base": 0.3817116916179657,
+   "B_full_era5": 0.2304915338754654,
+   "C_quiet_base": 0.0014082595007494092,
+   "D_quiet_era5": 0.0032449455466121435
+  },
+  "coastal": {
+   "A_full_base": 0.27068838477134705,
+   "B_full_era5": 0.26197394728660583,
+   "C_quiet_base": 0.014067853800952435,
+   "D_quiet_era5": 0.025365369394421577
+  },
+  "kamloops": {
+   "A_full_base": 0.28749361634254456,
+   "B_full_era5": 0.31082379817962646,
+   "C_quiet_base": 0.003921486437320709,
+   "D_quiet_era5": 0.006820360664278269
+  },
+  "northwest": {
+   "A_full_base": 0.24241331219673157,
+   "B_full_era5": 0.2725416421890259,
+   "C_quiet_base": 0.011975114233791828,
+   "D_quiet_era5": 0.0045508407056331635
+  },
+  "prince_george": {
+   "A_full_base": 0.3499583601951599,
+   "B_full_era5": 0.34482541680336,
+   "C_quiet_base": 0.006273940205574036,
+   "D_quiet_era5": 0.00530275097116828
+  },
+  "southeast": {
+   "A_full_base": 0.29524436593055725,
+   "B_full_era5": 0.3391413986682892,
+   "C_quiet_base": 0.011198131367564201,
+   "D_quiet_era5": 0.034632358700037
+  }
+ },
+ "total_2023": {
+  "rule": {
+   "f1": 0.6262313753155465,
+   "precision": 0.6491911324146196,
+   "recall": 0.6048401661549575,
+   "tp": 36839,
+   "fp": 19907,
+   "fn": 24068,
+   "recall_by_stratum": {
+    "continuing": 1.0,
+    "spread_nearby": 0.0,
+    "new_quiet": 0.0
+   }
+  },
+  "A_full_base": {
+   "f1": 0.6244543744931937,
+   "precision": 0.6578933018267745,
+   "recall": 0.5942502503817295,
+   "tp": 36194,
+   "fp": 18821,
+   "fn": 24713,
+   "recall_by_stratum": {
+    "continuing": 0.9643041342055974,
+    "spread_nearby": 0.0357600341588386,
+    "new_quiet": 0.0
+   }
+  },
+  "B_full_era5": {
+   "f1": 0.6197038417006904,
+   "precision": 0.659569342524646,
+   "recall": 0.5843827474674503,
+   "tp": 35593,
+   "fp": 18371,
+   "fn": 25314,
+   "recall_by_stratum": {
+    "continuing": 0.9433480821954994,
+    "spread_nearby": 0.0448868488471392,
+    "new_quiet": 0.0
+   }
+  }
+ },
+ "new_fires_2023": {
+  "quiet_rows": 33817177,
+  "quiet_positives": 5332,
+  "positives_by_stratum": {
+   "continuing": 36839,
+   "spread_nearby": 18736,
+   "new_quiet": 5332
+  },
+  "A_full_base": {
+   "ap": 0.004117451055506444,
+   "ap_by_centre": {
+    "cariboo": 0.0038323423421090536,
+    "coastal": 0.008331036241390097,
+    "kamloops": 0.0063122546334299385,
+    "northwest": 0.0034756106448326795,
+    "prince_george": 0.0038496374724619094,
+    "southeast": 0.009103242122616978
+   },
+   "watch_top25_catch": 0.051762940735183796,
+   "watch_top50_catch": 0.07520630157539385,
+   "watch_top100_catch": 0.11084021005251313
+  },
+  "B_full_era5": {
+   "ap": 0.0025755995200742276,
+   "ap_by_centre": {
+    "cariboo": 0.0005438906460367823,
+    "coastal": 0.006135325965775395,
+    "kamloops": 0.00444873992267272,
+    "northwest": 0.008298406066605798,
+    "prince_george": 0.002485671431666394,
+    "southeast": 0.009181248527732278
+   },
+   "watch_top25_catch": 0.041822955738934735,
+   "watch_top50_catch": 0.05738934733683421,
+   "watch_top100_catch": 0.08439609902475619
+  },
+  "C_quiet_base": {
+   "ap": 0.002010734976641977,
+   "ap_by_centre": {
+    "cariboo": 0.0017475699167216355,
+    "coastal": 0.006428136457596193,
+    "kamloops": 0.003377851674206554,
+    "northwest": 0.002594757840079374,
+    "prince_george": 0.0018636693481072636,
+    "southeast": 0.0076705385052368395
+   },
+   "watch_top25_catch": 0.04276069017254314,
+   "watch_top50_catch": 0.06807951987996999,
+   "watch_top100_catch": 0.1054013503375844,
+   "f1_quiet": 0.011596129699386956,
+   "precision_quiet": 0.006431263313124692,
+   "recall_quiet": 0.05888972243060765
+  },
+  "D_quiet_era5": {
+   "ap": 0.005120242998575958,
+   "ap_by_centre": {
+    "cariboo": 0.002305823788667498,
+    "coastal": 0.00824497624984245,
+    "kamloops": 0.007070373086465516,
+    "northwest": 0.0072669789550893595,
+    "prince_george": 0.0044774160197863355,
+    "southeast": 0.018089075153493454
+   },
+   "watch_top25_catch": 0.049699924981245314,
+   "watch_top50_catch": 0.07445611402850713,
+   "watch_top100_catch": 0.10708927231807952,
+   "f1_quiet": 0.02537519747235387,
+   "precision_quiet": 0.014610574189880614,
+   "recall_quiet": 0.09639909977494374
+  },
+  "random_top50_catch": 0.0018676621128198092
+ },
+ "bootstrap_95": {
+  "f1_B_minus_A": [
+   -0.010484457548104559,
+   0.0005104104192855559
+  ],
+  "watch50_D_minus_C": [
+   -0.001961272739415918,
+   0.016061203598258786
+  ],
+  "newrecall_B_minus_A": [
+   0.0,
+   0.0
+  ]
+ },
+ "importance_share": {
+  "B_full_era5": {
+   "fire_history": 3.5,
+   "lightning": 6.2,
+   "era5": 90.4,
+   "top_era5": [
+    [
+     "era5_swvl1",
+     12.827
+    ],
+    [
+     "era5_vpd",
+     8.015
+    ],
+    [
+     "era5_tp_3d",
+     7.541
+    ],
+    [
+     "era5_ssrd",
+     6.842
+    ],
+    [
+     "era5_t2m_max7",
+     5.694
+    ],
+    [
+     "era5_swvl1_chg7",
+     5.556
+    ]
+   ]
+  },
+  "D_quiet_era5": {
+   "fire_history": 3.7,
+   "lightning": 2.7,
+   "era5": 93.6,
+   "top_era5": [
+    [
+     "era5_vpd",
+     11.444
+    ],
+    [
+     "era5_snow_depth",
+     10.221
+    ],
+    [
+     "era5_vpd_mean7",
+     9.094
+    ],
+    [
+     "era5_t2m",
+     6.752
+    ],
+    [
+     "era5_swvl1",
+     5.489
+    ],
+    [
+     "era5_tp",
+     4.887
+    ]
+   ]
+  }
+ }
+}

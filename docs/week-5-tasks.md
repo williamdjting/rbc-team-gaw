@@ -1,4 +1,6 @@
-# Week 5 tasks: labels + watch list (Gurleen), features (Arshdeep)
+# Week 5 tasks: labels, watch list and features (all Gurleen)
+
+**Update November 21, 2026:** all tasks, including the features track (section 6, Exp 30 and 32), are reassigned to Gurleen. Exp 30 (ERA5) is in `experiments/30_exp_era5_features_bc/`.
 
 **Written:** November 14, 2026. **Read this first** before starting any Week 5 work in this repo
 (people and coding assistants alike). The two tracks are independent: each person works in their
@@ -67,7 +69,7 @@ Full history: `docs/final-experiments-summary.md`, `docs/data-guide.md`,
      forecast (upper bound)". Never use it in the main result.
 5. **Folders and numbering.**
    - Gurleen: `experiments/29_*`, `experiments/31_*`.
-   - Arshdeep: `experiments/30_*`, `experiments/32_*`.
+   - Gurleen (features track, reassigned Nov 21): `experiments/30_*`, `experiments/32_*`.
    - Each folder holds `README.md` (how to run), `RESULTS.md` (answer first, then tables) and
      `results/` (small CSVs only).
    - Large data stays out of git and goes under `data/`.
@@ -105,7 +107,7 @@ Full history: `docs/final-experiments-summary.md`, `docs/data-guide.md`,
   the full grid. They forecast 8 days ahead, not one day.
 - **What we borrow.**
   - FWI baseline, FWI-matched hard evaluation, time since last burn → Gurleen.
-  - ERA5 window statistics, MODIS vegetation → Arshdeep.
+  - ERA5 window statistics, MODIS vegetation → Gurleen (reassigned Nov 21).
 - **What we don't borrow.** Sentinel-2 imagery, sampled test sets as the headline, an 8-day
   target as the main task.
 
@@ -113,7 +115,7 @@ Full history: `docs/final-experiments-summary.md`, `docs/data-guide.md`,
 
 ## 4. Shared file contract (how the tracks meet)
 
-Arshdeep writes the per-cell daily feature tables; Gurleen's watch-list code reads them. Keep
+The features track (reassigned to Gurleen Nov 21) writes the per-cell daily feature tables; the watch-list code reads them. Keep
 these names and columns fixed so neither person waits on the other.
 
 ```
@@ -167,7 +169,7 @@ Build on Exp 27 (`experiments/27_exp_quiet_watchlist_bc/run_experiment.py`).
    the raw numbers.
 5. Optional, if time:
    - Score the watch list against the BCWS-wildfire-only label: onsets matched to BCWS records.
-   - Once Arshdeep's tables exist (section 4), add ERA5 and MODIS to the watch-list model.
+   - Once the feature tables exist (section 4), add ERA5 and MODIS to the watch-list model.
 
 - **Done when.** `experiments/29_*/RESULTS.md` answers:
   - Does the watch list beat FWI ranking?
@@ -178,7 +180,7 @@ Build on Exp 27 (`experiments/27_exp_quiet_watchlist_bc/run_experiment.py`).
 
 ---
 
-## 6. Arshdeep: features
+## 6. Features (reassigned to Gurleen, November 21)
 
 ### A0. Housekeeping (first)
 

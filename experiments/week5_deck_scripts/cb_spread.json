@@ -1,0 +1,167 @@
+{
+ "bands": [
+  {
+   "band": "burning yesterday (0)",
+   "cells": 6073,
+   "fires": 4264,
+   "caught": 3604,
+   "flagged": 4777,
+   "share_of_fires": 0.666562451148976,
+   "recall": 0.8452157598499062,
+   "precision": 0.7544483985765125,
+   "flag_rate": 0.7865964103408529,
+   "fire_rate": 0.7021241561007739
+  },
+  {
+   "band": "1 ring (~2.4 km)",
+   "cells": 13206,
+   "fires": 1063,
+   "caught": 201,
+   "flagged": 630,
+   "share_of_fires": 0.1661716429576364,
+   "recall": 0.18908748824082786,
+   "precision": 0.319047619047619,
+   "flag_rate": 0.04770558836892322,
+   "fire_rate": 0.08049371497804028
+  },
+  {
+   "band": "2 rings (~5 km)",
+   "cells": 17250,
+   "fires": 249,
+   "caught": 3,
+   "flagged": 14,
+   "share_of_fires": 0.03892449585743317,
+   "recall": 0.012048192771084338,
+   "precision": 0.21428571428571427,
+   "flag_rate": 0.0008115942028985507,
+   "fire_rate": 0.014434782608695651
+  },
+  {
+   "band": "3 rings (~7 km)",
+   "cells": 20320,
+   "fires": 149,
+   "caught": 4,
+   "flagged": 13,
+   "share_of_fires": 0.023292168203845554,
+   "recall": 0.026845637583892617,
+   "precision": 0.3076923076923077,
+   "flag_rate": 0.000639763779527559,
+   "fire_rate": 0.007332677165354331
+  },
+  {
+   "band": "4-5 rings (~10-12 km)",
+   "cells": 47878,
+   "fires": 153,
+   "caught": 3,
+   "flagged": 7,
+   "share_of_fires": 0.023917461309989056,
+   "recall": 0.0196078431372549,
+   "precision": 0.42857142857142855,
+   "flag_rate": 0.00014620493754960524,
+   "fire_rate": 0.0031956222064413718
+  },
+  {
+   "band": "6-10 rings (~15-24 km)",
+   "cells": 143475,
+   "fires": 128,
+   "caught": 1,
+   "flagged": 1,
+   "share_of_fires": 0.020009379396592152,
+   "recall": 0.0078125,
+   "precision": 1.0,
+   "flag_rate": 6.9698553755009586e-06,
+   "fire_rate": 0.0008921414880641227
+  },
+  {
+   "band": "farther / no fire nearby",
+   "cells": 3973770,
+   "fires": 391,
+   "caught": 1,
+   "flagged": 2,
+   "share_of_fires": 0.06112240112552759,
+   "recall": 0.0025575447570332483,
+   "precision": 0.5,
+   "flag_rate": 5.033003923226558e-07,
+   "fire_rate": 9.839522669907921e-05
+  }
+ ],
+ "wind": [
+  {
+   "direction": "upwind (against wind)",
+   "fires": 221,
+   "caught": 0.08597285067873303,
+   "median_score": 0.07984896004199982,
+   "share": 0.29078947368421054
+  },
+  {
+   "direction": "crosswind",
+   "fires": 260,
+   "caught": 0.1346153846153846,
+   "median_score": 0.09328031539916992,
+   "share": 0.34210526315789475
+  },
+  {
+   "direction": "downwind",
+   "fires": 279,
+   "caught": 0.14695340501792115,
+   "median_score": 0.07016471028327942,
+   "share": 0.3671052631578947
+  }
+ ],
+ "wind_by_dist": [
+  {
+   "dist": 1,
+   "direction": "upwind (against wind)",
+   "fires": 152,
+   "recall": 0.11842105263157894
+  },
+  {
+   "dist": 1,
+   "direction": "crosswind",
+   "fires": 183,
+   "recall": 0.18579234972677597
+  },
+  {
+   "dist": 1,
+   "direction": "downwind",
+   "fires": 189,
+   "recall": 0.20105820105820105
+  },
+  {
+   "dist": 2,
+   "direction": "upwind (against wind)",
+   "fires": 36,
+   "recall": 0.027777777777777776
+  },
+  {
+   "dist": 2,
+   "direction": "crosswind",
+   "fires": 46,
+   "recall": 0.021739130434782608
+  },
+  {
+   "dist": 2,
+   "direction": "downwind",
+   "fires": 56,
+   "recall": 0.0
+  },
+  {
+   "dist": 3,
+   "direction": "upwind (against wind)",
+   "fires": 33,
+   "recall": 0.0
+  },
+  {
+   "dist": 3,
+   "direction": "crosswind",
+   "fires": 31,
+   "recall": 0.0
+  },
+  {
+   "dist": 3,
+   "direction": "downwind",
+   "fires": 34,
+   "recall": 0.08823529411764706
+  }
+ ]
+}

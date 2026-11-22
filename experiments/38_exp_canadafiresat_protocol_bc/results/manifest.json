@@ -1,0 +1,60 @@
+{
+  "source": "Porta, Dalsasso, McCarty, Tuia: CanadaFireSat, arXiv 2506.08690 (v2, Nov 2025)",
+  "model_hashes": {
+    "22_exp_bcws_ignitions_bc/results/models/ign_full.cbm": "42499ee075fbc73d4a6648c1c073b119ec8ee1bd209db8378d30b91712254313",
+    "23_exp_lightning_ignitions_bc/results/models/ign_full.cbm": "3a6187c65842ceacf58510d1b3f5f9cab02dc55eaff534708567ee63354417f5",
+    "23_exp_lightning_ignitions_bc/results/models/ign_lightning.cbm": "87095dd204a5fd77f99daa58365f4121cbba7e5e98fee7272e91917d29bc7a74",
+    "16_exp_weather_lightning_spread_bc/results/models/catboost_spread_noday.cbm": "f055348850e49559000001229ae679c129872a9453d04c7376de5facfbf65e36",
+    "20_exp_fire_start_bc/results/models/start_drivers.cbm": "3abab9ed1abcf101b043ca25b24db42ec0e616b95f307fbca78746ae8756103b"
+  },
+  "regions": [
+    "Cariboo",
+    "Coastal",
+    "Kamloops",
+    "Northwest",
+    "Prince George",
+    "Southeast"
+  ],
+  "selection_year": 2022,
+  "evaluation_year": 2023,
+  "holdout_loaded": false,
+  "unit": "res-7 H3 cell (about 5 km2)",
+  "forecast_dates": [
+    "May 08",
+    "May 16",
+    "May 24",
+    "Jun 01",
+    "Jun 09",
+    "Jun 17",
+    "Jun 25",
+    "Jul 03",
+    "Jul 11",
+    "Jul 19",
+    "Jul 27",
+    "Aug 04",
+    "Aug 12",
+    "Aug 20",
+    "Aug 28",
+    "Sep 05",
+    "Sep 13",
+    "Sep 21"
+  ],
+  "window_days": 8,
+  "labels": {
+    "burn_8d": "S-NPP or NOAA-20 detection in the cell on t .. t+7",
+    "new_burn_8d": "Experiment 20 fire start (gap-filled S-NPP or NOAA-20 detection with none in the cell or its six neighbours on the previous 7 days) in the cell on t .. t+7",
+    "ignition_8d": "BCWS wildfire (type Fire) ignites in the cell on t .. t+7",
+    "big_lightning_8d": "BCWS lightning wildfire with CURRENT_SIZE >= 10 ha ignites in the cell on t .. t+7"
+  },
+  "test_negatives": "per Fire Centre and year, 2 per positive, between the first and last positive date, excluding cells burned (satellite or BCWS) in 2018..y-1 and, for 2023, the 2022 negative cells; equal numbers per FWI decile",
+  "test_hard_negatives": "2 per positive per Fire Centre x dominant fuel class x month, matched to the positives' FWI deciles; cells burned in 2018..2022 excluded",
+  "threshold": "maximizes F1 on the 2022 sample drawn like the test set, one threshold per model and label",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "runtime_seconds": 496
+}

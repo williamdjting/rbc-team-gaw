@@ -1,0 +1,11 @@
+{
+ "routed_thresholds": {
+  "cariboo": 0.16990287601947784,
+  "coastal": 0.22513267397880554,
+  "kamloops": 0.333664208650589,
+  "northwest": 0.20427796244621277,
+  "prince_george": 0.6310445070266724,
+  "southeast": 0.29500943422317505
+ },
+ "routed_pooled_threshold": 36582.0
+}

@@ -1,0 +1,139 @@
+{
+ "label": "v1",
+ "thresholds_2022": {
+  "main": {
+   "cariboo": 0.3817116916179657,
+   "coastal": 0.27068838477134705,
+   "kamloops": 0.28749361634254456,
+   "northwest": 0.24241331219673157,
+   "prince_george": 0.3499583601951599,
+   "southeast": 0.29524436593055725
+  },
+  "stacked": {
+   "cariboo": 0.18110646307468414,
+   "coastal": 0.20372241735458374,
+   "kamloops": 0.31184282898902893,
+   "northwest": 0.2506099045276642,
+   "prince_george": 0.3453895151615143,
+   "southeast": 0.27775201201438904
+  }
+ },
+ "scored_against_label_v1": {
+  "rule": {
+   "f1": 0.6262313753155465,
+   "precision": 0.6491911324146196,
+   "recall": 0.6048401661549575,
+   "tp": 36839,
+   "fp": 19907,
+   "fn": 24068,
+   "by_type": {
+    "continuing": {
+     "fires": 36839,
+     "cells": 56746,
+     "caught": 36839,
+     "flagged": 56746
+    },
+    "next_door": {
+     "fires": 12188,
+     "cells": 120873,
+     "caught": 0,
+     "flagged": 0
+    },
+    "recent_nearby": {
+     "fires": 6548,
+     "cells": 250088,
+     "caught": 0,
+     "flagged": 0
+    },
+    "new_quiet": {
+     "fires": 5332,
+     "cells": 33817177,
+     "caught": 0,
+     "flagged": 0
+    }
+   }
+  },
+  "main": {
+   "f1": 0.6244543744931937,
+   "precision": 0.6578933018267745,
+   "recall": 0.5942502503817295,
+   "tp": 36194,
+   "fp": 18821,
+   "fn": 24713,
+   "by_type": {
+    "continuing": {
+     "fires": 36839,
+     "cells": 56746,
+     "caught": 35524,
+     "flagged": 52714
+    },
+    "next_door": {
+     "fires": 12188,
+     "cells": 120873,
+     "caught": 621,
+     "flagged": 2175
+    },
+    "recent_nearby": {
+     "fires": 6548,
+     "cells": 250088,
+     "caught": 49,
+     "flagged": 126
+    },
+    "new_quiet": {
+     "fires": 5332,
+     "cells": 33817177,
+     "caught": 0,
+     "flagged": 0
+    }
+   }
+  },
+  "stacked": {
+   "f1": 0.626966706321945,
+   "precision": 0.6401163287999315,
+   "recall": 0.6143464626397622,
+   "tp": 37418,
+   "fp": 21037,
+   "fn": 23489,
+   "by_type": {
+    "continuing": {
+     "fires": 36839,
+     "cells": 56746,
+     "caught": 35824,
+     "flagged": 53543
+    },
+    "next_door": {
+     "fires": 12188,
+     "cells": 120873,
+     "caught": 1565,
+     "flagged": 4822
+    },
+    "recent_nearby": {
+     "fires": 6548,
+     "cells": 250088,
+     "caught": 29,
+     "flagged": 90
+    },
+    "new_quiet": {
+     "fires": 5332,
+     "cells": 33817177,
+     "caught": 0,
+     "flagged": 0
+    }
+   }
+  },
+  "bootstrap_95": {
+   "main_minus_rule": [
+    -0.004497430182344364,
+    0.0013642207464702812
+   ],
+   "stacked_minus_rule": [
+    -0.0024115152423712094,
+    0.004564708692804933
+   ],
+   "stacked_minus_main": [
+    0.0008147910895982269,
+    0.004482932646252346
+   ]
+  }
+ }
+}
